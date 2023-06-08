@@ -1,0 +1,25 @@
+{
+  "name": "recource_of_orders",
+  "version": "1.0.0",
+  "description": "pet project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YevhenDenyk"
+  },
+  "homepage": "https://github.com/YevhenDenyk/",
+  "author": "Yevhen Denyk",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
+    "mongoose": "^7.2.2",
+    "nodemon": "^2.0.22",
+    "swagger-ui-express": "^4.6.3",
+    "validator": "^13.9.0"
+  }
+}
