@@ -25,9 +25,9 @@ module.exports = {
         ])
 
         return {
+            limit: +limit,
             page: +page,
             count,
-            limit: +limit,
             users
         }
     },
@@ -43,6 +43,10 @@ module.exports = {
     deleteById: async (id) => {
         return User.deleteOne({_id: id})
     },
+
+    findOne: async (filter)=> {
+        return User.findOne(filter)
+    }
 
 
 }

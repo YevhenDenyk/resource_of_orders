@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const fileUpload = require('express-fileupload');
 
-
 const swaggerJson = require('./swagger.json');
 const {config} = require("./configs");
 const {usersRouter} = require("./routers");
