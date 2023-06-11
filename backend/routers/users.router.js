@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const {usersController} = require("../controllers");
-const {usersMiddleware} = require("../middlewares");
+const {usersMiddleware,commonMiddleware} = require("../middlewares");
 
 router.get(
     '/',
@@ -16,23 +16,23 @@ router.post(
 );
 
 router.get(
-    '/:userId',
-    usersMiddleware.isUserIdValid,
+    '/:_id',
+    commonMiddleware.isMongoIdValid,
     usersMiddleware.getUserDynamically('userId','params','_id'),
     usersController.getOneUser,
 );
 
 router.put(
-    '/:userId',
-    usersMiddleware.isUserIdValid,
+    '/:_id',
+    commonMiddleware.isMongoIdValid,
     usersMiddleware.isBodyUpdateValid,
     usersMiddleware.getUserDynamically('userId','params','_id'),
     usersController.updateUser,
 );
 
 router.delete(
-    '/:userId',
-    usersMiddleware.isUserIdValid,
+    '/:_id',
+    commonMiddleware.isMongoIdValid,
     usersMiddleware.getUserDynamically('userId','params','_id'),
     usersController.deleteUser,
 );

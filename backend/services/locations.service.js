@@ -34,7 +34,7 @@ module.exports = {
         }
     },
 
-    getLocationByIdAndOrder: async (id) => {
+    getByIdWithOrder: async (id) => {
         const res = await Location.aggregate([
             {
                 $match: { //пошук у використовуваній колекції
@@ -49,7 +49,7 @@ module.exports = {
                     as: 'orders' // назва нового масиву який ми отримаємо
                 }
             }
-        ])
+        ]);
         return res[0];
     },
 
@@ -59,5 +59,9 @@ module.exports = {
 
     updateLocation: async (location, id) => {
         return Location.findByIdAndUpdate(id, location, {new: true})
+    },
+
+    getOneById: async (id) => {
+        return Location.findById(id)
     },
 }

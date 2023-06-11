@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const {usersValidator, commonValidator} = require("../validators");
+const {usersValidator} = require("../validators");
 const {usersService} = require("../services");
 
 
@@ -51,19 +51,7 @@ module.exports = {
             next(e);
         }
     },
-    isUserIdValid: async (req, res, next) => {
-        try {
-            const validate = commonValidator.isMongoIdValid.validate(req.params.userId);
 
-            if (validate.error) {
-                throw new ApiError(validate.error.message, 400)
-            }
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
     checkIsEmailUnique: async (req, res, next) => {
         try {
             if (!req.body.email) {
