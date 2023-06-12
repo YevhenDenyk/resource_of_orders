@@ -4,5 +4,9 @@ module.exports = {
     EMAIL: /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/,
     PHONE: /^[+][3][8][0][0-9]{9}$/,
     REGION: /^((Північ)|(Схід)|(Центр)|(Південь)|(Захід))$/,
-    STATUS_LOCATION: /^((Проект)|(Робочий)|(Реконструкція)|(Закритий))$/,
+    LOCATION_STATUS: /^((Проект)|(Робочий)|(Реконструкція)|(Закритий))$/,
+    JOB_TYPE: /^((generalConstructionWorks)|(refrigerationEquipment)|(technologicalEquipment)|(ventilationAndAirConditioning)|(liftingEquipmentAndElevators)|(dieselGenerators)|(electricity)|(waterAndHeating))$/,
+    ORDER_PRIORITY: /^((Критичний)|(Високий)|(Плановий)|(Низький))$/,
+    ORDER_STATUS: /^((Нова)|(В роботі)|(Виконана)|(Відхилена)|(Скасована))$/,
+
 }

@@ -3,4 +3,5 @@ module.exports = {
     locationsMiddleware: require('./locations.middleware'),
     commonMiddleware: require('./common.middleware'),
     contractorsMiddleware: require('./contractors.middleware'),
+    ordersMiddleware: require('./orders.middleware'),
 }

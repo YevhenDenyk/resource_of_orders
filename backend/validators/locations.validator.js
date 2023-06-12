@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {REGION, PHONE, STATUS_LOCATION} = require("../enums/regexp.enum");
+const {REGION, PHONE, LOCATION_STATUS} = require("../enums/regexp.enum");
 
 module.exports = {
     create: Joi.object({
@@ -7,14 +7,14 @@ module.exports = {
         city: Joi.string().required().min(3).max(20),
         address: Joi.string().required().min(3).max(40),
         phone: Joi.string().required().regex(PHONE),
-        status: Joi.string().required().regex(STATUS_LOCATION),
+        status: Joi.string().required().regex(LOCATION_STATUS),
     }),
     update: Joi.object({
         region: Joi.string().optional().regex(REGION),
         city: Joi.string().optional().min(3).max(20),
         address: Joi.string().optional().min(3).max(40),
         phone: Joi.string().optional().regex(PHONE),
-        status: Joi.string().optional().regex(STATUS_LOCATION),
+        status: Joi.string().optional().regex(LOCATION_STATUS),
     }),
 
 }

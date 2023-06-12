@@ -3,4 +3,5 @@ module.exports = {
     commonValidator: require('./common.validator'),
     locationsValidator: require('./locations.validator'),
     contractorsValidator: require('./contractors.validator'),
+    ordersValidator: require('./orders.validator'),
 }
