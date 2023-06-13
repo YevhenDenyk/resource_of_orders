@@ -3,4 +3,6 @@ module.exports = {
     locationsService: require('./locations.service'),
     contractorsService: require('./contractors.service'),
     ordersService: require('./orders.service'),
+    jobTypesService: require('./jobTypes.service'),
+    commitsService: require('./commits.service'),
 }
