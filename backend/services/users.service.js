@@ -44,7 +44,7 @@ module.exports = {
         return User.deleteOne({_id: id})
     },
 
-    findOne: async (filter)=> {
+    findOne: async (filter = {})=> {
         return User.findOne(filter)
     }
 

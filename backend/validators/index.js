@@ -6,4 +6,5 @@ module.exports = {
     ordersValidator: require('./orders.validator'),
     jobTypesValidator: require('./jobTypes.validator'),
     commitsValidator: require('./commits.validator'),
+    authValidator: require('./auth.validator'),
 }

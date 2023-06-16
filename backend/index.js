@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 
 const swaggerJson = require('./swagger.json');
 const {config} = require("./configs");
-const {usersRouter} = require("./routers");
+const {usersRouter, commitsRouter, contractorsRouter, jobTypesRouter,locationsRouter,ordersRouter} = require("./routers");
 
 
 const app = express();
@@ -15,8 +15,15 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(fileUpload());
 
+app.use('/commits', commitsRouter);
+app.use('/contractors', contractorsRouter);
+app.use('/jobTypes', jobTypesRouter);
+app.use('/locations', locationsRouter);
+app.use('/orders', ordersRouter);
 app.use('/users', usersRouter);
+
 app.use('/docks', swaggerUi.serve, swaggerUi.setup(swaggerJson));
+
 
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json({
@@ -32,6 +39,7 @@ app.get('/', (req, res) => {
 const connect = async () => {
     let dbConnect = false
     console.log("Connecting to database...")
+
     while (!dbConnect) {
         try {
             await mongoose.connect(config.MONGO_URL);

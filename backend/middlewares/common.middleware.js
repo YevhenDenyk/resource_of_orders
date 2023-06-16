@@ -1,6 +1,7 @@
 const {commonValidator} = require("../validators");
 
 const ApiError = require("../error/ApiError");
+const {usersService} = require("../services");
 
 module.exports = {
     isMongoIdValid: async (req, res, next) => {
@@ -17,15 +18,14 @@ module.exports = {
         }
     },
 
-
-    //перевірити чи працюють
-    isBodyCreateValid: (Validator)=> async (req, res, next) => {
+    isBodyValid: (Validator) => async (req, res, next) => {
         try {
-            const validate = Validator.create.validate(req.body);
+            const validate = Validator.validate(req.body);
 
             if (validate.error) {
                 throw new ApiError(validate.error.message, 404)
             }
+            req.body = validate.data
 
             next();
         } catch (e) {
@@ -33,12 +33,23 @@ module.exports = {
         }
     },
 
-    isBodyUpdateValid: (Validator)=> async (req, res, next) => {
+    ifUserHasAccessTo: (AccessLevel) => async (req, res, next) => {
         try {
-            const validate = Validator.update.validate(req.body);
+            const {essence_id} = req.tokenInfo //Інфа береться після перевірки токену
+            const {user} = req
+            let userAccessLevel = 0
 
-            if (validate.error) {
-                throw new ApiError(validate.error.message, 404)
+
+            if (user) {
+                userAccessLevel = user.accessLevel
+            }
+            if (!user) {
+                const user = await usersService.findOne({_id: essence_id});
+                userAccessLevel = user.accessLevel
+            }
+
+            if ([AccessLevel] > userAccessLevel) {
+                throw new ApiError('Sorry, your access level is not high enough', 400)
             }
 
             next();

@@ -7,7 +7,7 @@ const userSchema = new Schema({
     email: {required: true, type: String, trim: true, lowercase: true},
     password: {required: true, type:String},
     phone: {required: true, type: String},
-    accessRights: {required: true, type: String},
+    accessLevel: {required: true, type: Number},
     location: {type: Schema.Types.ObjectId, ref: 'Location'},
 }, {
     timestamps: true

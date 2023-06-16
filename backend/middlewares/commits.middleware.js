@@ -1,18 +1,19 @@
+const {ordersService} = require("../services");
 const ApiError = require("../error/ApiError");
-const {commitsValidator} = require("../validators");
 
 module.exports = {
-    isBodyCreateValid: async (req, res, next) => {
-        try {
-            const validate = commitsValidator.create.validate(req.body);
+    isOrderExist : async (req, res, next) => {
+            try {
+                const order = await ordersService.getById(req.body.order);
 
-            if (validate.error) {
-                throw new ApiError(validate.error.message, 404)
+                if (!order){
+                    throw new ApiError('Order not found', 400)
+                }
+
+                next();
+            } catch (e) {
+                next(e);
             }
+      },
 
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
 }

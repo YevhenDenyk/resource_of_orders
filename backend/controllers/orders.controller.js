@@ -19,21 +19,30 @@ module.exports = {
         }
     },
     create: async (req, res, next) => {
-            try {
-                const order = await ordersService.create(req.body);
+        try {
+            const order = await ordersService.create(req.body);
 
-                res.status(201).json(order);
-            } catch (e) {
-                next(e);
-            }
-      },
-    update : async (req, res, next) => {
-            try {
-                const order = await ordersService.update(req.params._id, req.body);
+            res.status(201).json(order);
+        } catch (e) {
+            next(e);
+        }
+    },
+    update: async (req, res, next) => {
+        try {
+            const order = await ordersService.update(req.params._id, req.body);
 
-                res.status(201).json(order);
-            } catch (e) {
-                next(e);
-            }
-      },
+            res.status(201).json(order);
+        } catch (e) {
+            next(e);
+        }
+    },
+    updateStatus: async (req, res, next) => {
+        try {
+            const order = await ordersService.update(req.params._id, req.body);
+
+            res.status(201).json(order);
+        } catch (e) {
+            next(e);
+        }
+    },
 }

@@ -1,5 +1,4 @@
 const ApiError = require("../error/ApiError");
-const {usersValidator} = require("../validators");
 const {usersService} = require("../services");
 
 
@@ -16,36 +15,6 @@ module.exports = {
 
             req.user = user
 
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-    isBodyCreateValid: async (req, res, next) => {
-        try {
-
-            const validate = usersValidator.createUser.validate(req.body);
-
-            if (validate.error) {
-                throw new ApiError(validate.error.message, 400)
-            }
-
-            req.body = validate.value
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-    isBodyUpdateValid: async (req, res, next) => {
-        try {
-
-            const validate = usersValidator.updateUser.validate(req.body);
-
-            if (validate.error) {
-                throw new ApiError(validate.error.message, 400)
-            }
-
-            req.body = validate.value
             next();
         } catch (e) {
             next(e);

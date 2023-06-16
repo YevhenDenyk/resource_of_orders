@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const {contractorsController} = require('../controllers');
 const {contractorsMiddleware, commonMiddleware} = require('../middlewares');
+const {contractorsValidator} = require("../validators");
 
 router.get(
     '/',
@@ -10,7 +11,7 @@ router.get(
 
 router.post(
     '/',
-    contractorsMiddleware.isBodyCreateValid,
+    commonMiddleware.isBodyValid(contractorsValidator.create),
     contractorsController.create
 )
 
@@ -24,6 +25,7 @@ router.get(
 router.put(
     '/:_id',
     commonMiddleware.isMongoIdValid,
+    commonMiddleware.isBodyValid(contractorsValidator.update),
     contractorsMiddleware.isContractorExist,
     contractorsController.update
 )
@@ -34,3 +36,5 @@ router.delete(
     contractorsMiddleware.isContractorExist,
     contractorsController.delete
 )
+
+module.exports = router

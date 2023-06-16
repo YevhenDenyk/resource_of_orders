@@ -1,8 +1,8 @@
 const Contractor = require('../databases/Contractor');
 
 module.exports = {
-    getOneById: async (id)=>{
-        return Contractor.findById(id)
+    findOne: async (find = {})=>{
+        return Contractor.findOne(find)
     },
 
     create: async (contactor) => {
@@ -36,7 +36,7 @@ module.exports = {
         return res[0]
     },
 
-    find: async (query) => {
+    findAndFilter: async (query) => {
         const {limit = 10, page = 1, name, email, phone} = query
         let findObject = {}
 

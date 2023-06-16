@@ -9,8 +9,8 @@ module.exports = {
         email: Joi.string().required().regex(EMAIL).lowercase().trim(),
         password: Joi.string().required().regex(PASSWORD),
         phone: Joi.string().required().regex(PHONE),
-        accessRights: Joi.number().required().min(1).max(5),
-        location: Joi.string().required().regex(MONGO_ID)
+        accessLevel: Joi.number().required().min(1).max(100),
+        location: Joi.string().optional().regex(MONGO_ID)
     }),
     updateUser: Joi.object({
         firstName: Joi.string().optional().min(2).max(20),
@@ -18,7 +18,7 @@ module.exports = {
         profession: Joi.string().optional().min(2).max(30),
         email: Joi.string().optional().regex(EMAIL).lowercase().trim(),
         phone: Joi.string().optional().regex(PHONE),
-        accessRights: Joi.number().optional().min(1).max(5),
+        accessLevel: Joi.number().optional().min(1).max(100),
         location: Joi.string().optional().regex(MONGO_ID)
     }),
 }

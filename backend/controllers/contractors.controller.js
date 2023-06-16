@@ -3,7 +3,7 @@ const {contractorsService} = require('../services');
 module.exports = {
     getAllAndFilter: async (req, res, next) => {
         try {
-            const data = await contractorsService.find(req.query);
+            const data = await contractorsService.findAndFilter(req.query);
 
             res.status(200).json(data);
         } catch (e) {
@@ -21,7 +21,7 @@ module.exports = {
     },
     create: async (req, res, next) => {
         try {
-            const contractor = await contractorsService.create(req.validContractor);
+            const contractor = await contractorsService.create(req.body);
 
             res.status(201).json(contractor);
         } catch (e) {
@@ -30,7 +30,7 @@ module.exports = {
     },
     update: async (req, res, next) => {
         try {
-            const contractor = await contractorsService.update(req.params._id, req.validContractor);
+            const contractor = await contractorsService.update(req.params._id, req.body);
 
             res.status(201).json(contractor);
         } catch (e) {

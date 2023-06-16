@@ -5,4 +5,5 @@ module.exports = {
     ordersController: require('./orders.controller'),
     jobTypesController: require('./jobTypes.controller'),
     commitsController: require('./commits.controller'),
+    authController: require('./auth.controller'),
 }

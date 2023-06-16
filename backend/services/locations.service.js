@@ -64,4 +64,7 @@ module.exports = {
     getOneById: async (id) => {
         return Location.findById(id)
     },
+    deleteOne: async (id)=>{
+        return Location.deleteOne({_id:id})
+    }
 }

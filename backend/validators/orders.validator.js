@@ -20,5 +20,6 @@ module.exports = {
         description: Joi.string().optional().min(10).max(300),
         files: Joi.string().optional(),
     }),
+    updateStatus: Joi.string().optional().regex(ORDER_STATUS),
 
 }

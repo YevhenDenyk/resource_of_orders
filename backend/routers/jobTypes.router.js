@@ -2,10 +2,11 @@ const router = require('express').Router();
 
 const {jobTypesMiddleware, commonMiddleware, locationsMiddleware} = require("../middlewares");
 const {jobTypesController} = require("../controllers");
+const {jobTypesValidator} = require("../validators");
 
 router.post(
     '/',
-    jobTypesMiddleware.isBodyCreateValid,
+    commonMiddleware.isBodyValid(jobTypesValidator.create),
     jobTypesMiddleware.checkIsLocationUnique,
     jobTypesController.create
 );
@@ -19,7 +20,9 @@ router.get(
 router.put(
     '/:_id',
     commonMiddleware.isMongoIdValid,
-    jobTypesMiddleware.isBodyUpdateValid,
+    commonMiddleware.isBodyValid(jobTypesValidator.update),
     locationsMiddleware.isLocationExist,
     jobTypesController.update
 )
+
+module.exports = router

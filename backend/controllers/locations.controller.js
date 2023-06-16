@@ -40,4 +40,13 @@ module.exports = {
             next(e);
         }
     },
+    delete: async (req, res, next) => {
+        try {
+            await locationsService.deleteOne(req.params._id)
+
+            res.sendStatus(204);
+        } catch (e) {
+            next(e);
+        }
+    },
 }

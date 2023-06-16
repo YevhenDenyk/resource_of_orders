@@ -5,4 +5,5 @@ module.exports = {
     ordersService: require('./orders.service'),
     jobTypesService: require('./jobTypes.service'),
     commitsService: require('./commits.service'),
+    authService: require('./auth.service'),
 }

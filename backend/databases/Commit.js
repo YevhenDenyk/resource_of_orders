@@ -8,4 +8,4 @@ const commitSchema = new Schema({
     timestamps: true
 })
 
-module.exports = model('User', commitSchema)
+module.exports = model('Commit', commitSchema)
