@@ -11,11 +11,10 @@ module.exports = {
         }
     },
 
-    getOneAndOrders: async (req, res, next) => {
+    getOne: async (req, res, next) => {
         try {
-            const location = await locationsService.getByIdWithOrder(req.params._id);
 
-            res.status(200).json(location);
+            res.status(200).json(req.location);
         } catch (e) {
             next(e);
         }

@@ -10,11 +10,10 @@ module.exports = {
             next(e);
         }
     },
-    getOneWithOrders: async (req, res, next) => {
+    getOne: async (req, res, next) => {
         try {
-            const contractor = await contractorsService.getOneWithOrders(req.params._id)
 
-            res.status(200).json(contractor);
+            res.status(200).json(req.contractor);
         } catch (e) {
             next(e);
         }

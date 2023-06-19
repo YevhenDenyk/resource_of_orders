@@ -19,7 +19,7 @@ router.get(
     '/:_id',
     commonMiddleware.isMongoIdValid,
     contractorsMiddleware.isContractorExist,
-    contractorsController.getOneWithOrders
+    contractorsController.getOne
 )
 
 router.put(

@@ -6,7 +6,7 @@ module.exports = {
     },
 
     update: async (id, order) => {
-        return Order.findByIdAndUpdate(id, order)
+        return Order.findByIdAndUpdate(id, order, {new: true})
     },
 
     getAllAndFilter: async (query) => {

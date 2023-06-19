@@ -1,13 +1,16 @@
 const JobType = require('../databases/JobType');
 
 module.exports = {
-    create: (jobType = {}) => {
+    getAll: async (filter = {}) => {
+        return JobType.find(filter)
+    },
+    create: async (jobType = {}) => {
         return JobType.create(jobType)
     },
-    findByIdAndUpdate: (idLocation, jobType) => {
-        return JobType.findOneAndUpdate({location: idLocation},jobType, {new: true})
+    findByIdAndUpdate: async (id, jobType) => {
+        return JobType.findByIdAndUpdate(id, jobType, {new: true})
     },
-    findByLocation: (idLocation) => {
+    findByLocation: async (idLocation) => {
         return JobType.find({location: idLocation})
     }
 

@@ -10,6 +10,7 @@ module.exports = {
                 throw new ApiError('Location not found', 404)
             }
 
+            req.location = location
             next();
         } catch (e) {
             next(e);

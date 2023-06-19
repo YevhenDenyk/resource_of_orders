@@ -1,27 +1,34 @@
 const router = require('express').Router();
 
-const {jobTypesMiddleware, commonMiddleware, locationsMiddleware} = require("../middlewares");
+const {jobTypesMiddleware, commonMiddleware} = require("../middlewares");
 const {jobTypesController} = require("../controllers");
 const {jobTypesValidator} = require("../validators");
+
+router.get(
+    '/',
+    jobTypesController.getAll
+);
 
 router.post(
     '/',
     commonMiddleware.isBodyValid(jobTypesValidator.create),
+    jobTypesMiddleware.checkIsLocationExist,
     jobTypesMiddleware.checkIsLocationUnique,
     jobTypesController.create
 );
 
 router.get(
-    '/:_id',
+    '/:_idLocation',
     commonMiddleware.isMongoIdValid,
+    jobTypesMiddleware.checkIsJobTypeExist,
     jobTypesController.getByIdLocation
 )
 
 router.put(
-    '/:_id',
+    '/:_idLocation',
     commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(jobTypesValidator.update),
-    locationsMiddleware.isLocationExist,
+    jobTypesMiddleware.checkIsJobTypeExist,
     jobTypesController.update
 )
 

@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 
 const swaggerJson = require('./swagger.json');
 const {config} = require("./configs");
-const {usersRouter, commitsRouter, contractorsRouter, jobTypesRouter,locationsRouter,ordersRouter} = require("./routers");
+const {usersRouter, commitsRouter, contractorsRouter, jobTypesRouter,locationsRouter,ordersRouter, authRouter} = require("./routers");
 
 
 const app = express();
@@ -15,6 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(fileUpload());
 
+app.use('/auth', authRouter);
 app.use('/commits', commitsRouter);
 app.use('/contractors', contractorsRouter);
 app.use('/jobTypes', jobTypesRouter);

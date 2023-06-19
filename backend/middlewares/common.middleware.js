@@ -25,7 +25,7 @@ module.exports = {
             if (validate.error) {
                 throw new ApiError(validate.error.message, 404)
             }
-            req.body = validate.data
+            req.body = validate.value
 
             next();
         } catch (e) {

@@ -6,7 +6,7 @@ const locationSchema = new Schema({
     address: {required: true, type: String},
     phone: {required: true, type: String},
     status: {required: true, type: String},
-
+    description: {required: true, type: String},
 }, {
     timestamps: true
 })

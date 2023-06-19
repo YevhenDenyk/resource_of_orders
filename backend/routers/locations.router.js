@@ -19,7 +19,7 @@ router.get(
     '/:_id',
     commonMiddleware.isMongoIdValid,
     locationsMiddleware.isLocationExist,
-    locationsController.getOneAndOrders
+    locationsController.getOne
 );
 
 router.put(

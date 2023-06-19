@@ -34,24 +34,25 @@ module.exports = {
         }
     },
 
-    getByIdWithOrder: async (id) => {
-        const res = await Location.aggregate([
-            {
-                $match: { //пошук у використовуваній колекції
-                    _id: id
-                }
-            },
-            {
-                $lookup: { //пошук у приєднуваній колекції
-                    from: 'orders', //назва колекції
-                    localField: '_id', //поле в поточній колекції
-                    foreignField: 'location', //поле в приєднуваній колекції
-                    as: 'orders' // назва нового масиву який ми отримаємо
-                }
-            }
-        ]);
-        return res[0];
-    },
+    ////  не використовується -  відсутній сенс
+    // getByIdWithOrder: async (id) => {
+    //     const res = await Location.aggregate([
+    //         {
+    //             $match: { //пошук у використовуваній колекції
+    //                 _id: id
+    //             }
+    //         },
+    //         {
+    //             $lookup: { //пошук у приєднуваній колекції
+    //                 from: 'orders', //назва колекції
+    //                 localField: '_id', //поле в поточній колекції
+    //                 foreignField: 'location', //поле в приєднуваній колекції
+    //                 as: 'orders' // назва нового масиву який ми отримаємо
+    //             }
+    //         }
+    //     ]);
+    //     return res[0];
+    // },
 
     createLocation: async (location = {}) => {
         return Location.create(location)

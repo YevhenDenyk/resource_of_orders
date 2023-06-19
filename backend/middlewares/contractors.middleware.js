@@ -9,7 +9,7 @@ module.exports = {
             if (!contractor) {
                 throw new ApiError('Contractor not found', 404)
             }
-
+            req.contractor = contractor
             next();
         } catch (e) {
             next(e);

@@ -17,24 +17,25 @@ module.exports = {
         return Contractor.deleteOne({_id: id})
     },
 
-    getOneWithOrders: async (id) => {
-        const res = await Contractor.aggregate([
-            {
-                $match: {
-                    _id: id
-                }
-            },
-            {
-                $lookup: {
-                    from: 'orders',
-                    localField: '_id',
-                    foreignField: 'contractor',
-                    as: 'orders'
-                }
-            }
-        ]);
-        return res[0]
-    },
+    ////не запрацювало, не знайшов сенсу у використанні
+    // getOneWithOrders: async (id) => {
+    //     const res = await Contractor.aggregate([
+    //         {
+    //             $match: {
+    //                 _id: id
+    //             }
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: 'orders',
+    //                 localField: '_id',
+    //                 foreignField: 'contractor',
+    //                 as: 'orders'
+    //             }
+    //         }
+    //     ]);
+    //     return res[0]
+    // },
 
     findAndFilter: async (query) => {
         const {limit = 10, page = 1, name, email, phone} = query
