@@ -34,25 +34,25 @@ module.exports = {
         }
     },
 
-    ////  не використовується -  відсутній сенс
-    // getByIdWithOrder: async (id) => {
-    //     const res = await Location.aggregate([
-    //         {
-    //             $match: { //пошук у використовуваній колекції
-    //                 _id: id
-    //             }
-    //         },
-    //         {
-    //             $lookup: { //пошук у приєднуваній колекції
-    //                 from: 'orders', //назва колекції
-    //                 localField: '_id', //поле в поточній колекції
-    //                 foreignField: 'location', //поле в приєднуваній колекції
-    //                 as: 'orders' // назва нового масиву який ми отримаємо
-    //             }
-    //         }
-    //     ]);
-    //     return res[0];
-    // },
+    getByIdWithJobTypes: async (id) => {
+        const res = await Location.aggregate([
+            {
+                $match: { //пошук у використовуваній колекції
+                    _id: id
+                }
+            },
+            {
+                $lookup: { //пошук у приєднуваній колекції
+                    from: 'jobtypes', //назва колекції
+                    localField: '_id', //поле в поточній колекції
+                    foreignField: 'location', //поле в приєднуваній колекції
+                    as: 'jobTypes' // назва нового масиву який ми отримаємо
+                }
+            }
+        ]);
+
+        return {...res[0], jobTypes: res[0].jobTypes[0]};
+    },
 
     createLocation: async (location = {}) => {
         return Location.create(location)
@@ -65,7 +65,7 @@ module.exports = {
     getOneById: async (id) => {
         return Location.findById(id)
     },
-    deleteOne: async (id)=>{
-        return Location.deleteOne({_id:id})
+    deleteOne: async (id) => {
+        return Location.deleteOne({_id: id})
     }
 }

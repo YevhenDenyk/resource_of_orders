@@ -10,7 +10,7 @@ module.exports = {
     },
 
     getAllAndFilter: async (query) => {
-        const {page = 1, limit = 10, jobType, orderStatus, overdue, priority} = query
+        const {page = 1, limit = 10,contractor,location, jobType, orderStatus, overdue, priority} = query
         let findObj = {}
 
         if (jobType) {
@@ -25,9 +25,15 @@ module.exports = {
         if (priority) {
             findObj = {...findObj, priority: {$regex: priority}}
         }
+        if (contractor) {
+            findObj = {...findObj, contractor}
+        }
+        if (location) {
+            findObj = {...findObj, location}
+        }
 
-        const [orders, count]= await Promise.all([
-            Order.find(findObj).limit(+limit).skip(+limit*(+page-1)),
+        const [orders, count] = await Promise.all([
+            Order.find(findObj).limit(+limit).skip(+limit * (+page - 1)),
             Order.count(findObj)
         ])
 
@@ -37,6 +43,25 @@ module.exports = {
             count,
             orders
         }
+    },
+
+    getByIdWithCommits: async (id) => {
+        const res = await Order.aggregate([
+            {
+                $match: {
+                    _id: id
+                }
+            },
+            {
+                $lookup: {
+                    from: 'commits',
+                    localField: '_id',
+                    foreignField: 'order',
+                    as: 'commits'
+                }
+            }
+        ]);
+        return res[0]
     },
 
     getById: async (id) => {

@@ -10,7 +10,8 @@ const orderSchema = new Schema({
     priority: {required: true, type: String},
     description: {required: true, type: String},
     files: [String],
-    overdue: {type:Boolean, default: false}
+    overdue: {type:Boolean, default: false},
+    orderNumber: {type:Number, required:true},
 
 }, {
     timestamps: true

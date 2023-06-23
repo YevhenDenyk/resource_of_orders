@@ -7,6 +7,7 @@ module.exports = {
         password: Joi.string().required().regex(PASSWORD),
         contractor: Joi.boolean().optional(),
     }),
-    password: Joi.string().required().regex(PASSWORD),
-
+    password: Joi.object({
+        password: Joi.string().required().regex(PASSWORD),
+    }),
 }

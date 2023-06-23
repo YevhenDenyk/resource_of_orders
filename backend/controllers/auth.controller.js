@@ -1,4 +1,14 @@
-const {authService} = require("../services");
+const {
+    authService,
+    emailService,
+    actionTokenService,
+    oldPasswordService,
+    contractorsService,
+    usersService
+} = require("../services");
+const {FRONTEND_URL} = require("../configs/config");
+const {FORGOT_PASS} = require("../enums/email-action.enum");
+
 
 module.exports = {
     login: async (req, res, next) => {
@@ -50,4 +60,57 @@ module.exports = {
             next(e);
         }
     },
+
+    forgotPassword: async (req, res, next) => {
+        try {
+            const {essence, body} = req
+            let name = ''
+
+            if (body.contractor) {
+                name = essence.name
+            }
+            if (!body.contractor) {
+                name = `${essence.firstName} ${essence.lastName}`
+            }
+
+            const actionToken = authService.generateActionToken({essence_id: essence._id});
+            const forgotPassFEUrl = `${FRONTEND_URL}/password/new?token=${actionToken}`
+
+            await Promise.all([
+                emailService.sendEmail(essence.email, FORGOT_PASS, {userName: name, url: forgotPassFEUrl}),
+                actionTokenService.create(essence._id, actionToken, body.contractor)
+            ])
+
+            res.status(200).json('ok');
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    setPasswordAfterForgot: async (req, res, next) => {
+        try {
+            const {essence, body, tokenInfo} = req;
+
+
+            const hashPassword = await authService.hashPassword(body.password);
+
+            await Promise.allSettled([
+                oldPasswordService.create(essence._id, essence.password),
+                actionTokenService.deleteActionToken(tokenInfo.actionToken)
+            ])
+
+            if (tokenInfo.contractor) {
+                await contractorsService.update(tokenInfo.essence_id, {password: hashPassword})
+            }
+            if (!tokenInfo.contractor) {
+                await usersService.updateOneById(tokenInfo.essence_id, {password: hashPassword})
+            }
+
+            res.status(200).json('ok');
+        } catch (e) {
+            next(e);
+        }
+    },
+
+
 }

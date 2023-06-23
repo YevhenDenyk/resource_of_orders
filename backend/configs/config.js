@@ -6,5 +6,9 @@ module.exports = {
 
     ACCESS_SECRET: process.env.ACCESS_SECRET,
     REFRESH_SECRET: process.env.REFRESH_SECRET,
+    ACTION_TOKEN_SECRET: process.env.ACTION_TOKEN_SECRET,
+
+    NO_REPLAY_EMAIL: process.env.NO_REPLAY_EMAIL,
+    NO_REPLAY_EMAIL_PASSWORD: process.env.NO_REPLAY_EMAIL_PASSWORD,
 
 }

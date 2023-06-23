@@ -10,7 +10,7 @@
   ],
 
   "paths": {
-    "/users/{userId}": {
+    "/users/{_id}": {
       "get": {
         "description": "Get user by id",
         "tags": [

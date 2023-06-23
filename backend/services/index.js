@@ -6,4 +6,7 @@ module.exports = {
     jobTypesService: require('./jobTypes.service'),
     commitsService: require('./commits.service'),
     authService: require('./auth.service'),
+    emailService: require('./email.service'),
+    actionTokenService: require('./actionToken.service'),
+    oldPasswordService: require('./oldPassword.service'),
 }

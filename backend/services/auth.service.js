@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const Auth = require('../databases/Auth')
 const ApiError = require("../error/ApiError");
-const {ACCESS_SECRET, REFRESH_SECRET} = require("../configs/config");
+const {ACCESS_SECRET, REFRESH_SECRET, ACTION_TOKEN_SECRET} = require("../configs/config");
 const {tokenTypeEnums} = require('../enums');
 
 module.exports = {
@@ -18,6 +18,9 @@ module.exports = {
             throw new ApiError('Wrong email or password', 400)
         }
     },
+    compareOldPassword: (hashPassword, password) => {
+        return bcrypt.compare(password, hashPassword);
+    },
 
     generateAccessTokenPair: (dataToSign = {}) => {
         const accessToken = jwt.sign(dataToSign, ACCESS_SECRET, {expiresIn: '15m'});
@@ -29,7 +32,7 @@ module.exports = {
         }
     },
 
-    checkTokenPair: (token = '', tokenType = tokenTypeEnums.accessToken) => {
+    checkTokenPair: (token = '', tokenType = tokenTypeEnums.ACCESS_TOKEN) => {
         try {
             let secretWord = ''
 
@@ -43,16 +46,29 @@ module.exports = {
         }
     },
 
+    generateActionToken: (dataToSign = {}) => {
+       return  jwt.sign(dataToSign, ACTION_TOKEN_SECRET, {expiresIn: '1d'})
+    },
+
+    checkActionToken: (actionToken) => {
+        try {
+            return jwt.verify(actionToken, ACTION_TOKEN_SECRET)
+        } catch (e) {
+            throw new ApiError('Token invalid', 401)
+        }
+    },
+
+
     createInBase: async (essence_id, accessToken, refreshToken) => {
         return Auth.create({essence_id, accessToken, refreshToken})
     },
     findByToken: async (token = {}) => {
-        return Auth.find(token)
+        return Auth.findOne(token)
     },
     deleteById: async (_id) => {
         return Auth.deleteOne({_id})
     },
-    deleteMany: async (filter={})=>{
+    deleteMany: async (filter = {}) => {
         return Auth.deleteMany(filter)
     }
 

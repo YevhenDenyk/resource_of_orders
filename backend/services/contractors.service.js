@@ -9,7 +9,7 @@ module.exports = {
         return Contractor.create(contactor)
     },
 
-    update: async (id, contactor) => {
+    update: async (id, contactor={}) => {
         return Contractor.findByIdAndUpdate(id, contactor, {new: true})
     },
 

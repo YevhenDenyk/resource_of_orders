@@ -19,7 +19,7 @@ router.post(
 router.get(
     '/:_id',
     commonMiddleware.isMongoIdValid,
-    usersMiddleware.getUserDynamically('userId', 'params', '_id'),
+    usersMiddleware.getUserDynamically('_id', 'params'),
     usersController.getOneUser,
 );
 
@@ -27,14 +27,14 @@ router.put(
     '/:_id',
     commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(usersValidator.updateUser),
-    usersMiddleware.getUserDynamically('userId', 'params', '_id'),
+    usersMiddleware.getUserDynamically('_id', 'params'),
     usersController.updateUser,
 );
 
 router.delete(
     '/:_id',
     commonMiddleware.isMongoIdValid,
-    usersMiddleware.getUserDynamically('userId', 'params', '_id'),
+    usersMiddleware.getUserDynamically('_id', 'params'),
     usersController.deleteUser,
 );
 

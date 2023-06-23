@@ -11,16 +11,18 @@ module.exports = {
         }
     },
 
-    getById: async (req, res, next) => {
+    getByIdWithCommits: async (req, res, next) => {
         try {
-            res.status(200).json(req.order);
+            const orderWithCommits = await ordersService.getByIdWithCommits(req.order._id);
+
+            res.status(200).json(orderWithCommits);
         } catch (e) {
             next(e);
         }
     },
     create: async (req, res, next) => {
         try {
-            const order = await ordersService.create(req.body);
+            const order = await ordersService.create({...req.body, orderNumber: new Date().valueOf()});
 
             res.status(201).json(order);
         } catch (e) {

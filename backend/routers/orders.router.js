@@ -19,7 +19,7 @@ router.get(
     '/:_id',
     commonMiddleware.isMongoIdValid,
     ordersMiddleware.isOrderExist,
-    ordersController.getById
+    ordersController.getByIdWithCommits
 );
 
 router.put(

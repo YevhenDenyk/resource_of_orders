@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const {authService, contractorsService, usersService} = require("../services");
+const {authService, contractorsService, usersService, actionTokenService, oldPasswordService} = require("../services");
 const {REFRESH_TOKEN} = require("../enums/tokenType.enum");
 
 module.exports = {
@@ -69,6 +69,61 @@ module.exports = {
             }
 
             req.tokenInfo = tokenInfo
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+    checkActionToken: async (req, res, next) => {
+        try {
+            const actionToken = req.get('Authorization')
+
+            if (!actionToken) {
+                throw new ApiError('No token', 401)
+            }
+
+            const payload = authService.checkActionToken(actionToken);
+
+            const tokenInfo = await actionTokenService.findOne(actionToken);
+
+            if (!tokenInfo || payload.essence_id !== tokenInfo.essence_id) {
+                throw new ApiError('Unknown token', 401)
+            }
+
+            if (tokenInfo.contractor) {
+                const essence = await contractorsService.findOne({_id: tokenInfo.essence_id});
+                req.essence = essence
+            }
+            if (!tokenInfo.contractor) {
+                const essence = await usersService.findOne({_id: tokenInfo.essence_id});
+                req.essence = essence
+            }
+
+            req.tokenInfo = tokenInfo;
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkOldPasswords: async (req, res, next) => {
+        try {
+            const {_id, password} = req.essence;
+
+            const oldPasswords = await oldPasswordService.findAllPasswordByUser(_id);
+
+            oldPasswords.push({oldPassword: password})
+
+            const results = await Promise.all(
+                oldPasswords.map((record) => authService.compareOldPassword(record.oldPassword, req.body.password))
+            )
+
+            const condition = results.some((res) => res);
+
+            if (condition) {
+                throw new ApiError("This is old password", 409)
+            }
+
             next();
         } catch (e) {
             next(e);

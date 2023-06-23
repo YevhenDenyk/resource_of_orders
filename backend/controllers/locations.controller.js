@@ -13,8 +13,9 @@ module.exports = {
 
     getOne: async (req, res, next) => {
         try {
+            const locationWithJob = await locationsService.getByIdWithJobTypes(req.location._id);
 
-            res.status(200).json(req.location);
+            res.status(200).json(locationWithJob);
         } catch (e) {
             next(e);
         }
