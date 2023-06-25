@@ -1,4 +1,4 @@
-const {WELCOME, FORGOT_PASS, DELETE_ACCOUNT, LOGOUT} = require("../enums/email-action.enum");
+const {WELCOME, FORGOT_PASS, DELETE_ACCOUNT, LOGOUT} = require("../enums/emailAction.enum");
 module.exports = {
     [WELCOME]: {
         subject: "Welcome on board",

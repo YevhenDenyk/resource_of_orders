@@ -15,7 +15,7 @@ module.exports = {
         const isPassSame = await bcrypt.compare(password, hashPassword);
 
         if (!isPassSame) {
-            throw new ApiError('Wrong email or password', 400)
+            throw new ApiError('Wrong password', 400)
         }
     },
     compareOldPassword: (hashPassword, password) => {
@@ -47,7 +47,7 @@ module.exports = {
     },
 
     generateActionToken: (dataToSign = {}) => {
-       return  jwt.sign(dataToSign, ACTION_TOKEN_SECRET, {expiresIn: '1d'})
+        return jwt.sign(dataToSign, ACTION_TOKEN_SECRET, {expiresIn: '1d'})
     },
 
     checkActionToken: (actionToken) => {
@@ -59,8 +59,8 @@ module.exports = {
     },
 
 
-    createInBase: async (essence_id, accessToken, refreshToken) => {
-        return Auth.create({essence_id, accessToken, refreshToken})
+    createInBase: async (essence_id, accessLevel, accessToken, refreshToken) => {
+        return Auth.create({essence_id, accessLevel, accessToken, refreshToken})
     },
     findByToken: async (token = {}) => {
         return Auth.findOne(token)

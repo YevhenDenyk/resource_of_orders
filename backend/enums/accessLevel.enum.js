@@ -1,0 +1,7 @@
+module.exports = {
+    CONTRACTOR_LEVEL: 10,
+    STAFF_LEVEL: 21,
+    ENGINEER_LEVEL: 41,
+    LEAD_ENGINEER_LEVEL: 61,
+    ADMIN_LEVEL: 81
+}

@@ -7,7 +7,7 @@ const {
     usersService
 } = require("../services");
 const {FRONTEND_URL} = require("../configs/config");
-const {FORGOT_PASS} = require("../enums/email-action.enum");
+const {FORGOT_PASS} = require("../enums/emailAction.enum");
 
 
 module.exports = {
@@ -21,7 +21,7 @@ module.exports = {
                 essence_id: essence._id,
             });
 
-            await authService.createInBase(essence._id, accessToken, refreshToken)
+            await authService.createInBase(essence._id, essence.accessLevel, accessToken, refreshToken)
 
             res.status(200).json({
                 accessToken,

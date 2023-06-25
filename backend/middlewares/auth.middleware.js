@@ -11,7 +11,7 @@ module.exports = {
                 const findContractor = await contractorsService.findOne({email});
 
                 if (!findContractor) {
-                    throw new ApiError('Contractor not found', 404)
+                    throw new ApiError('Please, check your email. Contractor is with this email not found.', 404)
                 }
                 req.essence = findContractor
             }
@@ -20,7 +20,7 @@ module.exports = {
                 const user = await usersService.findOne({email})
 
                 if (!user) {
-                    throw new ApiError('User not found', 404)
+                    throw new ApiError('Please, check your email. User is with this email not found.', 404)
                 }
                 req.essence = user
             }
@@ -91,12 +91,10 @@ module.exports = {
             }
 
             if (tokenInfo.contractor) {
-                const essence = await contractorsService.findOne({_id: tokenInfo.essence_id});
-                req.essence = essence
+                req.essence = await contractorsService.findOne({_id: tokenInfo.essence_id});
             }
             if (!tokenInfo.contractor) {
-                const essence = await usersService.findOne({_id: tokenInfo.essence_id});
-                req.essence = essence
+                req.essence = await usersService.findOne({_id: tokenInfo.essence_id});
             }
 
             req.tokenInfo = tokenInfo;
@@ -122,6 +120,20 @@ module.exports = {
 
             if (condition) {
                 throw new ApiError("This is old password", 409)
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkAccessLevel: (AccessLevel) => async (req, res, next) => {
+        try {
+            const {accessLevel} = req.tokenInfo //Інфа береться після перевірки токену
+
+            if ([AccessLevel] > accessLevel) {
+                throw new ApiError('Sorry, your access level is not high enough for this operation.', 400)
             }
 
             next();

@@ -2,6 +2,7 @@ const {Schema, model} = require('mongoose');
 
 const AuthSchema = new Schema({
     essence_id: {type: String, required: true},
+    accessLevel: {type: Number, required: true},
     accessToken: {type: String, required: true},
     refreshToken: {type: String, required: true},
 }, {
