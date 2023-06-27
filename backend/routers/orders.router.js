@@ -17,6 +17,8 @@ router.post(
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(STAFF_LEVEL),
     commonMiddleware.isBodyValid(ordersValidator.create),
+    ordersMiddleware.isLocationExist,
+    ordersMiddleware.isContractorExist,
     ordersController.create
 );
 
@@ -36,6 +38,7 @@ router.put(
     commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(ordersValidator.update),
     ordersMiddleware.isOrderExist,
+    ordersMiddleware.checkOrderStatus,
     ordersController.update
 );
 
@@ -46,7 +49,8 @@ router.put(
     commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(ordersValidator.updateStatus),
     ordersMiddleware.isOrderExist,
-    ordersController.updateStatus
+    ordersMiddleware.checkOrderStatus,
+    ordersController.update
 );
 
 module.exports = router

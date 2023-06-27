@@ -1,10 +1,10 @@
 const OldPassword = require('../databases/OldPassword');
 
 module.exports = {
-    create: async (essence_id, oldPassword) => {
-        return OldPassword.create({essence_id, oldPassword })
+    create: async (essenceId, oldPassword) => {
+        return OldPassword.create({essenceId, oldPassword })
     },
-    findAllPasswordByUser: async (essence_id) => {
-        return OldPassword.find({essence_id}).lean()
+    findAllPasswordByUser: async (essenceId) => {
+        return OldPassword.find({essenceId}).lean()
     },
 }

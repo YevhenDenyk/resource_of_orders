@@ -11,4 +11,6 @@ module.exports = {
     NO_REPLAY_EMAIL: process.env.NO_REPLAY_EMAIL,
     NO_REPLAY_EMAIL_PASSWORD: process.env.NO_REPLAY_EMAIL_PASSWORD,
 
+    ENGINEER_EMAIL:'denyk.yevhen@gmail.com'
+
 }

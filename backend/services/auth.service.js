@@ -59,8 +59,8 @@ module.exports = {
     },
 
 
-    createInBase: async (essence_id, accessLevel, accessToken, refreshToken) => {
-        return Auth.create({essence_id, accessLevel, accessToken, refreshToken})
+    createInBase: async (essenceId, essenceEmail, accessLevel, accessToken, refreshToken) => {
+        return Auth.create({essenceId, essenceEmail, accessLevel, accessToken, refreshToken})
     },
     findByToken: async (token = {}) => {
         return Auth.findOne(token)

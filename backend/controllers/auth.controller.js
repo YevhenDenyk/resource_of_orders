@@ -18,10 +18,10 @@ module.exports = {
             await authService.comparePassword(body.password, essence.password);
 
             const {accessToken, refreshToken} = authService.generateAccessTokenPair({
-                essence_id: essence._id,
+                essenceId: essence._id,
             });
 
-            await authService.createInBase(essence._id, essence.accessLevel, accessToken, refreshToken)
+            await authService.createInBase(essence._id, essence.email, essence.accessLevel, accessToken, refreshToken)
 
             res.status(200).json({
                 accessToken,
@@ -35,13 +35,13 @@ module.exports = {
 
     refresh: async (req, res, next) => {
         try {
-            const {essence_id, _id} = req.tokenInfo;
+            const {essenceId, essenceEmail, accessLevel, _id} = req.tokenInfo;
 
             await authService.deleteById(_id);
 
-            const {accessToken, refreshToken} = authService.generateAccessTokenPair({essence_id});
+            const {accessToken, refreshToken} = authService.generateAccessTokenPair({essenceId});
 
-            await authService.createInBase(essence_id, accessToken, refreshToken)
+            await authService.createInBase(essenceId, essenceEmail, accessLevel, accessToken, refreshToken)
 
             res.status(201).json({accessToken, refreshToken});
         } catch (e) {
@@ -51,9 +51,9 @@ module.exports = {
 
     logout: async (req, res, next) => {
         try {
-            const {essence_id} = req.tokenInfo;
+            const {essenceId} = req.tokenInfo;
 
-            await authService.deleteMany({essence_id})
+            await authService.deleteMany({essenceId})
 
             res.sendStatus(204)
         } catch (e) {
@@ -100,10 +100,10 @@ module.exports = {
             ])
 
             if (tokenInfo.contractor) {
-                await contractorsService.update(tokenInfo.essence_id, {password: hashPassword})
+                await contractorsService.update(tokenInfo.essenceId, {password: hashPassword})
             }
             if (!tokenInfo.contractor) {
-                await usersService.updateOneById(tokenInfo.essence_id, {password: hashPassword})
+                await usersService.updateOneById(tokenInfo.essenceId, {password: hashPassword})
             }
 
             res.status(200).json('ok');

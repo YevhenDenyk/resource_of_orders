@@ -1,8 +1,8 @@
 const ActionToken = require('../databases/ActionToken');
 
 module.exports = {
-    create: async (essence_id, actionToken, contractor) => {
-        return ActionToken.create({essence_id, actionToken, contractor})
+    create: async (essenceId, actionToken, contractor) => {
+        return ActionToken.create({essenceId, actionToken, contractor})
     },
     findOne: async (actionToken) => {
         return ActionToken.findOne({actionToken})

@@ -42,7 +42,7 @@ module.exports = {
 
             const tokenInfo = await authService.findByToken({accessToken});
 
-            if (!tokenInfo || payload.essence_id !== tokenInfo.essence_id) {
+            if (!tokenInfo || payload.essenceId !== tokenInfo.essenceId) {
                 throw new ApiError('Unknown token', 401)
             }
 
@@ -64,7 +64,7 @@ module.exports = {
 
             const tokenInfo = await authService.findByToken({refreshToken});
 
-            if (!tokenInfo || payload.essence_id !== tokenInfo.essence_id) {
+            if (!tokenInfo || payload.essenceId !== tokenInfo.essenceId) {
                 throw new ApiError('Unknown token', 401)
             }
 
@@ -86,15 +86,15 @@ module.exports = {
 
             const tokenInfo = await actionTokenService.findOne(actionToken);
 
-            if (!tokenInfo || payload.essence_id !== tokenInfo.essence_id) {
+            if (!tokenInfo || payload.essenceId !== tokenInfo.essenceId) {
                 throw new ApiError('Unknown token', 401)
             }
 
             if (tokenInfo.contractor) {
-                req.essence = await contractorsService.findOne({_id: tokenInfo.essence_id});
+                req.essence = await contractorsService.findOne({_id: tokenInfo.essenceId});
             }
             if (!tokenInfo.contractor) {
-                req.essence = await usersService.findOne({_id: tokenInfo.essence_id});
+                req.essence = await usersService.findOne({_id: tokenInfo.essenceId});
             }
 
             req.tokenInfo = tokenInfo;
