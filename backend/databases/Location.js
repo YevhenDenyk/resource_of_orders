@@ -8,7 +8,13 @@ const locationSchema = new Schema({
     status: {required: true, type: String},
     description: {required: true, type: String},
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {virtuals: true},
+    toObject: {virtuals: true}
+})
+
+locationSchema.virtual('fullAddress').get(function () {
+    return `Регіон ${this.region}, м.${this.city}, ${this.address}`
 })
 
 module.exports = model('Location', locationSchema)

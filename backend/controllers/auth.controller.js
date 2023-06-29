@@ -21,7 +21,7 @@ module.exports = {
                 essenceId: essence._id,
             });
 
-            await authService.createInBase(essence._id, essence.email, essence.accessLevel, accessToken, refreshToken)
+            await authService.createInBase(essence._id, essence.email, essence.name, essence.accessLevel, accessToken, refreshToken)
 
             res.status(200).json({
                 accessToken,

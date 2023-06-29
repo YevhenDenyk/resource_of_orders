@@ -27,7 +27,6 @@ module.exports = {
             const {body, location, contractor} = req
 
             const orderNumber = new Date().valueOf()
-            const address = ` Регіон ${location.region}, ${location.city}, ${location.address}`
 
             const order = await ordersService.create({...body, orderNumber});
 
@@ -37,7 +36,7 @@ module.exports = {
             await Promise.allSettled(
                 emails.map((email) => emailService.sendEmail(email, NEW_ORDER, {
                         orderNumber,
-                        address,
+                        address: location.fullAddress,
                         description: body.description
                     })
                 )
@@ -56,6 +55,36 @@ module.exports = {
 
             const order = await ordersService.update(req.params._id, req.body);
 
+            ////преевіряємо чи не змінено підрядника
+            //// якщо його змінено - йому лист про нову заявку, а старому підряднику про скасування
+
+            if (req.body.contractor && req.body.contractor !== contractor.toString) {
+
+                const [upContractor, oldContractor, locationInfo] = await Promise.all([
+                    contractorsService.findOne({_id: req.body.contractor}),
+                    contractorsService.findOne({_id: contractor}),
+                    locationsService.getOneById(location),
+                ])
+
+                await Promise.allSettled([
+                    emailService.sendEmail(upContractor.email, NEW_ORDER, {
+                        orderNumber,
+                        address: locationInfo.fullAddress,
+                        description
+                    }),
+                    emailService.sendEmail(oldContractor.email, CLOSED_ORDER, {
+                        orderNumber,
+                        orderStatus: 'Відхилена',
+                        address: locationInfo.fullAddress,
+                        description
+                    }),
+                ])
+
+            }
+
+            ////якщо підрядника не змінено,то перевіряємо статус
+            //// якщо заявка закривається повідомляємо всіх
+
             if (orderStatus === 'Виконана' || orderStatus === 'Відхилена' || orderStatus === 'Скасована') {
 
                 const [userIfo, contractorInfo, locationInfo] = await Promise.all([
@@ -64,15 +93,13 @@ module.exports = {
                     locationsService.getOneById(location)
                 ])
 
-                const address = ` Регіон ${locationInfo.region}, ${locationInfo.city}, ${locationInfo.address}`
-
                 const emails = [ENGINEER_EMAIL, contractorInfo.email, userIfo.email]
 
                 await Promise.allSettled(
                     emails.map((email) =>
                         emailService.sendEmail(email, CLOSED_ORDER, {
                             orderNumber,
-                            address,
+                            address: locationInfo.fullAddress,
                             description,
                             orderStatus
                         })

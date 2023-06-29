@@ -6,33 +6,28 @@ module.exports = {
     create: async (req, res, next) => {
         try {
             const {orderNumber, contractor, user, location} = req.order;
-            const {essenceEmail} = req.tokenInfo;
+            const {essenceEmail, essenceName} = req.tokenInfo;
 
-            const commit = await commitsService.create(req.body);
+            const commit = await commitsService.create({...req.body, name: essenceName});
 
             //відправка емейлу
-            const [userIfo, contractorInfo, locationInfo] = await Promise.allSettled([
+            const [userIfo, contractorInfo, locationInfo] = await Promise.all([
                 usersService.findOne({_id: user}),
                 contractorsService.findOne({_id: contractor}),
                 locationsService.getOneById(location)
             ])
 
-            const address = ` Регіон ${locationInfo.region}, ${locationInfo.city}, ${locationInfo.address}`
-
 
 // Формування списку адресатів та видалення адреси відправника коментаря
             const emails = [ENGINEER_EMAIL, contractorInfo.email, userIfo.email]
-
             const index = emails.findIndex(el => el === essenceEmail);
-
             emails.splice(index, 1)
-
 
             await Promise.allSettled(
                 emails.map((email) =>
                     emailService.sendEmail(email, NEW_COMMIT, {
                         orderNumber,
-                        address,
+                        address: locationInfo.fullAddress,
                         description: req.body.text
                     })
                 )

@@ -4,7 +4,7 @@ const {ordersService, locationsService, contractorsService} = require("../servic
 module.exports = {
     isOrderExist: async (req, res, next) => {
         try {
-            const order = await ordersService.getById(req.params._id);
+            const order = await ordersService.getById(req.params._id)
 
             if (!order) {
                 throw new ApiError('Order not found', 400)

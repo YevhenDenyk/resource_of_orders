@@ -15,4 +15,21 @@ module.exports = {
             next(e);
         }
     },
+    checkIsEmailUnique: async (req, res, next) => {
+        try {
+            if (!req.body.email) {
+                throw new ApiError(`Email not present`, 400);
+            }
+
+            const contractor = await contractorsService.findOne({email: req.body.email})
+
+            if (contractor) {
+                throw new ApiError(`Contractor with this email already exists`, 409);
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
 }
