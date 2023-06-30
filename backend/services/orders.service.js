@@ -1,16 +1,16 @@
 const Order = require('../databases/Order');
 
 module.exports = {
-    create: async (order) => {
-        return Order.create(order)
+    create: async (order = {}) => {
+        return Order.createWithExecutionDate(order)
     },
 
-    update: async (id, order) => {
-        return Order.findByIdAndUpdate(id, order, {new: true})
+    update: async (id, order = {}) => {
+        return Order.updateWithExecutionDate(id, order)
     },
 
     getAllAndFilter: async (query) => {
-        const {page = 1, limit = 10,contractor,location, jobType, orderStatus, overdue, priority} = query
+        const {page = 1, limit = 10, contractor, location, jobType, orderStatus, overdue, priority} = query
         let findObj = {}
 
         if (jobType) {

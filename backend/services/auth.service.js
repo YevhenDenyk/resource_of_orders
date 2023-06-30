@@ -47,7 +47,7 @@ module.exports = {
     },
 
     generateActionToken: (dataToSign = {}) => {
-        return jwt.sign(dataToSign, ACTION_TOKEN_SECRET, {expiresIn: '1d'})
+        return jwt.sign(dataToSign, ACTION_TOKEN_SECRET, {expiresIn: '7d'})
     },
 
     checkActionToken: (actionToken) => {

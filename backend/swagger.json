@@ -2,8 +2,8 @@
   "swagger": "2.0",
   "info": {
     "version": "1.0",
-    "description": "listening project",
-    "title": "June 22"
+    "description": "Work with contracting companies in the field of maintenance and repair of buildings, communications and equipment.",
+    "title": "Order service"
   },
   "schemes": [
     "http"

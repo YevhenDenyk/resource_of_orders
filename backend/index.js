@@ -4,9 +4,18 @@ const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const fileUpload = require('express-fileupload');
 
+const {cronRunner} = require('./crones');
 const swaggerJson = require('./swagger.json');
 const {config} = require("./configs");
-const {usersRouter, commitsRouter, contractorsRouter, jobTypesRouter,locationsRouter,ordersRouter, authRouter} = require("./routers");
+const {
+    usersRouter,
+    commitsRouter,
+    contractorsRouter,
+    jobTypesRouter,
+    locationsRouter,
+    ordersRouter,
+    authRouter
+} = require("./routers");
 
 
 const app = express();
@@ -53,14 +62,16 @@ const connect = async () => {
     }
 }
 
-const start = async ()=>{
+const start = async () => {
     try {
         await connect()
 
         await app.listen(config.PORT, config.HOST);
         console.log(`Server listen port ${config.PORT}`);
 
-    }catch (e) {
+        cronRunner();
+
+    } catch (e) {
         console.error(e)
     }
 }

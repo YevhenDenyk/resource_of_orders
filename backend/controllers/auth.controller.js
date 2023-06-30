@@ -35,13 +35,13 @@ module.exports = {
 
     refresh: async (req, res, next) => {
         try {
-            const {essenceId, essenceEmail, accessLevel, _id} = req.tokenInfo;
+            const {essenceId, essenceEmail, accessLevel, _id, essenceName} = req.tokenInfo;
 
             await authService.deleteById(_id);
 
             const {accessToken, refreshToken} = authService.generateAccessTokenPair({essenceId});
 
-            await authService.createInBase(essenceId, essenceEmail, accessLevel, accessToken, refreshToken)
+            await authService.createInBase(essenceId, essenceEmail, essenceName, accessLevel, accessToken, refreshToken)
 
             res.status(201).json({accessToken, refreshToken});
         } catch (e) {
