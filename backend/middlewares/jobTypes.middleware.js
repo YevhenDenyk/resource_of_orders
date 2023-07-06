@@ -14,7 +14,7 @@ module.exports = {
             const jobType = await jobTypesService.findByLocation(location);
 
             if (jobType[0]) {
-                throw new ApiError(`Job types for this object already exist`, 409);
+                throw new ApiError(`Job types for this location already exist`, 409);
             }
 
             next();

@@ -36,7 +36,7 @@ router.put(
     authMiddleware.checkAccessLevel(LEAD_ENGINEER_LEVEL),
     commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(usersValidator.updateUser),
-    usersMiddleware.checkIsEmailUnique,
+    usersMiddleware.checkIsEmailUniqueAtUpdate,
     usersMiddleware.getUserDynamically('_id', 'params'),
     usersController.updateUser,
 );

@@ -38,5 +38,20 @@ module.exports = {
             next(e);
         }
     },
+    checkIsEmailUniqueAtUpdate: async (req, res, next) => {
+        try {
+            if (req.body.email) {
+                const user = await usersService.findOne({email: req.body.email});
+
+                if (user) {
+                    throw new ApiError(`User with this email already exists`, 409);
+                }
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
 
 }

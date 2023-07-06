@@ -1,5 +1,5 @@
 const ApiError = require("../error/ApiError");
-const {ordersService, locationsService, contractorsService} = require("../services");
+const {ordersService, contractorsService} = require("../services");
 
 module.exports = {
     isOrderExist: async (req, res, next) => {
@@ -17,6 +17,7 @@ module.exports = {
             next(e);
         }
     },
+
     checkOrderStatus : async (req, res, next) => {
             try {
                 const {orderStatus} = req.order
@@ -31,20 +32,6 @@ module.exports = {
             }
       },
 
-    isLocationExist: async (req, res, next) => {
-        try {
-            const location = await locationsService.getOneById(req.body.location);
-
-            if (!location) {
-                throw new ApiError('Location not found', 404)
-            }
-
-            req.location = location
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
     isContractorExist: async (req, res, next) => {
         try {
             const contractor = await contractorsService.findOne({_id: req.body.contractor});

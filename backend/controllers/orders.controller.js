@@ -1,6 +1,8 @@
 const {ordersService, emailService, usersService, contractorsService, locationsService} = require('../services');
 const {ENGINEER_EMAIL} = require("../configs/config");
 const {NEW_ORDER, CLOSED_ORDER} = require("../enums/emailAction.enum");
+const {executionTimeHelper} = require("../helpers/executionTime.helper");
+
 
 module.exports = {
     getAllAndFilter: async (req, res, next) => {
@@ -24,24 +26,31 @@ module.exports = {
     },
     create: async (req, res, next) => {
         try {
-            const {body, location, contractor} = req
+            const {body, tokenInfo} = req;
 
-            const orderNumber = new Date().valueOf()
+            const orderNumber = new Date().valueOf();
+            const executionTime = executionTimeHelper(body.priority);
+            const user = tokenInfo.essenceId;
+            const {location} = await usersService.findOne({_id: tokenInfo.essenceId});
 
-            const order = await ordersService.create({...body, orderNumber});
+            const locationFulInfo = await locationsService.getByIdWithJobTypes(location);
+//потрібна перевірка чи вірна локація в юзера прописана бо може не бути
+            const contractor = locationFulInfo.jobTypes[body.jobType];
+// потрібна перевірак чи взагалі існують види робіт
+            const contractorFullInfo = await contractorsService.findOne({_id: contractor})
+ //потрібна перевірка чи такий підрядник існує,
+            const emails = [ENGINEER_EMAIL, contractorFullInfo.email];
 
-
-            const emails = [ENGINEER_EMAIL, contractor.email]
+            const order = await ordersService.create({...body, orderNumber, executionTime, user, location, contractor});
 
             await Promise.allSettled(
                 emails.map((email) => emailService.sendEmail(email, NEW_ORDER, {
                         orderNumber,
-                        address: location.fullAddress,
+                        address: `Регіон ${locationFulInfo.region}, м.${locationFulInfo.city}, ${locationFulInfo.address}`,
                         description: body.description
                     })
                 )
             )
-
 
             res.status(201).json(order);
         } catch (e) {

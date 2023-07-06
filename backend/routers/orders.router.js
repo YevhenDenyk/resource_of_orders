@@ -14,11 +14,9 @@ router.get(
 
 router.post(
     '/',
+    commonMiddleware.isBodyValid(ordersValidator.create),
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(STAFF_LEVEL),
-    commonMiddleware.isBodyValid(ordersValidator.create),
-    ordersMiddleware.isLocationExist,
-    ordersMiddleware.isContractorExist,
     ordersController.create
 );
 
@@ -42,8 +40,8 @@ router.put(
     ordersController.update
 );
 
-router.put(
-    '/:_id/status',
+router.patch(
+    '/:_id',
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(CONTRACTOR_LEVEL),
     commonMiddleware.isMongoIdValid,

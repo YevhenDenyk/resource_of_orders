@@ -19,6 +19,7 @@ router.post(
     commonMiddleware.isBodyValid(jobTypesValidator.create),
     jobTypesMiddleware.checkIsLocationExist,
     jobTypesMiddleware.checkIsLocationUnique,
+    //додати перевірку існування контракторів
     jobTypesController.create
 );
 

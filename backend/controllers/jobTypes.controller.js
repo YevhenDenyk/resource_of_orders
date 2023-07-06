@@ -32,7 +32,6 @@ module.exports = {
     update: async (req, res, next) => {
         try {
             const {_id} = req.jobType
-            console.log(req.jobType)
 
             const jobType = await jobTypesService.findByIdAndUpdate(_id, req.body);
 

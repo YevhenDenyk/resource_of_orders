@@ -6,9 +6,9 @@ module.exports = {
     create: async (req, res, next) => {
         try {
             const {orderNumber, contractor, user, location} = req.order;
-            const {essenceEmail, essenceName} = req.tokenInfo;
+            const {essenceEmail, essenceName, essenceId} = req.tokenInfo;
 
-            const commit = await commitsService.create({...req.body, name: essenceName});
+            const commit = await commitsService.create({...req.body, essenceName, essenceId});
 
             //відправка емейлу
             const [userIfo, contractorInfo, locationInfo] = await Promise.all([

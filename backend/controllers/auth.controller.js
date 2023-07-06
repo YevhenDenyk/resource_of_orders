@@ -81,7 +81,7 @@ module.exports = {
                 actionTokenService.create(essence._id, actionToken, body.contractor)
             ])
 
-            res.status(200).json('ok');
+            res.status(200).json('The letter was send to the your email');
         } catch (e) {
             next(e);
         }
@@ -106,7 +106,7 @@ module.exports = {
                 await usersService.updateOneById(tokenInfo.essenceId, {password: hashPassword})
             }
 
-            res.status(200).json('ok');
+            res.status(200).json('password updated');
         } catch (e) {
             next(e);
         }

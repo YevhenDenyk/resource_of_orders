@@ -8,27 +8,77 @@
   "schemes": [
     "http"
   ],
-
   "paths": {
-    "/users/{_id}": {
-      "get": {
-        "description": "Get user by id",
+    "/auth/login": {
+      "post": {
+        "summary": "login",
+        "description": "",
+        "operationId": "login",
         "tags": [
-          "User"
+          "Auth"
         ],
-        "operationId": "getUserById",
         "parameters": [
           {
-            "description": " _id - user in data base",
-            "name": "userId",
-            "in": "path",
+            "in": "formData",
+            "name": "email",
             "type": "string",
             "required": true
           },
           {
-            "description": "access token key",
-            "name": "Authorization",
+            "in": "formData",
+            "name": "password",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "contractor",
+            "type": "boolean",
+            "description": "if you are a contractor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string",
+                  "example": "GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbnlrLnlldmhlbkBnbWFpbC5jb20iLCJpYXQiOjE2ODE3NTM5MTUs"
+                },
+                "refreshToken": {
+                  "type": "string",
+                  "example": "GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbnlrLnlldmhlbkBnbWFpbC5jb20iLCJpYXQiOjE2ODE3NTM5MTUs"
+                },
+                "essence": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Body invalid"
+          },
+          "404": {
+            "description": "Please, check your email or password"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "refresh token",
+        "description": "",
+        "operationId": "refresh",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
             "in": "header",
+            "name": "Authorization",
             "type": "string",
             "required": true
           }
@@ -37,7 +87,1326 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/SingleUser"
+              "type": "object",
+              "properties": {
+                "accessToken": {
+                  "type": "string",
+                  "example": "GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbnlrLnlldmhlbkBnbWFpbC5jb20iLCJpYXQiOjE2ODE3NTM5MTUs"
+                },
+                "refreshToken": {
+                  "type": "string",
+                  "example": "GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbnlrLnlldmhlbkBnbWFpbC5jb20iLCJpYXQiOjE2ODE3NTM5MTUs"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No token / Unknown token / Token invalid"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "logout in all devices",
+        "description": "",
+        "operationId": "logout",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success response"
+          },
+          "401": {
+            "description": "No token / Unknown token / Token invalid"
+          }
+        }
+      }
+    },
+    "/auth//password/forgot": {
+      "post": {
+        "summary": "forgot password",
+        "description": "receive an email to reset your password",
+        "operationId": "ForgotPassword",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "email",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "contractor",
+            "type": "boolean",
+            "description": "if you are a contractor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The letter was send to the your email"
+          },
+          "400": {
+            "description": "Body invalid"
+          },
+          "404": {
+            "description": "Please, check your email"
+          }
+        }
+      },
+      "put": {
+        "summary": "update password after forgot",
+        "description": "the password must be different from the old passwords",
+        "operationId": "updateForgotPassword",
+        "tags": [
+          "Auth"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "required": true,
+            "description": "action token"
+          },
+          {
+            "in": "formData",
+            "name": "password",
+            "type": "string",
+            "required": true,
+            "pattern": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$/"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "password updated"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Password invalid"
+          },
+          "409": {
+            "description": "This is old password"
+          }
+        }
+      }
+    },
+    "/commits": {
+      "post": {
+        "summary": "Create comment to order",
+        "description": "You need CONTRACTOR_LEVEL or higher",
+        "operationId": "createCommit",
+        "tags": [
+          "Commit"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Commit"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success create",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Body invalid"
+          }
+        }
+      }
+    },
+    "/contractors": {
+      "get": {
+        "summary": "Get all contractors, query filter",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "Contractors"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "name",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "email",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "phone",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "operationId": "getAllContractors",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "limit": {
+                  "type": "number",
+                  "example": 10
+                },
+                "count": {
+                  "type": "number",
+                  "example": 38
+                },
+                "contractors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Contractor"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create contractor",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "operationId": "createContractor",
+        "tags": [
+          "Contractors"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Contractor"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success create",
+            "schema": {
+              "$ref": "#/definitions/Contractor"
+            }
+          },
+          "400": {
+            "description": "Body invalid"
+          },
+          "409": {
+            "description": "Contractors with this email already exists"
+          }
+        }
+      }
+    },
+    "/contractors/{_id}": {
+      "get": {
+        "summary": "Get contractor by id",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "Contractors"
+        ],
+        "operationId": "getContractorById",
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": " _id - contractor id in database",
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/Contractor"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ApiError"
+            }
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Contractor not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update contractor",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "Contractors"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "UpdateContractorById",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "formData"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/ContractorUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Contractor was updated",
+            "schema": {
+              "$ref": "#/definitions/Contractor"
+            }
+          },
+          "400": {
+            "description": "Contractor id invalid / Body invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Contractor not found"
+          },
+          "409": {
+            "description": "Contractor with this email already exists"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete contractor by id",
+        "description": "You need LEAD_ENGINEER_LEVEL or higher",
+        "tags": [
+          "Contractors"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "DeleteContractor",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Contractor was deleted"
+          },
+          "400": {
+            "description": "Contractor id invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Contractor not found"
+          }
+        }
+      }
+    },
+    "/jobTypes": {
+      "get": {
+        "summary": "Get all jobTypes",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "JobTypes"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "operationId": "getAllJobTypes",
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/JobType"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create JobTypes",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "operationId": "createJobTypes",
+        "tags": [
+          "JobTypes"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/JobType"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success create",
+            "schema": {
+              "$ref": "#/definitions/JobType"
+            }
+          },
+          "400": {
+            "description": "Body invalid / Location not present"
+          },
+          "404": {
+            "description": "Location not found"
+          },
+          "409": {
+            "description": "Job types for this location already exist"
+          }
+        }
+      }
+    },
+    "/jobTypes/{_idLocation}": {
+      "get": {
+        "summary": "Get JobTypes by id Location",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "JobTypes"
+        ],
+        "operationId": "getJobTypesById",
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": " _id - Location id in data database",
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/JobType"
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ApiError"
+            }
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Job Types to this location not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update JobTypes",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "JobTypes"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "updateJobTypesById",
+        "parameters": [
+          {
+            "description": " _id - Location id in data database",
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/JobTypeUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "JobTypes was updated",
+            "schema": {
+              "$ref": "#/definitions/JobType"
+            }
+          },
+          "400": {
+            "description": "Mongo id invalid / Body invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Job Types to this location not found"
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "summary": "Get all Locations, query filter",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "Locations"
+        ],
+        "operationId": "getAllLocations",
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "region",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "city",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "address",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "phone",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "limit": {
+                  "type": "number",
+                  "example": 10
+                },
+                "count": {
+                  "type": "number",
+                  "example": 38
+                },
+                "contractors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Location"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Location",
+        "description": "You need LEAD_ENGINEER_LEVEL or higher",
+        "operationId": "createLocation",
+        "tags": [
+          "Locations"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success create",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          },
+          "400": {
+            "description": "Body invalid"
+          }
+        }
+      }
+    },
+    "/locations/{_id}": {
+      "get": {
+        "summary": "Get Location by id",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "Locations"
+        ],
+        "operationId": "getLocationById",
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": " _id - Location id in database",
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "title": "ID",
+                  "readOnly": true,
+                  "example": "6422e90f22c474b3316bcaea"
+                },
+                "region": {
+                  "type": "string",
+                  "pattern": "/^((Північ)|(Схід)|(Центр)|(Південь)|(Захід))$/",
+                  "example": "Північ"
+                },
+                "city": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 20,
+                  "example": "Луцьк"
+                },
+                "address": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 40,
+                  "example": "вул. Каштанів 48А"
+                },
+                "phone": {
+                  "type": "string",
+                  "minLength": 8,
+                  "pattern": "/^[+][3][8][0][0-9]{9}$/",
+                  "example": "+380999112911"
+                },
+                "status": {
+                  "type": "string",
+                  "pattern": "/^((Проект)|(Відкритий)|(Реконструкція)|(Закритий))$/",
+                  "example": "Відкритий"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 40,
+                  "example": "Office"
+                },
+                "jobTypes": {
+                  "type": "object",
+                  "$ref": "#/definitions/JobType"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ApiError"
+            }
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Location not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Location",
+        "description": "You need LEAD_ENGINEER_LEVEL or higher",
+        "tags": [
+          "Locations"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "UpdateLocationById",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "formData"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Location was updated",
+            "schema": {
+              "$ref": "#/definitions/Location"
+            }
+          },
+          "400": {
+            "description": "Locations id invalid / Body invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Location not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Location by id",
+        "description": "You need ADMIN_LEVEL or higher",
+        "tags": [
+          "Locations"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "deleteLocation",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "formData"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Location was deleted"
+          },
+          "400": {
+            "description": "Location id invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Location not found"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Get all Orders, query filter",
+        "description": "You need CONTRACTOR_LEVEL or higher",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "operationId": "getAllOrders",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "jobType",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "orderStatus",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "overdue",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "priority",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "contractor",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "location",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "limit": {
+                  "type": "number",
+                  "example": 10
+                },
+                "count": {
+                  "type": "number",
+                  "example": 333
+                },
+                "contractors": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Order"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Order",
+        "description": "You need STAFF_LEVEL or higher",
+        "operationId": "createOrder",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/OrderCreate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success create",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Body invalid"
+          }
+        }
+      }
+    },
+    "/orders/{_id}": {
+      "get": {
+        "summary": "Get Order by id with comments",
+        "description": "You need CONTRACTOR_LEVEL or higher",
+        "tags": [
+          "Orders"
+        ],
+        "operationId": "getOrderById",
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": " _id - Order id in database",
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "title": "mongo ID",
+                  "readOnly": true,
+                  "example": "6422e90f22c474b3316bcaea"
+                },
+                "jobType": {
+                  "type": "string",
+                  "pattern": "/^((generalConstructionWorks)|(refrigerationEquipment)|(technologicalEquipment)|(ventilationAndAirConditioning)|(liftingEquipmentAndElevators)|(dieselGenerators)|(electricity)|(waterAndHeating))$/",
+                  "example": "generalConstructionWorks"
+                },
+                "orderStatus": {
+                  "type": "string",
+                  "pattern": "/^((Нова)|(В роботі)|(Виконана)|(Відхилена)|(Скасована))$/",
+                  "example": "Виконана"
+                },
+                "executionTime": {
+                  "type": "number",
+                  "minimum": 24,
+                  "maximum": 744,
+                  "example": 48
+                },
+                "executionDate": {
+                  "type": "string",
+                  "readOnly": true,
+                  "example": "2023-04-17T17:50:07.227+0000"
+                },
+                "contractor": {
+                  "type": "string",
+                  "title": "mongo ID",
+                  "example": "6422e90f22c474b3316bcaea"
+                },
+                "user": {
+                  "type": "string",
+                  "title": "mongo ID",
+                  "example": "6422e90f22c474b3316bcaea"
+                },
+                "location": {
+                  "type": "string",
+                  "title": "mongo ID",
+                  "example": "6422e90f22c474b3316bcaea"
+                },
+                "priority": {
+                  "type": "string",
+                  "pattern": "/^((Критичний)|(Високий)|(Плановий)|(Низький))$/",
+                  "example": "Критичний"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 10,
+                  "maxLength": 300,
+                  "example": "згоріла лампа потрібно міняти"
+                },
+                "files": {
+                  "type": "array",
+                  "title": "links to file",
+                  "example": "[{https://www.google.com}]"
+                },
+                "overdue": {
+                  "type": "boolean",
+                  "readOnly": true,
+                  "example": true
+                },
+                "orderNumber": {
+                  "type": "number",
+                  "readOnly": true,
+                  "example": 1236445
+                },
+                "commits": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/definitions/Commit"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "schema": {
+              "$ref": "#/definitions/ApiError"
+            }
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Order",
+        "description": "You need ENGINEER_LEVEL or higher",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "UpdateOrderById",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "formData"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/OrderUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order was updated",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Order id invalid / Body invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update status Order",
+        "description": "You need CONTRACTOR_LEVEL or higher",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "UpdateStatusOrderById",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "formData"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "properties": {
+                "orderStatus": {
+                  "type": "string",
+                  "pattern": "/^((Нова)|(В роботі)|(Виконана)|(Відхилена)|(Скасована))$/",
+                  "example": "Виконана"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order was updated",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Order id invalid / Body invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get all users",
+        "description": "You need STAFF_LEVEL or higher",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "operationId": "getAllUsers",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "limit",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "page",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "firstName",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "lastName",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "email",
+            "in": "query",
+            "required": false
+          },
+          {
+            "type": "string",
+            "name": "phone",
+            "in": "query",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "number",
+                  "example": 1
+                },
+                "limit": {
+                  "type": "number",
+                  "example": 10
+                },
+                "count": {
+                  "type": "number",
+                  "example": 38
+                },
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create user",
+        "description": "You need LEAD_ENGINEER_LEVEL or higher",
+        "operationId": "createUser",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success create",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Body invalid"
+          },
+          "409": {
+            "description": "User with this email already exists"
+          }
+        },
+        "security": [
+          {
+            "accessToken": []
+          }
+        ]
+      }
+    },
+    "/users/{_id}": {
+      "get": {
+        "summary": "Get user by id",
+        "description": "You need STAFF_LEVEL or higher",
+        "tags": [
+          "User"
+        ],
+        "operationId": "getUserById",
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "parameters": [
+          {
+            "description": " _id - user in data database",
+            "name": "_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "schema": {
+              "$ref": "#/definitions/User"
             }
           },
           "400": {
@@ -52,15 +1421,11 @@
           "404": {
             "description": "User not found"
           }
-        },
-        "security": [
-          {
-            "api-key": []
-          }
-        ]
+        }
       },
       "put": {
-        "description": "Update user",
+        "summary": "Update user",
+        "description": "You need LEAD_ENGINEER_LEVEL or higher",
         "tags": [
           "User"
         ],
@@ -72,35 +1437,25 @@
         "operationId": "UpdateUserById",
         "parameters": [
           {
-            "name": "Authorization",
-            "required": true,
+            "description": " _id - user in data database",
+            "name": "_id",
+            "in": "path",
             "type": "string",
-            "in": "header"
+            "required": true
           },
           {
-            "name": "name",
-            "required": false,
-            "type": "string",
-            "in": "formData"
-          },
-          {
-            "name": "age",
-            "required": false,
-            "type": "integer",
-            "in": "formData"
-          },
-          {
-            "name": "email",
-            "required": false,
-            "type": "string",
-            "in": "formData"
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/UserUpdate"
+            }
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "User was updated",
             "schema": {
-              "$ref": "#/definitions/SingleUser"
+              "$ref": "#/definitions/User"
             }
           },
           "400": {
@@ -118,23 +1473,24 @@
         }
       },
       "delete": {
-        "description": "Delete user by id",
+        "summary": "Delete user by id",
+        "description": "You need ADMIN_LEVEL or higher",
         "tags": [
           "User"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
         ],
         "operationId": "DeleteUser",
         "parameters": [
           {
-            "name": "Authorization",
-            "required": true,
+            "description": " _id - user in data database",
+            "name": "_id",
+            "in": "path",
             "type": "string",
-            "in": "header"
-          },
-          {
-            "name": "userId",
-            "required": true,
-            "type": "string",
-            "in": "formData"
+            "required": true
           }
         ],
         "responses": {
@@ -150,246 +1506,35 @@
           "404": {
             "description": "User not found"
           }
-        },
-        "security": [
-          {
-            "api-key": []
-          }
-        ]
-      }
-    },
-    "/users": {
-      "get": {
-        "description": "Get all users",
-        "tags": [
-          "User"
-        ],
-        "operationId": "getAllUsers",
-        "responses": {
-          "200": {
-            "description": "Success response",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SingleUser"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Create user",
-        "operationId": "createUser",
-        "tags": [
-          "User"
-        ],
-        "parameters": [
-          {
-            "name": "name",
-            "required": true,
-            "type": "string",
-            "in": "formData"
-          },
-          {
-            "name": "age",
-            "required": true,
-            "type": "integer",
-            "in": "formData"
-          },
-          {
-            "name": "email",
-            "required": true,
-            "type": "string",
-            "in": "formData",
-            "pattern": "/^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$/"
-          },
-          {
-            "name": "password",
-            "required": true,
-            "type": "string",
-            "in": "formData"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Success create",
-            "schema": {
-              "$ref": "#/definitions/SingleUser"
-            }
-          },
-          "400": {
-            "description": "Body invalid"
-          },
-          "409": {
-            "description": "User with this email already exists"
-          }
-        }
-      }
-    },
-    "/cars/": {
-      "get": {
-        "description": "Get all car",
-        "tags": ["Cars"],
-        "operationId": "getAllCar",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/SingleCar"
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "create new car",
-        "tags": ["Cars"],
-        "operationId": "createCar",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
-            "schema": {
-
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful crate car",
-            "schema": {
-
-              "$ref": "#/definitions/SingleCar"
-            }
-          },
-          "400": {
-            "description": "Car is fields invalid"
-          }
-        }
-      }
-    },
-    "/cars/{carId}": {
-      "get": {
-        "description": "get Car by id and populate User",
-        "tags": ["Cars"],
-        "operationId": "getCarFromId",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "carId",
-            "type": "string",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful",
-            "schema": {
-              "properties": {
-                "_id": {
-                  "example": "6422e90f22c474b3316bcaea"
-                },
-                "model":{
-                  "example": "BMW"
-                },
-                "year": {
-                  "example": 2014
-                },
-                "price": {
-                  "example": 302678
-                },
-                "user": {
-                  "properties": {
-                    "_id": {
-                      "example": "6422e90f22c474b3316bcaea"
-                    },
-                    "name": {
-                      "example": "Viktor"
-                    },
-                    "age": {
-                      "example": "10"
-                    },
-                    "email": {
-                      "example": "fwefe@vd.tr"
-                    },
-                    "password": {
-                      "example": "$2b$10$CJmw1A37ztbUZzkh8TKVZOQe"
-                    }
-                  }
-                }
-
-              }
-            }
-          },
-          "404": {
-            "description": "Car not found"
-          }
-        }
-      },
-      "put": {
-        "description": "update Car",
-        "tags": ["Cars"],
-        "operationId": "updateCar",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "carId",
-            "type": "string",
-            "required": true
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "schema": {
-              "$ref": "#/definitions/SingleCar"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful",
-            "schema": {
-              "$ref": "#/definitions/SingleCar"
-            }
-          },
-          "400": {
-            "description": "Car is fields invalid"
-          },
-          "404": {
-            "description": "Car not found"
-          }
-        }
-      },
-      "delete": {
-        "description": "delete car by id",
-        "operationId": "deleteCar",
-        "tags": ["Cars"],
-        "parameters": [{
-          "in": "path",
-          "type": "string",
-          "name": "carId",
-          "required": true
-        }],
-        "responses": {
-          "204": {
-            "description": "No content"
-          },
-          "404": {
-            "description": "Car not found"
-          }
         }
       }
     }
   },
-
-
-
-
-
   "definitions": {
+    "AccessLevel": {
+      "properties": {
+        "CONTRACTOR_LEVEL": {
+          "type": "number",
+          "title": "10"
+        },
+        "STAFF_LEVEL": {
+          "type": "number",
+          "title": "21"
+        },
+        "ENGINEER_LEVEL": {
+          "type": "number",
+          "title": "41"
+        },
+        "LEAD_ENGINEER_LEVEL": {
+          "type": "number",
+          "title": "61"
+        },
+        "ADMIN_LEVEL": {
+          "type": "number",
+          "title": "81"
+        }
+      }
+    },
     "400": {
       "description": "User id invalid"
     },
@@ -414,7 +1559,38 @@
         }
       }
     },
-    "SingleUser": {
+    "Commit": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "title": "mongoID",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "essenceId": {
+          "type": "string",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "essenceName": {
+          "type": "string",
+          "readOnly": true,
+          "example": "Viktor Kmin"
+        },
+        "order": {
+          "type": "string",
+          "title": "mongoID",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "text": {
+          "type": "integer",
+          "minLength": 3,
+          "maxLength": 300,
+          "example": "commit to order"
+        }
+      }
+    },
+    "Contractor": {
       "properties": {
         "_id": {
           "type": "string",
@@ -422,17 +1598,16 @@
           "readOnly": true,
           "example": "6422e90f22c474b3316bcaea"
         },
+        "region": {
+          "type": "string",
+          "pattern": "/^((Північ)|(Схід)|(Центр)|(Південь)|(Захід))$/",
+          "example": "Північ"
+        },
         "name": {
           "type": "string",
           "minLength": 2,
-          "maxLength": 20,
-          "example": "Viktor"
-        },
-        "age": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 120,
-          "example": "10"
+          "maxLength": 30,
+          "example": "Fero Start"
         },
         "email": {
           "type": "string",
@@ -444,10 +1619,68 @@
           "minLength": 8,
           "pattern": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$/",
           "example": "$2b$10$CJmw1A37ztbUZzkh8TKVZOQe"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "/^[+][3][8][0][0-9]{9}$/",
+          "example": "+380999112911"
+        },
+        "accessLevel": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "example": 20
+        },
+        "representative": {
+          "type": "string",
+          "maxLength": 30,
+          "example": "Oleg"
+        },
+        "jobPosition": {
+          "type": "string",
+          "maxLength": 30,
+          "example": "Owner"
         }
       }
     },
-    "SingleCar": {
+    "ContractorUpdate": {
+      "properties": {
+        "region": {
+          "type": "string",
+          "pattern": "/^((Північ)|(Схід)|(Центр)|(Південь)|(Захід))$/",
+          "example": "Північ"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 30,
+          "example": "Fero Start"
+        },
+        "email": {
+          "type": "string",
+          "pattern": "/^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$/",
+          "example": "fwefe@vd.tr"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "/^[+][3][8][0][0-9]{9}$/",
+          "example": "+380999112911"
+        },
+        "representative": {
+          "type": "string",
+          "maxLength": 30,
+          "example": "Oleg"
+        },
+        "jobPosition": {
+          "type": "string",
+          "maxLength": 30,
+          "example": "Owner"
+        }
+      }
+    },
+    "JobType": {
       "properties": {
         "_id": {
           "type": "string",
@@ -455,38 +1688,399 @@
           "readOnly": true,
           "example": "6422e90f22c474b3316bcaea"
         },
-        "model":{
+        "location": {
           "type": "string",
-          "minLength": 2,
-          "maxLength": 15,
-          "example": "BMW"
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
         },
-        "year": {
-          "type": "integer",
-          "minimum": 1990,
-          "maximum": "this Year",
-          "example": 2014
+        "generalConstructionWorks": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
         },
-        "price": {
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 9999999,
-          "example": 302678
+        "refrigerationEquipment": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "technologicalEquipment": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "ventilationAndAirConditioning": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "liftingEquipmentAndElevators": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "dieselGenerators": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "electricity": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "waterAndHeating": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        }
+      }
+    },
+    "JobTypeUpdate": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "title": "ID",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "generalConstructionWorks": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "refrigerationEquipment": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "technologicalEquipment": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "ventilationAndAirConditioning": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "liftingEquipmentAndElevators": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "dieselGenerators": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "electricity": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "waterAndHeating": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        }
+      }
+    },
+    "Location": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "title": "ID",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "region": {
+          "type": "string",
+          "pattern": "/^((Північ)|(Схід)|(Центр)|(Південь)|(Захід))$/",
+          "example": "Північ"
+        },
+        "city": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 20,
+          "example": "Луцьк"
+        },
+        "address": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 40,
+          "example": "вул. Каштанів 48А"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "/^[+][3][8][0][0-9]{9}$/",
+          "example": "+380999112911"
+        },
+        "status": {
+          "type": "string",
+          "pattern": "/^((Проект)|(Відкритий)|(Реконструкція)|(Закритий))$/",
+          "example": "Відкритий"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 40,
+          "example": "Office"
+        }
+      }
+    },
+    "Order": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "title": "mongo ID",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "jobType": {
+          "type": "string",
+          "pattern": "/^((generalConstructionWorks)|(refrigerationEquipment)|(technologicalEquipment)|(ventilationAndAirConditioning)|(liftingEquipmentAndElevators)|(dieselGenerators)|(electricity)|(waterAndHeating))$/",
+          "example": "generalConstructionWorks"
+        },
+        "orderStatus": {
+          "type": "string",
+          "pattern": "/^((Нова)|(В роботі)|(Виконана)|(Відхилена)|(Скасована))$/",
+          "example": "Виконана"
+        },
+        "executionTime": {
+          "type": "number",
+          "minimum": 24,
+          "maximum": 744,
+          "example": 48
+        },
+        "executionDate": {
+          "type": "string",
+          "readOnly": true,
+          "example": "2023-04-17T17:50:07.227+0000"
+        },
+        "contractor": {
+          "type": "string",
+          "title": "mongo ID",
+          "example": "6422e90f22c474b3316bcaea"
         },
         "user": {
           "type": "string",
+          "title": "mongo ID",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "location": {
+          "type": "string",
+          "title": "mongo ID",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "priority": {
+          "type": "string",
+          "pattern": "/^((Критичний)|(Високий)|(Плановий)|(Низький))$/",
+          "example": "Критичний"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "example": "згоріла лампа потрібно міняти"
+        },
+        "files": {
+          "type": "array",
+          "title": "links to file",
+          "example": "[{https://www.google.com}]"
+        },
+        "overdue": {
+          "type": "boolean",
+          "readOnly": true,
+          "example": true
+        },
+        "orderNumber": {
+          "type": "number",
+          "readOnly": true,
+          "example": 1236445
+        }
+      }
+    },
+    "OrderCreate": {
+      "properties": {
+        "jobType": {
+          "type": "string",
+          "pattern": "/^((generalConstructionWorks)|(refrigerationEquipment)|(technologicalEquipment)|(ventilationAndAirConditioning)|(liftingEquipmentAndElevators)|(dieselGenerators)|(electricity)|(waterAndHeating))$/",
+          "example": "generalConstructionWorks"
+        },
+        "priority": {
+          "type": "string",
+          "pattern": "/^((Критичний)|(Високий)|(Плановий)|(Низький))$/",
+          "example": "Критичний"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "example": "згоріла лампа потрібно міняти"
+        },
+        "files": {
+          "type": "array",
+          "title": "links to file",
+          "example": "[{https://www.google.com}]"
+        }
+      }
+    },
+    "OrderUpdate": {
+      "properties": {
+        "orderStatus": {
+          "type": "string",
+          "pattern": "/^((Нова)|(В роботі)|(Виконана)|(Відхилена)|(Скасована))$/",
+          "example": "Виконана"
+        },
+        "executionTime": {
+          "type": "number",
+          "minimum": 24,
+          "maximum": 744,
+          "example": 48
+        },
+        "contractor": {
+          "type": "string",
+          "title": "mongo ID",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "priority": {
+          "type": "string",
+          "pattern": "/^((Критичний)|(Високий)|(Плановий)|(Низький))$/",
+          "example": "Критичний"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "example": "згоріла лампа потрібно міняти"
+        },
+        "files": {
+          "type": "array",
+          "title": "links to file",
+          "example": "[{https://www.google.com}]"
+        }
+      }
+    },
+    "User": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "title": "ID",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "firstName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 20,
+          "example": "Viktor"
+        },
+        "lastName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 20,
+          "example": "Kmin"
+        },
+        "profession": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 30,
+          "example": "Engineer"
+        },
+        "email": {
+          "type": "string",
+          "pattern": "/^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$/",
+          "example": "fwefe@vd.tr"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&_])[A-Za-z\\d@$!%*?&_]{8,}$/",
+          "example": "$2b$10$CJmw1A37ztbUZzkh8TKVZOQe"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 8,
+          "pattern": "/^[+][3][8][0][0-9]{9}$/",
+          "example": "+380999112911"
+        },
+        "accessLevel": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "example": 60
+        },
+        "location": {
+          "type": "string",
+          "title": "mongoID",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "name": {
+          "type": "string",
+          "title": "virtual property",
+          "readOnly": true,
+          "example": "Viktor Kmin"
+        }
+      }
+    },
+    "UserUpdate": {
+      "properties": {
+        "firstName": {
+          "description": "optional",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 20,
+          "example": "Viktor"
+        },
+        "lastName": {
+          "description": "optional",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 20,
+          "example": "Kmin"
+        },
+        "profession": {
+          "description": "optional",
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 30,
+          "example": "Engineer"
+        },
+        "email": {
+          "description": "optional",
+          "type": "string",
+          "pattern": "/^[^\\s@]+@([^\\s@.,]+\\.)+[^\\s@.,]{2,}$/",
+          "example": "fwefe@vd.tr"
+        },
+        "phone": {
+          "description": "optional",
+          "type": "string",
+          "minLength": 8,
+          "pattern": "/^[+][3][8][0][0-9]{9}$/",
+          "example": "+380999112911"
+        },
+        "accessLevel": {
+          "description": "optional",
+          "type": "number",
+          "minimum": 1,
+          "maximum": 100,
+          "example": 60
+        },
+        "location": {
+          "description": "optional",
+          "type": "string",
+          "title": "mongoID",
           "example": "6422e90f22c474b3316bcaea"
         }
-
       }
     }
   },
   "securityDefinitions": {
-    "api-key": {
+    "accessToken": {
       "type": "apiKey",
-      "name": "api-key",
+      "name": "accessToken",
       "in": "header"
     }
   }
 }
-
