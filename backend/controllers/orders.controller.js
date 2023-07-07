@@ -1,7 +1,15 @@
-const {ordersService, emailService, usersService, contractorsService, locationsService} = require('../services');
+const {
+    ordersService,
+    emailService,
+    usersService,
+    contractorsService,
+    locationsService,
+    s3Service
+} = require('../services');
 const {ENGINEER_EMAIL} = require("../configs/config");
 const {NEW_ORDER, CLOSED_ORDER} = require("../enums/emailAction.enum");
 const {executionTimeHelper} = require("../helpers/executionTime.helper");
+const {FILE_TO_ORDER} = require("../enums/itemType.enam");
 
 
 module.exports = {
@@ -38,7 +46,7 @@ module.exports = {
             const contractor = locationFulInfo.jobTypes[body.jobType];
 // потрібна перевірак чи взагалі існують види робіт
             const contractorFullInfo = await contractorsService.findOne({_id: contractor})
- //потрібна перевірка чи такий підрядник існує,
+            //потрібна перевірка чи такий підрядник існує,
             const emails = [ENGINEER_EMAIL, contractorFullInfo.email];
 
             const order = await ordersService.create({...body, orderNumber, executionTime, user, location, contractor});
@@ -117,6 +125,22 @@ module.exports = {
             }
 
             res.status(201).json(order);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    uploadFiles: async (req, res, next) => {
+        try {
+            const {order, files} = req
+
+            const sendData = await s3Service.uploadPublicFile(files.file, FILE_TO_ORDER, order._id);
+
+            order.files.push(sendData.Location)
+
+            const upOrder = await ordersService.update(order._id, {files: order.files});
+
+            res.status(200).json(upOrder);
         } catch (e) {
             next(e);
         }

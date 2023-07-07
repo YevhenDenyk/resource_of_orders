@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const {ordersMiddleware, commonMiddleware, authMiddleware} = require('../middlewares');
+const {ordersMiddleware, commonMiddleware, authMiddleware, fileMiddleware} = require('../middlewares');
 const {ordersController} = require('../controllers');
 const {ordersValidator} = require("../validators");
 const {CONTRACTOR_LEVEL, STAFF_LEVEL, ENGINEER_LEVEL} = require("../enums/accessLevel.enum");
@@ -22,18 +22,18 @@ router.post(
 
 router.get(
     '/:_id',
+    commonMiddleware.isMongoIdValid,
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(CONTRACTOR_LEVEL),
-    commonMiddleware.isMongoIdValid,
     ordersMiddleware.isOrderExist,
     ordersController.getByIdWithCommits
 );
 
 router.put(
     '/:_id',
+    commonMiddleware.isMongoIdValid,
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(ENGINEER_LEVEL),
-    commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(ordersValidator.update),
     ordersMiddleware.isOrderExist,
     ordersMiddleware.checkOrderStatus,
@@ -42,13 +42,23 @@ router.put(
 
 router.patch(
     '/:_id',
+    commonMiddleware.isMongoIdValid,
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(CONTRACTOR_LEVEL),
-    commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(ordersValidator.updateStatus),
     ordersMiddleware.isOrderExist,
     ordersMiddleware.checkOrderStatus,
     ordersController.update
 );
+
+router.post(
+    '/:_id/files',
+    commonMiddleware.isMongoIdValid,
+    fileMiddleware.checkUploadImage,
+    authMiddleware.checkAccessToken,
+    authMiddleware.checkAccessLevel(STAFF_LEVEL),
+    ordersMiddleware.isOrderExist,
+    ordersController.uploadFiles
+)
 
 module.exports = router

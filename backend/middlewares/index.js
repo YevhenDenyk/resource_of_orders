@@ -7,4 +7,5 @@ module.exports = {
     jobTypesMiddleware: require('./jobTypes.middleware'),
     commitsMiddleware: require('./commits.middleware'),
     authMiddleware: require('./auth.middleware'),
+    fileMiddleware: require('./file.middleware'),
 }

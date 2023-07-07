@@ -9,4 +9,5 @@ module.exports = {
     emailService: require('./email.service'),
     actionTokenService: require('./actionToken.service'),
     oldPasswordService: require('./oldPassword.service'),
+    s3Service: require('./s3.service'),
 }

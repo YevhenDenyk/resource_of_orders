@@ -408,7 +408,7 @@
             "name": "_id",
             "required": true,
             "type": "string",
-            "in": "formData"
+            "in": "path"
           },
           {
             "in": "body",
@@ -456,7 +456,7 @@
             "name": "_id",
             "required": true,
             "type": "string",
-            "in": "formData"
+            "in": "path"
           }
         ],
         "responses": {
@@ -856,7 +856,7 @@
             "name": "_id",
             "required": true,
             "type": "string",
-            "in": "formData"
+            "in": "path"
           },
           {
             "in": "body",
@@ -901,7 +901,7 @@
             "name": "_id",
             "required": true,
             "type": "string",
-            "in": "formData"
+            "in": "path"
           }
         ],
         "responses": {
@@ -1183,7 +1183,7 @@
             "name": "_id",
             "required": true,
             "type": "string",
-            "in": "formData"
+            "in": "path"
           },
           {
             "in": "body",
@@ -1228,7 +1228,7 @@
             "name": "_id",
             "required": true,
             "type": "string",
-            "in": "formData"
+            "in": "path"
           },
           {
             "in": "body",
@@ -1242,6 +1242,53 @@
                 }
               }
             }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order was updated",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "400": {
+            "description": "Order id invalid / Body invalid"
+          },
+          "401": {
+            "description": "Token invalid / No token"
+          },
+          "404": {
+            "description": "Order not found"
+          }
+        }
+      }
+    },
+    "/orders/{_id}/files": {
+      "post": {
+        "summary": "Add image to order",
+        "description": "You need STAFF_LEVEL or higher",
+        "tags": [
+          "Orders"
+        ],
+        "security": [
+          {
+            "api-key": []
+          }
+        ],
+        "operationId": "addImageToOrder",
+        "parameters": [
+          {
+            "name": "_id",
+            "required": true,
+            "type": "string",
+            "in": "path"
+          },
+          {
+            "in": "formData",
+            "name": "file",
+            "type": "file",
+            "description": "image, max 5Mb",
+            "required": true
           }
         ],
         "responses": {
