@@ -54,7 +54,7 @@ module.exports = {
     },
     checkRefreshToken: async (req, res, next) => {
         try {
-            const refreshToken = req.get('Authorization')
+            const refreshToken = req.get('refreshToken')
 
             if (!refreshToken) {
                 throw new ApiError('No token', 401)
@@ -76,10 +76,10 @@ module.exports = {
     },
     checkActionToken: async (req, res, next) => {
         try {
-            const actionToken = req.get('Authorization')
+            const actionToken = req.get('actionToken')
 
             if (!actionToken) {
-                throw new ApiError('No token', 401)
+                throw new ApiError('No action token', 401)
             }
 
             const payload = authService.checkActionToken(actionToken);
@@ -87,7 +87,7 @@ module.exports = {
             const tokenInfo = await actionTokenService.findOne(actionToken);
 
             if (!tokenInfo || payload.essenceId !== tokenInfo.essenceId) {
-                throw new ApiError('Unknown token', 401)
+                throw new ApiError('Unknown action token', 401)
             }
 
             if (tokenInfo.contractor) {

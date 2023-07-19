@@ -78,7 +78,7 @@
         "parameters": [
           {
             "in": "header",
-            "name": "Authorization",
+            "name": "refreshToken",
             "type": "string",
             "required": true
           }
@@ -129,7 +129,7 @@
         }
       }
     },
-    "/auth//password/forgot": {
+    "/auth/password/forgot": {
       "post": {
         "summary": "forgot password",
         "description": "receive an email to reset your password",

@@ -73,8 +73,8 @@ module.exports = {
                 name = `${essence.firstName} ${essence.lastName}`
             }
 
-            const actionToken = authService.generateActionToken({essence_id: essence._id});
-            const forgotPassFEUrl = `${FRONTEND_URL}/password/new?token=${actionToken}`
+            const actionToken = authService.generateActionToken({essenceId: essence._id});
+            const forgotPassFEUrl = `${FRONTEND_URL}password/new?actionToken=${actionToken}`
 
             await Promise.all([
                 emailService.sendEmail(essence.email, FORGOT_PASS, {userName: name, url: forgotPassFEUrl}),

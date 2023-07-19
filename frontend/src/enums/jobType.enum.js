@@ -1,0 +1,19 @@
+const GENERAL_CONSTRUCTION_WORKS = 'generalConstructionWorks';
+const REFRIGERATION_EQUIPMENT = 'refrigerationEquipment';
+const TECHNOLOGICAL_EQUIPMENT = 'technologicalEquipment';
+const VENTILATION_AND_AIR_CONDITIONING = 'ventilationAndAirConditioning';
+const LIFTING_EQUIPMENT_AND_ELEVATORS = 'liftingEquipmentAndElevators';
+const DIESEL_GENERATORS = 'dieselGenerators';
+const ELECTRICITY = 'electricity';
+const WATER_AND_HEATING = 'waterAndHeating';
+
+export {
+    GENERAL_CONSTRUCTION_WORKS,
+    WATER_AND_HEATING,
+    ELECTRICITY,
+    DIESEL_GENERATORS,
+    LIFTING_EQUIPMENT_AND_ELEVATORS,
+    VENTILATION_AND_AIR_CONDITIONING,
+    TECHNOLOGICAL_EQUIPMENT,
+    REFRIGERATION_EQUIPMENT
+}
