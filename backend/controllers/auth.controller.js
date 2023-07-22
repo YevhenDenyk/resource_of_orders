@@ -21,7 +21,17 @@ module.exports = {
                 essenceId: essence._id,
             });
 
-            await authService.createInBase(essence._id, essence.email, essence.name, essence.accessLevel, accessToken, refreshToken)
+            const inf = {
+                essenceId: essence._id,
+                essenceEmail: essence.email,
+                essenceName: essence.name,
+                accessLevel: essence.accessLevel,
+                location: essence?.location,
+                accessToken,
+                refreshToken
+            };
+
+            await authService.createInBase(inf)
 
             res.status(200).json({
                 accessToken,
@@ -35,13 +45,13 @@ module.exports = {
 
     refresh: async (req, res, next) => {
         try {
-            const {essenceId, essenceEmail, accessLevel, _id, essenceName} = req.tokenInfo;
+            const {tokenInfo} = req;
 
-            await authService.deleteById(_id);
+            await authService.deleteById(tokenInfo._id);
 
-            const {accessToken, refreshToken} = authService.generateAccessTokenPair({essenceId});
+            const {accessToken, refreshToken} = authService.generateAccessTokenPair({essenceId: tokenInfo.essenceId});
 
-            await authService.createInBase(essenceId, essenceEmail, essenceName, accessLevel, accessToken, refreshToken)
+            await authService.createInBase({...tokenInfo._doc, accessToken, refreshToken})
 
             res.status(201).json({accessToken, refreshToken});
         } catch (e) {

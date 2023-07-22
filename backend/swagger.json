@@ -923,7 +923,7 @@
     "/orders": {
       "get": {
         "summary": "Get all Orders, query filter",
-        "description": "You need CONTRACTOR_LEVEL or higher",
+        "description": "You need CONTRACTOR_LEVEL or higher \nIf you are a contractor, you only receive your orders.\nIf you are a staff, you only receive orders your location.",
         "tags": [
           "Orders"
         ],
@@ -1001,7 +1001,7 @@
                   "type": "number",
                   "example": 333
                 },
-                "contractors": {
+                "orders": {
                   "type": "array",
                   "items": {
                     "$ref": "#/definitions/Order"
@@ -1562,23 +1562,23 @@
       "properties": {
         "CONTRACTOR_LEVEL": {
           "type": "number",
-          "title": "10"
+          "title": "10-20"
         },
         "STAFF_LEVEL": {
           "type": "number",
-          "title": "21"
+          "title": "21-40"
         },
         "ENGINEER_LEVEL": {
           "type": "number",
-          "title": "41"
+          "title": "41-60"
         },
         "LEAD_ENGINEER_LEVEL": {
           "type": "number",
-          "title": "61"
+          "title": "61-80"
         },
         "ADMIN_LEVEL": {
           "type": "number",
-          "title": "81"
+          "title": "81-100"
         }
       }
     },

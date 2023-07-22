@@ -9,9 +9,17 @@ module.exports = {
         return Order.updateWithExecutionDate(id, order)
     },
 
-    getAllAndFilter: async (query) => {
-        const {page = 1, limit = 10, contractor, location, jobType, orderStatus, overdue, priority} = query
+    getAllAndFilter: async (query, payload={}) => {
+        let {page = 1, limit = 10, contractor, location, jobType, orderStatus, overdue, priority} = query
+        const {contractorId, locationId} = payload
+
         let findObj = {}
+
+        if (contractorId) contractor = contractorId
+        if (locationId) location = locationId
+        if (page <= 0) page = 1
+        if (limit <= 0) limit = 10
+
 
         if (jobType) {
             findObj = {...findObj, jobType: {$regex: jobType}}
@@ -20,7 +28,7 @@ module.exports = {
             findObj = {...findObj, orderStatus: {$regex: orderStatus}}
         }
         if (overdue) {
-            findObj = {...findObj, overdue: {$regex: overdue}}
+            findObj = {...findObj, overdue}
         }
         if (priority) {
             findObj = {...findObj, priority: {$regex: priority}}

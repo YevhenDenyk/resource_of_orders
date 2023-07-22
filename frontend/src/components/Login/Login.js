@@ -23,7 +23,7 @@ const Login = () => {
             const {data} = await authService.login(essence);
             console.log(data)
             authService.setToken(data)
-            // navigate('/')
+            navigate('/orders')
         } catch (e) {
 
 ////розібратися з помилкою при невірних даних видає якусь діч замість помилки яку я відправляю

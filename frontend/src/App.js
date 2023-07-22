@@ -1,7 +1,7 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 
 import {MainLayout} from "./layout/MainLayout";
-import {ForgotPage, LoginPage, UpdateForgotPasswordPage} from "./pages";
+import {ForgotPage, LoginPage, OrdersPage, UpdateForgotPasswordPage} from "./pages";
 
 const App = () => {
     return (
@@ -11,6 +11,7 @@ const App = () => {
                 <Route path={'login'} element={<LoginPage/>}/>
                 <Route path={'forgot/password'} element={<ForgotPage/>}/>
                 <Route path={'password/new'} element={<UpdateForgotPasswordPage/>}/>
+                <Route path={'orders'} element={<OrdersPage/>}/>
             </Route>
         </Routes>
     );

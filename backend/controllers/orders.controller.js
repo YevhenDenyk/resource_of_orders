@@ -15,7 +15,20 @@ const {FILE_TO_ORDER} = require("../enums/itemType.enam");
 module.exports = {
     getAllAndFilter: async (req, res, next) => {
         try {
-            const orders = await ordersService.getAllAndFilter(req.query);
+            const {accessLevel, essenceId, location} = req.tokenInfo
+            let orders = []
+            ////Якщо запит робить підрядник повертаємо йому тільки його заявки
+            ////Якщо запит робить персонал - повертаємо заявки його філіалу
+            ////якщо запит робить інженер - повертаємо усі
+            if (accessLevel <= 20) {
+                orders = await ordersService.getAllAndFilter(req.query,{contractorId:essenceId});
+            }
+            if (accessLevel > 20 && accessLevel <= 40) {
+                orders = await ordersService.getAllAndFilter(req.query,{locationId:location});
+            }
+            if (accessLevel > 40) {
+                orders = await ordersService.getAllAndFilter(req.query);
+            }
 
             res.status(200).json(orders);
         } catch (e) {

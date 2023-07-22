@@ -23,7 +23,7 @@ module.exports = {
     },
 
     generateAccessTokenPair: (dataToSign = {}) => {
-        const accessToken = jwt.sign(dataToSign, ACCESS_SECRET, {expiresIn: '15m'});
+        const accessToken = jwt.sign(dataToSign, ACCESS_SECRET, {expiresIn: '1m'});
         const refreshToken = jwt.sign(dataToSign, REFRESH_SECRET, {expiresIn: '1d'});
 
         return {
@@ -59,8 +59,8 @@ module.exports = {
     },
 
 
-    createInBase: async (essenceId, essenceEmail, essenceName, accessLevel, accessToken, refreshToken) => {
-        return Auth.create({essenceId, essenceEmail, essenceName, accessLevel, accessToken, refreshToken})
+    createInBase: async (info={}) => {
+        return Auth.create(info)
     },
     findByToken: async (token = {}) => {
         return Auth.findOne(token)
