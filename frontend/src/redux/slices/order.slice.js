@@ -3,6 +3,7 @@ import {orderService} from "../../services";
 
 const initialState = {
     orders: {},
+    order: {},
     errors: null,
 }
 
@@ -17,6 +18,18 @@ const getAll = createAsyncThunk(
         }
     }
 );
+const getById = createAsyncThunk(
+    'orderSlice/getById',
+    async (_id, {rejectWithValue}) => {
+        try {
+            const {data} = await orderService.getById(_id);
+            return data
+        } catch (e) {
+            return rejectWithValue(e.response.data)
+        }
+    }
+);
+
 
 const orderSlice = createSlice({
     name: 'orderSlice',
@@ -26,6 +39,9 @@ const orderSlice = createSlice({
         builder
             .addCase(getAll.fulfilled, (state, action) => {
                 state.orders = action.payload
+            })
+            .addCase(getById.fulfilled, (state, action) => {
+                state.order = action.payload
             })
             //
             .addDefaultCase((state, action) => {
@@ -42,7 +58,7 @@ const orderSlice = createSlice({
 const {reducer: orderReducer, action} = orderSlice;
 
 const orderAction = {
-    getAll
+    getAll,getById
 };
 
 export {orderAction, orderReducer};

@@ -1,7 +1,7 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 
 import {MainLayout} from "./layout/MainLayout";
-import {ForgotPage, LoginPage, OrdersPage, UpdateForgotPasswordPage} from "./pages";
+import {ForgotPage, LoginPage, OrderDetailPage, OrdersPage, UpdateForgotPasswordPage, UsersPage} from "./pages";
 
 const App = () => {
     return (
@@ -11,7 +11,10 @@ const App = () => {
                 <Route path={'login'} element={<LoginPage/>}/>
                 <Route path={'forgot/password'} element={<ForgotPage/>}/>
                 <Route path={'password/new'} element={<UpdateForgotPasswordPage/>}/>
-                <Route path={'orders'} element={<OrdersPage/>}/>
+                <Route path={'orders'} element={<OrdersPage/>}>
+                </Route>
+                    <Route path={'orders/:id'} element={<OrderDetailPage/>}/>
+                <Route path={'users'} element={<UsersPage/>}/>
             </Route>
         </Routes>
     );

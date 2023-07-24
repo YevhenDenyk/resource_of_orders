@@ -1,0 +1,26 @@
+.link{
+     color: black;
+ }
+
+
+.button{
+    border: 2px solid #e3e3e3;
+    box-shadow: 0 0 7px #666;
+    border-radius: 15px;
+    font-family: 'Calibri Light', serif;
+
+    cursor: pointer;
+
+    width: 130px;
+    height: 30px;
+    margin: 10px;
+    padding-left: 15px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+}
+.button:hover{
+    background: #e3e3e3;
+}

@@ -10,27 +10,22 @@ import {orderFormFilterHelper} from "../../helpers";
 const Orders = () => {
 
     const dispatch = useDispatch();
-    const {orders} = useSelector(state => state.orderReducer);
-    console.log(orders)
     const [filter, setFilter] = useState({});
-
+    const {orders} = useSelector(state => state.orderReducer);
     useEffect(() => {
         dispatch(orderAction.getAll(filter))
-    }, [filter])
+    }, [filter]);
 
     const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
 
     const submit = (formFilter) => {
         const formFilterHelper = orderFormFilterHelper(formFilter);
-
         setFilter(formFilterHelper)
-        console.log(formFilterHelper)
-    }
-
+    };
     const resetFilter = () => {
         reset()
         setFilter({})
-    }
+    };
 
     return (
         <div>

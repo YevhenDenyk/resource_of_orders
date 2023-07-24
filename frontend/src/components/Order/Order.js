@@ -1,13 +1,14 @@
-import dayjs from "dayjs";
-import 'dayjs/locale/zh-cn'
+import {Link} from "react-router-dom";
+
+import {dateTransformer} from "../../helpers"
 import css from './Order.module.css'
 
 const Order = ({order}) => {
-    let {createdAt, executionDate, jobType, orderStatus, priority, overdue, orderNumber} = order
+    let {createdAt, executionDate, jobType, orderStatus, priority, overdue, orderNumber, _id} = order
     let color = ''
 
-    createdAt = dayjs(createdAt).format('D.MM.YY H:mm');
-    executionDate = dayjs(executionDate).format('D.MM.YY H:mm');
+    createdAt = dateTransformer(createdAt);
+    executionDate = dateTransformer(executionDate);
 
     switch (jobType) {
         case 'generalConstructionWorks':
@@ -43,7 +44,11 @@ const Order = ({order}) => {
 
     return (
         <tr bgcolor={color}>
-            <td>{orderNumber}</td>
+            <td>
+                <Link to={`/orders/${_id}`}>
+                    {orderNumber}
+                </Link>
+            </td>
             <td>{executionDate}</td>
             <td>{orderStatus}</td>
             <td>{priority}</td>

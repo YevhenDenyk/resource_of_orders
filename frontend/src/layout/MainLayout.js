@@ -1,11 +1,14 @@
 import {Outlet} from "react-router-dom";
 
+import css from './MainLayout.module.css'
+import {Toolbar} from "../components/Toolbar/Toolbar";
+
 const MainLayout = () => {
     return (
-        <div>
-            <h1>MainLayout</h1>
+        <div className={css.layout}>
+            <Toolbar/>
             <Outlet/>
-            
+
         </div>
     );
 };

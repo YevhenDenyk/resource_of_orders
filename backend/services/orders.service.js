@@ -9,7 +9,7 @@ module.exports = {
         return Order.updateWithExecutionDate(id, order)
     },
 
-    getAllAndFilter: async (query, payload={}) => {
+    getAllAndFilter: async (query, payload = {}) => {
         let {page = 1, limit = 10, contractor, location, jobType, orderStatus, overdue, priority} = query
         const {contractorId, locationId} = payload
 
@@ -62,14 +62,44 @@ module.exports = {
             },
             {
                 $lookup: {
+                    from: 'contractors',
+                    localField: 'contractor',
+                    foreignField: '_id',
+                    as: 'detailContractor'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'locations',
+                    localField: 'location',
+                    foreignField: '_id',
+                    as: 'detailLocation'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user',
+                    foreignField: '_id',
+                    as: 'detailUser'
+                }
+            },
+            {
+                $lookup: {
                     from: 'commits',
                     localField: '_id',
                     foreignField: 'order',
                     as: 'commits'
                 }
             }
+
         ]);
-        return res[0]
+        return {
+            ...res[0],
+            detailContractor: res[0].detailContractor[0],
+            detailLocation: res[0].detailLocation[0],
+            detailUser: res[0].detailUser[0]
+        }
     },
 
     getById: async (id) => {

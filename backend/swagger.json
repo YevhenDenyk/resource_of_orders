@@ -228,7 +228,7 @@
           "201": {
             "description": "Success create",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Commit"
             }
           },
           "400": {
@@ -1141,6 +1141,18 @@
                   "type": "number",
                   "readOnly": true,
                   "example": 1236445
+                },
+                "detailContractor": {
+                  "type": "object",
+                  "$ref": "#/definitions/Contractor"
+                },
+                "detailLocation": {
+                  "type": "object",
+                  "$ref": "#/definitions/Location"
+                },
+                "detailUser": {
+                  "type": "object",
+                  "$ref": "#/definitions/User"
                 },
                 "commits": {
                   "type": "array",

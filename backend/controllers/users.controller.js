@@ -1,10 +1,12 @@
 const {usersService, authService} = require('../services');
+const {usersPresenter} = require("../presenters");
 
 module.exports = {
     getAllUsersAndFilter: async (req, res, next) => {
         try {
             const data = await usersService.find(req.query);
 
+            data.users = usersPresenter.normalizeUsers(data.users)
             res.status(200).json(data);
         } catch (e) {
             next(e);
@@ -17,7 +19,9 @@ module.exports = {
 
             const newUser = await usersService.createUser({...req.body, password: hashPassword});
 
-            res.status(201).json(newUser);
+            const normalizeUser = usersPresenter.normalizeUser(newUser);
+
+            res.status(201).json(normalizeUser);
         } catch (e) {
             next(e);
         }
@@ -25,8 +29,8 @@ module.exports = {
 
     getOneUser: async (req, res, next) => {
         try {
-
-            res.status(200).json(req.user);
+            const normalizeUser = usersPresenter.normalizeUser(req.user);
+            res.status(200).json(normalizeUser);
         } catch (e) {
             next(e);
         }
@@ -36,7 +40,8 @@ module.exports = {
         try {
             const user = await usersService.updateOneById(req.user._id, req.body)
 
-            res.status(201).json(user);
+            const normalizeUser = usersPresenter.normalizeUser(user);
+            res.status(201).json(normalizeUser);
         } catch (e) {
             next(e);
         }
