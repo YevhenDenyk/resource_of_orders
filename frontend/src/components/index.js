@@ -6,3 +6,4 @@ export * from './Order/Order';
 export * from './Toolbar/Toolbar';
 export * from './Users/Users';
 export * from './OrderDetail/OrderDetail';
+export * from './AddComment/AddComment';

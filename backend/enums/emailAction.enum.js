@@ -6,5 +6,5 @@ module.exports = {
     NEW_ORDER: 'new_order',
     CLOSED_ORDER: 'closed_order',
     OVERDUE_ORDER: 'overdue_order',
-    NEW_COMMIT: 'new_commit',
+    NEW_COMMENT: 'new_comment',
 }

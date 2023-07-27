@@ -53,7 +53,7 @@ module.exports = {
         }
     },
 
-    getByIdWithCommits: async (id) => {
+    getByIdWithComments: async (id) => {
         const res = await Order.aggregate([
             {
                 $match: {
@@ -86,10 +86,10 @@ module.exports = {
             },
             {
                 $lookup: {
-                    from: 'commits',
+                    from: 'comments',
                     localField: '_id',
                     foreignField: 'order',
-                    as: 'commits'
+                    as: 'comments'
                 }
             }
 

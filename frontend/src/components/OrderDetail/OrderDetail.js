@@ -1,14 +1,13 @@
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {joiResolver} from "@hookform/resolvers/joi";
-import {useForm} from "react-hook-form";
+// import {joiResolver} from "@hookform/resolvers/joi";
+// import {useForm} from "react-hook-form";
 
 
 import {orderAction} from "../../redux";
 import {dateTransformer, jobTypeTranslateHelper} from "../../helpers"
-import {commitService} from "../../services";
-import {createCommitValidator} from "../../validators";
+import {AddComment} from "../AddComment/AddComment";
 
 const OrderDetail = () => {
 
@@ -18,89 +17,85 @@ const OrderDetail = () => {
         dispatch(orderAction.getById(id))
     }, [id]);
 
-    const {order, commits} = useSelector(state => state.orderReducer);
+    const {order, comments} = useSelector(state => state.orderReducer);
 
     const createdAt = dateTransformer(order.createdAt);
     const executionDate = dateTransformer(order.executionDate);
     const jobType = jobTypeTranslateHelper(order.jobType);
 
-    const {
-        handleSubmit,
-        register,
-        reset,
-        formState: {errors, isValid}
-    } = useForm({resolver: joiResolver(createCommitValidator), mode: "onSubmit"});
-    const submit = async (commit) => {
-        try {
-            const newCommit = {...commit, order: order._id}
-            const {data} = await commitService.createCommit(newCommit);
-            dispatch(orderAction.setNewCommit(data))
-            reset()
-        } catch (e) {
-////додати обробку помилок
-        }
-    }
+//     const {
+//         handleSubmit,
+//         register,
+//         reset,
+//         formState: {errors, isValid}
+//     } = useForm({resolver: joiResolver(createCommitValidator), mode: "onSubmit"});
+//     const submit = async (comment) => {
+//         try {
+//             const newCommit = {...commit, order: order._id}
+//             const {data} = await commentService.createCommit(newCommit);
+//             dispatch(orderAction.setNewCommit(data))
+//             reset()
+//         } catch (e) {
+// ////додати обробку помилок
+//         }
+//     }
 
     return (
         <div>
             {order &&
-                <div>
-                    <h2>Заявка № {order.orderNumber}</h2>
+                // <form onSubmit={handleSubmit(submit)}>
                     <div>
-                        Тип робіт: {jobType} <br/>
-                        Статус: {order.orderStatus} <br/>
-                        Пріорітет: {order.priority} <br/>
-                        Виконати до: {executionDate} <br/>
-                        Дата подачі: {createdAt} <br/>
+                        <h2>Заявка № {order.orderNumber}</h2>
+                        <div>
+                            Тип робіт: {jobType} <br/>
+                            Статус: {order.orderStatus} <br/>
+                            Пріорітет: {order.priority} <br/>
+                            Виконати до: {executionDate} <br/>
+                            Дата подачі: {createdAt} <br/>
 
+                        </div>
+                        <div>
+                            <h3>Локація</h3>
+                            Регіон:{order.detailLocation?.region} <br/>
+                            Адреса: {order.detailLocation?.city}, {order.detailLocation?.address} <br/>
+                            Телефон: {order.detailLocation?.phone}
+                        </div>
+                        <div>
+                            <h3>Виконавець</h3>
+                            Назва компанії: {order.detailContractor?.name} <br/>
+                            Представник: {order.detailContractor?.representative} <br/>
+                            Посада: {order.detailContractor?.jobPosition} <br/>
+                            Пошта: {order.detailContractor?.email} <br/>
+                            Телефон: {order.detailContractor?.phone}
+                        </div>
+                        <div>
+                            <h3>Заявник</h3>
+                            Представник: {order.detailUser?.firstName} {order.detailUser?.lastName}<br/>
+                            Посада: {order.detailUser?.profession} <br/>
+                            Пошта: {order.detailUser?.email} <br/>
+                            Телефон: {order.detailUser?.phone}
+                        </div>
+                        <div>
+                            <h3>Опис заявки:</h3>
+                            <p>{order.description}</p>
+                        </div>
+                        <div>
+                            <h3>Вкладення:</h3>
+                            {order?.files?.map(file => <p>{file}</p>)}
+                        </div>
+                        <div>
+                            {/*перенести в окрему компоненту*/}
+                            <h3>Коментарі:</h3>
+                            {comments?.map(comment => <div key={comment._id}>
+                                <h4>{comment.essenceName} пише:</h4>
+                                <p>{comment.text}</p>
+                                <p>{comment.createdAt}</p>
+                            </div>)}
+                        </div>
                     </div>
-                    <div>
-                        <h3>Локація</h3>
-                        Регіон:{order.detailLocation?.region} <br/>
-                        Адреса: {order.detailLocation?.city}, {order.detailLocation?.address} <br/>
-                        Телефон: {order.detailLocation?.phone}
-                    </div>
-                    <div>
-                        <h3>Виконавець</h3>
-                        Назва компанії: {order.detailContractor?.name} <br/>
-                        Представник: {order.detailContractor?.representative} <br/>
-                        Посада: {order.detailContractor?.jobPosition} <br/>
-                        Пошта: {order.detailContractor?.email} <br/>
-                        Телефон: {order.detailContractor?.phone}
-                    </div>
-                    <div>
-                        <h3>Заявник</h3>
-                        Представник: {order.detailUser?.firstName} {order.detailUser?.lastName}<br/>
-                        Посада: {order.detailUser?.profession} <br/>
-                        Пошта: {order.detailUser?.email} <br/>
-                        Телефон: {order.detailUser?.phone}
-                    </div>
-                    <div>
-                        <h3>Опис заявки:</h3>
-                        <p>{order.description}</p>
-                    </div>
-                    <div>
-                        <h3>Вкладення:</h3>
-                        {order?.files?.map(file => <p>{file}</p>)}
-                    </div>
-                    <div>
-                        {/*перенести в окрему компоненту*/}
-                        <h3>Коментарі:</h3>
-                        {commits?.map(commit => <div key={commit._id}>
-                            <h4>{commit.essenceName} пише:</h4>
-                            <p>{commit.text}</p>
-                            <p>{commit.createdAt}</p>
-                        </div>)}
-                    </div>
-                </div>}
-            <div>
-                <h2>Додати коментар</h2>
-                <form onSubmit={handleSubmit(submit)}>
-                    <input type="text" placeholder={'commit'} {...register('text')}/>
-                    {errors.text && <span>{errors.text.message}</span>}
-                    <button disabled={!isValid}>Send</button>
-                </form>
-            </div>
+                // </form>
+            }
+           <AddComment orderId={order._id}/>
         </div>
     );
 };

@@ -1,5 +1,5 @@
 export * from './auth.validator'
-export * from './commits.validator'
+export * from './comments.validator'
 export * from './common.validator'
 export * from './contractors.validator'
 export * from './jobTypes.validator'

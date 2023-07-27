@@ -1,4 +1,4 @@
-const {WELCOME, FORGOT_PASS, DELETE_ACCOUNT, LOGOUT, NEW_ORDER, OVERDUE_ORDER, CLOSED_ORDER, NEW_COMMIT} = require("../enums/emailAction.enum");
+const {WELCOME, FORGOT_PASS, DELETE_ACCOUNT, LOGOUT, NEW_ORDER, OVERDUE_ORDER, CLOSED_ORDER, NEW_COMMENT} = require("../enums/emailAction.enum");
 module.exports = {
     [WELCOME]: {
         subject: "Welcome on board",
@@ -27,8 +27,8 @@ module.exports = {
     [OVERDUE_ORDER]:{
 
     },
-    [NEW_COMMIT]:{
+    [NEW_COMMENT]:{
         subject: "You have a new comment on the order",
-        templateName: 'commit'
+        templateName: 'comment'
     },
 }

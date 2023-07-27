@@ -8,7 +8,7 @@ const urls = {
         forgotPassword: '/auth/password/forgot',
     },
 
-    commit: '/commits',
+    comments: '/comments',
     contractors: '/contractors',
     jobTypes: '/jobTypes',
     locations: '/locations',

@@ -5,7 +5,7 @@ module.exports = {
     contractorsMiddleware: require('./contractors.middleware'),
     ordersMiddleware: require('./orders.middleware'),
     jobTypesMiddleware: require('./jobTypes.middleware'),
-    commitsMiddleware: require('./commits.middleware'),
+    commentsMiddleware: require('./comments.middleware'),
     authMiddleware: require('./auth.middleware'),
     fileMiddleware: require('./file.middleware'),
 }

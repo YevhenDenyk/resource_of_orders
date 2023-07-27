@@ -26,7 +26,7 @@ router.get(
     authMiddleware.checkAccessToken,
     authMiddleware.checkAccessLevel(CONTRACTOR_LEVEL),
     ordersMiddleware.isOrderExist,
-    ordersController.getByIdWithCommits
+    ordersController.getByIdWithComments
 );
 
 router.put(

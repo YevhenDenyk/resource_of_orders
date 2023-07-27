@@ -4,6 +4,6 @@ module.exports = {
     contractorsController: require('./contractors.controller'),
     ordersController: require('./orders.controller'),
     jobTypesController: require('./jobTypes.controller'),
-    commitsController: require('./commits.controller'),
+    commentsController: require('./comment.controller'),
     authController: require('./auth.controller'),
 }

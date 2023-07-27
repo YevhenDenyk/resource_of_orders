@@ -9,7 +9,7 @@ const swaggerJson = require('./swagger.json');
 const {config} = require("./configs");
 const {
     usersRouter,
-    commitsRouter,
+    commentsRouter,
     contractorsRouter,
     jobTypesRouter,
     locationsRouter,
@@ -25,7 +25,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(fileUpload());
 
 app.use('/auth', authRouter);
-app.use('/commits', commitsRouter);
+app.use('/comments', commentsRouter);
 app.use('/contractors', contractorsRouter);
 app.use('/jobTypes', jobTypesRouter);
 app.use('/locations', locationsRouter);

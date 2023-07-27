@@ -202,13 +202,13 @@
         }
       }
     },
-    "/commits": {
+    "/comments": {
       "post": {
         "summary": "Create comment to order",
         "description": "You need CONTRACTOR_LEVEL or higher",
-        "operationId": "createCommit",
+        "operationId": "createComment",
         "tags": [
-          "Commit"
+          "Comment"
         ],
         "security": [
           {
@@ -220,7 +220,7 @@
             "in": "body",
             "name": "body",
             "schema": {
-              "$ref": "#/definitions/Commit"
+              "$ref": "#/definitions/Comment"
             }
           }
         ],
@@ -228,7 +228,7 @@
           "201": {
             "description": "Success create",
             "schema": {
-              "$ref": "#/definitions/Commit"
+              "$ref": "#/definitions/Comment"
             }
           },
           "400": {
@@ -1154,11 +1154,11 @@
                   "type": "object",
                   "$ref": "#/definitions/User"
                 },
-                "commits": {
+                "comments": {
                   "type": "array",
                   "items": {
                     "type": "object",
-                    "$ref": "#/definitions/Commit"
+                    "$ref": "#/definitions/Comment"
                   }
                 }
               }
@@ -1618,7 +1618,7 @@
         }
       }
     },
-    "Commit": {
+    "Comment": {
       "properties": {
         "_id": {
           "type": "string",
@@ -1645,7 +1645,7 @@
           "type": "integer",
           "minLength": 3,
           "maxLength": 300,
-          "example": "commit to order"
+          "example": "comment to order"
         }
       }
     },

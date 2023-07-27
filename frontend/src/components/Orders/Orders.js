@@ -11,7 +11,7 @@ const Orders = () => {
 
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({});
-    const {orders} = useSelector(state => state.orderReducer);
+    const {orders, count, limit, page} = useSelector(state => state.orderReducer);
     useEffect(() => {
         dispatch(orderAction.getAll(filter))
     }, [filter]);
@@ -26,6 +26,17 @@ const Orders = () => {
         reset()
         setFilter({})
     };
+
+    const nextPage = () => {
+        if (page * limit < count) {
+            setFilter({...filter, page: page + 1})
+        }
+    }
+    const prevPage = () => {
+        if (page>1) {
+            setFilter({...filter, page: page - 1})
+        }
+    }
 
     return (
         <div>
@@ -81,6 +92,11 @@ const Orders = () => {
                 <button onClick={resetFilter}>reset filter</button>
             </div>
 
+            <div>
+                Всього заявок {count} <br/>
+                Кількість показано {limit} <br/>
+                Сторінка {page}
+            </div>
 
             <table>
                 <thead>
@@ -94,16 +110,16 @@ const Orders = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {orders.orders?.map(order => <Order key={order._id} order={order}/>)}
+                {orders.map(order => <Order key={order._id} order={order}/>)}
                 </tbody>
             </table>
 
-
             <div>
-                Всього заявок {orders.count} <br/>
-                Кількість показано {orders.limit} <br/>
-                Сторінка {orders.page}
+                <button onClick={prevPage}>Назад</button>
+                <button onClick={nextPage}>Вперед</button>
+
             </div>
+
         </div>
     );
 };

@@ -10,7 +10,6 @@ const {ENGINEER_EMAIL} = require("../configs/config");
 const {NEW_ORDER, CLOSED_ORDER} = require("../enums/emailAction.enum");
 const {executionTimeHelper} = require("../helpers/executionTime.helper");
 const {FILE_TO_ORDER} = require("../enums/itemType.enam");
-const {usersPresenter} = require("../presenters");
 
 
 module.exports = {
@@ -37,11 +36,11 @@ module.exports = {
         }
     },
 
-    getByIdWithCommits: async (req, res, next) => {
+    getByIdWithComments: async (req, res, next) => {
         try {
-            const orderWithCommits = await ordersService.getByIdWithCommits(req.order._id);
+            const orderWithComments = await ordersService.getByIdWithComments(req.order._id);
 
-            res.status(200).json(orderWithCommits);
+            res.status(200).json(orderWithComments);
         } catch (e) {
             next(e);
         }

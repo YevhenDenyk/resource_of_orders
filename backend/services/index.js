@@ -4,7 +4,7 @@ module.exports = {
     contractorsService: require('./contractors.service'),
     ordersService: require('./orders.service'),
     jobTypesService: require('./jobTypes.service'),
-    commitsService: require('./commits.service'),
+    commentsService: require('./comments.service'),
     authService: require('./auth.service'),
     emailService: require('./email.service'),
     actionTokenService: require('./actionToken.service'),
