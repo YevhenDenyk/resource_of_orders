@@ -1,9 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import {orderService} from "../../services";
+import {commitService, orderService} from "../../services";
 
 const initialState = {
     orders: {},
     order: {},
+    commits: [],
     errors: null,
 }
 
@@ -34,7 +35,11 @@ const getById = createAsyncThunk(
 const orderSlice = createSlice({
     name: 'orderSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        setNewCommit: (state, action) => {
+            state.commits.push(action.payload)
+        }
+    },
     extraReducers: builder =>
         builder
             .addCase(getAll.fulfilled, (state, action) => {
@@ -42,7 +47,9 @@ const orderSlice = createSlice({
             })
             .addCase(getById.fulfilled, (state, action) => {
                 state.order = action.payload
+                state.commits = action.payload.commits
             })
+
             //
             .addDefaultCase((state, action) => {
                 const [pathsElement] = action.type.split('/').splice(-1);
@@ -55,10 +62,10 @@ const orderSlice = createSlice({
             })
 });
 
-const {reducer: orderReducer, action} = orderSlice;
+const {reducer: orderReducer, actions: {setNewCommit}} = orderSlice;
 
 const orderAction = {
-    getAll,getById
+    getAll, getById, setNewCommit
 };
 
 export {orderAction, orderReducer};

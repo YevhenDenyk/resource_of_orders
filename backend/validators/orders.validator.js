@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const {JOB_TYPE, MONGO_ID, ORDER_STATUS, ORDER_PRIORITY} = require("../enums/regexp.enum");
+const {JOB_TYPE, MONGO_ID, ORDER_STATUS, ORDER_PRIORITY, ORDER_STATUS_UPDATE} = require("../enums/regexp.enum");
 
 module.exports = {
     create: Joi.object({
@@ -17,6 +17,6 @@ module.exports = {
         files: Joi.string().optional(),
     }),
     updateStatus:  Joi.object({
-        orderStatus: Joi.string().optional().regex(ORDER_STATUS),
+        orderStatus: Joi.string().optional().regex(ORDER_STATUS_UPDATE),
     }),
 }

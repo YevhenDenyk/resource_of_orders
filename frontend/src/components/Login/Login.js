@@ -38,8 +38,8 @@ const Login = () => {
         <div>
             <h1>login</h1>
 
-            {query.has('expSession') && <h1>Session end!</h1>}
-            {query.has('updatePassword') && <h1>Password changed successfully</h1>}
+            {query.has('expSession') && <h1>Сесія закінчилася, увійдіть знову</h1>}
+            {query.has('updatePassword') && <h1>Ваш пароль успішно змінено</h1>}
 
             <form onSubmit={handleSubmit(submit)}>
                 {error && <h3>{error}</h3>}
@@ -48,6 +48,7 @@ const Login = () => {
                 <input type="text" placeholder={'password'} {...register('password')}/>
                 {errors.password && <span>{errors.password.message}</span>}
                 <input type='checkbox'  {...register('contractor')} />
+                <label>Я підрядник</label>
                 <button disabled={!isValid}>Login</button>
             </form>
 

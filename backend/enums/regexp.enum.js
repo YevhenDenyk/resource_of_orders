@@ -8,5 +8,6 @@ module.exports = {
     JOB_TYPE: /^((generalConstructionWorks)|(refrigerationEquipment)|(technologicalEquipment)|(ventilationAndAirConditioning)|(liftingEquipmentAndElevators)|(dieselGenerators)|(electricity)|(waterAndHeating))$/,
     ORDER_PRIORITY: /^((Критичний)|(Високий)|(Плановий)|(Низький))$/,
     ORDER_STATUS: /^((Нова)|(В роботі)|(Виконана)|(Відхилена)|(Скасована))$/,
+    ORDER_STATUS_UPDATE: /^((В роботі)|(Виконана)|(Відхилена)|(Скасована))$/,
 
 }

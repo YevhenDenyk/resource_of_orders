@@ -1,10 +1,14 @@
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
+import {joiResolver} from "@hookform/resolvers/joi";
+import {useForm} from "react-hook-form";
+
+
 import {orderAction} from "../../redux";
-
-
 import {dateTransformer, jobTypeTranslateHelper} from "../../helpers"
+import {commitService} from "../../services";
+import {createCommitValidator} from "../../validators";
 
 const OrderDetail = () => {
 
@@ -13,12 +17,29 @@ const OrderDetail = () => {
     useEffect(() => {
         dispatch(orderAction.getById(id))
     }, [id]);
-    let {order} = useSelector(state => state.orderReducer);
+
+    const {order, commits} = useSelector(state => state.orderReducer);
 
     const createdAt = dateTransformer(order.createdAt);
     const executionDate = dateTransformer(order.executionDate);
     const jobType = jobTypeTranslateHelper(order.jobType);
 
+    const {
+        handleSubmit,
+        register,
+        reset,
+        formState: {errors, isValid}
+    } = useForm({resolver: joiResolver(createCommitValidator), mode: "onSubmit"});
+    const submit = async (commit) => {
+        try {
+            const newCommit = {...commit, order: order._id}
+            const {data} = await commitService.createCommit(newCommit);
+            dispatch(orderAction.setNewCommit(data))
+            reset()
+        } catch (e) {
+////додати обробку помилок
+        }
+    }
 
     return (
         <div>
@@ -63,14 +84,23 @@ const OrderDetail = () => {
                         {order?.files?.map(file => <p>{file}</p>)}
                     </div>
                     <div>
+                        {/*перенести в окрему компоненту*/}
                         <h3>Коментарі:</h3>
-                        {order?.commits?.map(commit => <div key={commit._id}>
-                            <h3>{commit.essenceName} пише:</h3>
+                        {commits?.map(commit => <div key={commit._id}>
+                            <h4>{commit.essenceName} пише:</h4>
                             <p>{commit.text}</p>
                             <p>{commit.createdAt}</p>
                         </div>)}
                     </div>
                 </div>}
+            <div>
+                <h2>Додати коментар</h2>
+                <form onSubmit={handleSubmit(submit)}>
+                    <input type="text" placeholder={'commit'} {...register('text')}/>
+                    {errors.text && <span>{errors.text.message}</span>}
+                    <button disabled={!isValid}>Send</button>
+                </form>
+            </div>
         </div>
     );
 };
@@ -80,6 +110,7 @@ export {OrderDetail};
 //     "_id": "649af9c4d0f09f0c7a7b41ee",
 //     "jobType": "technologicalEquipment",
 //     "orderStatus": "Нова",
+
 //     "executionTime": 870,
 //     "contractor": "649d9a4a837a17cfb3514e14",
 //     "user": "64919f159cc69362e170453a",

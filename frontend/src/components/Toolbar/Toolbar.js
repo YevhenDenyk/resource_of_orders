@@ -6,6 +6,11 @@ const Toolbar = () => {
 
     return (
         <div>
+            <Link to={'/login'} className={css.link}>
+                <div className={css.button}>
+                    Увійти
+                </div>
+            </Link>
             <Link to={'/orders'} className={css.link}>
                 <div className={css.button}>
                     Заявки

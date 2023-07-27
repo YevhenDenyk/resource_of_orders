@@ -38,6 +38,7 @@ const ForgotPassword = () => {
                     <form onSubmit={handleSubmit(submit)}>
                         <input type="text" placeholder={'email'} {...register('email')}/>
                         <input type='checkbox'  {...register('contractor')} />
+                        <label>Я підрядник</label>
                         <button disabled={!isValid}>Forgot password</button>
                     </form>
                 </div>
