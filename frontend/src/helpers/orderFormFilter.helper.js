@@ -1,29 +1,29 @@
 const orderFormFilterHelper = (formFilter) => {
     const {page, limit, jobType, orderStatus, overdue, priority, contractor, location} = formFilter
     if (!page || page <= 0) {
-        formFilter = {...formFilter, page: null}
+        delete formFilter.page
     }
     if (!limit || limit <= 0) {
-        formFilter = {...formFilter, limit: null}
+        delete formFilter.limit
     }
     if (!overdue) {
-        formFilter = {...formFilter, overdue: null}
+        delete formFilter.overdue
     }
 
     if (!jobType) {
-        formFilter = {...formFilter, jobType: null}
+        delete formFilter.jobType
     }
     if (!orderStatus) {
-        formFilter = {...formFilter, orderStatus: null}
+        delete formFilter.orderStatus
     }
     if (!priority) {
-        formFilter = {...formFilter, priority: null}
+        delete formFilter.priority
     }
     if (!contractor) {
-        formFilter = {...formFilter, contractor: null}
+        delete formFilter.contractor
     }
     if (!location) {
-        formFilter = {...formFilter, location: null}
+        delete formFilter.location
     }
     return formFilter
 }

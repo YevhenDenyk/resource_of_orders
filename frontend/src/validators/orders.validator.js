@@ -11,10 +11,10 @@ const createOrderValidator = Joi.object({
 const updateOrderValidator = Joi.object({
     orderStatus: Joi.string().optional().regex(ORDER_STATUS),
     executionTime: Joi.number().optional().min(24).max(744),
-    contractor: Joi.string().optional().regex(MONGO_ID),
-    priority: Joi.string().optional().regex(ORDER_PRIORITY),
+    // contractor: Joi.string().optional().regex(MONGO_ID),
+    // priority: Joi.string().optional().regex(ORDER_PRIORITY),
     description: Joi.string().optional().min(10).max(300),
-    files: Joi.string().optional(),
+    // files: Joi.string().optional(),
 })
 const updateStatusOrderValidator = Joi.object({
     orderStatus: Joi.string().optional().regex(ORDER_STATUS),

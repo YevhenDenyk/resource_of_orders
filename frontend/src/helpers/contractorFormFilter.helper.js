@@ -1,20 +1,20 @@
 const contractorFormFilterHelper = (formFilter) => {
     const {page, limit, name, email, phone} = formFilter
     if (!page || page <= 0) {
-        formFilter = {...formFilter, page: null}
+        delete formFilter.page
     }
     if (!limit || limit <= 0) {
-        formFilter = {...formFilter, limit: null}
+        delete formFilter.limit
     }
     if (!name) {
-        formFilter = {...formFilter, name: null}
+        delete formFilter.name
     }
 
     if (!email) {
-        formFilter = {...formFilter, email: null}
+        delete formFilter.email
     }
     if (!phone) {
-        formFilter = {...formFilter, phone: null}
+        delete formFilter.phone
     }
     return formFilter
 }

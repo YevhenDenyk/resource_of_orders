@@ -1,0 +1,17 @@
+.image {
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+.image img {
+    width: 500px;
+    border-radius: 5px;
+}
+
+.description{
+    width: 600px;
+    height: 200px;
+}

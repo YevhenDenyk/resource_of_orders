@@ -16,6 +16,11 @@ const Toolbar = () => {
                     Заявки
                 </div>
             </Link>
+            <Link to={'/order/create'} className={css.link}>
+                <div className={css.button}>
+                    Нова заявка
+                </div>
+            </Link>
             <Link to={'/users'} className={css.link}>
                 <div className={css.button}>
                     Користувачі

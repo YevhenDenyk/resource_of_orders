@@ -41,6 +41,9 @@ const orderSlice = createSlice({
     reducers: {
         setNewComment: (state, action) => {
             state.comments.push(action.payload)
+        },
+        putUpdateOrder: (state, action) => {
+            state.order = Object.assign(state.order, action.payload.data)
         }
     },
     extraReducers: builder =>
@@ -68,10 +71,10 @@ const orderSlice = createSlice({
             })
 });
 
-const {reducer: orderReducer, actions: {setNewComment}} = orderSlice;
+const {reducer: orderReducer, actions: {setNewComment, putUpdateOrder}} = orderSlice;
 
 const orderAction = {
-    getAll, getById, setNewComment
+    getAll, getById, setNewComment, putUpdateOrder
 };
 
 export {orderAction, orderReducer};
