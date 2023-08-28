@@ -51,7 +51,7 @@ module.exports = {
             findObject = {...findObject, phone: {$regex: phone}}
         }
 
-        const [contractor, count] = await Promise.all([
+        const [contractors, count] = await Promise.all([
             Contractor.find(findObject).limit(+limit).skip(+limit * (+page - 1)),
             Contractor.count(findObject)
         ])
@@ -60,7 +60,7 @@ module.exports = {
             page: +page,
             limit: +limit,
             count,
-            contractor
+            contractors
         }
     }
 

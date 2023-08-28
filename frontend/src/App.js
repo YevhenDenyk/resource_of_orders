@@ -2,13 +2,14 @@ import {Navigate, Route, Routes} from "react-router-dom";
 
 import {MainLayout} from "./layout/MainLayout";
 import {
+    ContractorDetailPage,
     ContractorsPage,
     CreateOrderPage,
     ForgotPage,
     LoginPage,
     OrderDetailPage,
     OrdersPage,
-    UpdateForgotPasswordPage,
+    UpdateForgotPasswordPage, UserDetailPage,
     UsersPage
 } from "./pages";
 
@@ -24,7 +25,9 @@ const App = () => {
                 <Route path={'orders/:id'} element={<OrderDetailPage/>}/>
                 <Route path={'order/create'} element={<CreateOrderPage/>}/>
                 <Route path={'users'} element={<UsersPage/>}/>
+                <Route path={'users/:id'} element={<UserDetailPage/>}/>
                 <Route path={'contractors'} element={<ContractorsPage/>}/>
+                <Route path={'contractors/:id'} element={<ContractorDetailPage/>}/>
 
             </Route>
         </Routes>
