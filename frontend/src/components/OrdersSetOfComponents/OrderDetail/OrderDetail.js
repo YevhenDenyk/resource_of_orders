@@ -45,8 +45,6 @@ const OrderDetail = () => {
 
     const submit = async (upOrder) => {
         try {
-            ////додати перевірку чи можна редагувати заявку згідно статусу
-            console.log(upOrder)
             const upOrderHelper = updateOrderHelper(upOrder);
 
             if (Object.keys(upOrderHelper).length > 0) {
@@ -151,7 +149,6 @@ export {OrderDetail};
 //     "priority": "Високий",
 //     "description": "ой горіло ой палало",
 //     "files": [
-//     "vsvwe32fe32ew32ew",
 //     "https://learning-2022-2023.s3.eu-north-1.amazonaws.com/fileToOrder/649af9c4d0f09f0c7a7b41ee/568d7dc0-1cd1-11ee-92b0-6bf7fb248a85.jpeg"
 // ],
 //     "overdue": false,

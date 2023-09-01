@@ -38,9 +38,9 @@ const userSlice = createSlice({
     name: 'userSlice',
     initialState,
     reducers: {
-        // putUpdateOrder: (state, action) => {
-        //     state.order = Object.assign(state.order, action.payload.data)
-        // }
+        putUpdateUser: (state, action) => {
+            state.user = Object.assign(state.user, action.payload.data)
+        }
     },
     extraReducers: builder =>
         builder
@@ -66,10 +66,10 @@ const userSlice = createSlice({
             })
 });
 
-const {reducer: userReducer, actions} = userSlice;
+const {reducer: userReducer, actions: {putUpdateUser}} = userSlice;
 
 const userAction = {
-    getAll, getById
+    getAll, getById, putUpdateUser
 };
 
 export {userAction, userReducer};

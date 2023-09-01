@@ -1,4 +1,4 @@
-const {usersService, authService} = require('../services');
+const {usersService, authService, locationsService} = require('../services');
 const {usersPresenter} = require("../presenters");
 
 module.exports = {
@@ -30,7 +30,9 @@ module.exports = {
     getOneUser: async (req, res, next) => {
         try {
             const normalizeUser = usersPresenter.normalizeUser(req.user);
-            res.status(200).json(normalizeUser);
+            const location = await locationsService.getOneById(req.user.location);
+
+            res.status(200).json({...normalizeUser, location});
         } catch (e) {
             next(e);
         }
@@ -41,7 +43,8 @@ module.exports = {
             const user = await usersService.updateOneById(req.user._id, req.body)
 
             const normalizeUser = usersPresenter.normalizeUser(user);
-            res.status(201).json(normalizeUser);
+            const location = await locationsService.getOneById(req.user.location);
+            res.status(201).json({...normalizeUser, location});
         } catch (e) {
             next(e);
         }

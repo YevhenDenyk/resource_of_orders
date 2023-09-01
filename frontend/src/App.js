@@ -2,15 +2,11 @@ import {Navigate, Route, Routes} from "react-router-dom";
 
 import {MainLayout} from "./layout/MainLayout";
 import {
-    ContractorDetailPage,
-    ContractorsPage,
-    CreateOrderPage,
-    ForgotPage,
-    LoginPage,
-    OrderDetailPage,
-    OrdersPage,
-    UpdateForgotPasswordPage, UserDetailPage,
-    UsersPage
+    ContractorDetailPage, ContractorsPage, ContractorCreatePage,
+    ForgotPage, LoginPage, UpdateForgotPasswordPage,
+    OrderDetailPage, OrdersPage, OrderCreatePage,
+    UsersPage, UserCreatePage, UserDetailPage,
+
 } from "./pages";
 
 const App = () => {
@@ -21,13 +17,18 @@ const App = () => {
                 <Route path={'login'} element={<LoginPage/>}/>
                 <Route path={'forgot/password'} element={<ForgotPage/>}/>
                 <Route path={'password/new'} element={<UpdateForgotPasswordPage/>}/>
+
                 <Route path={'orders'} element={<OrdersPage/>}/>
                 <Route path={'orders/:id'} element={<OrderDetailPage/>}/>
-                <Route path={'order/create'} element={<CreateOrderPage/>}/>
+                <Route path={'order/create'} element={<OrderCreatePage/>}/>
+
                 <Route path={'users'} element={<UsersPage/>}/>
                 <Route path={'users/:id'} element={<UserDetailPage/>}/>
+                <Route path={'users/create'} element={<UserCreatePage/>}/>
+
                 <Route path={'contractors'} element={<ContractorsPage/>}/>
                 <Route path={'contractors/:id'} element={<ContractorDetailPage/>}/>
+                <Route path={'contractors/create'} element={<ContractorCreatePage/>}/>
 
             </Route>
         </Routes>
