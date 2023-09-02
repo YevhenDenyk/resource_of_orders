@@ -1,7 +1,6 @@
 import {useParams, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
-import {joiResolver} from "@hookform/resolvers/joi";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 
 import css from './OrderDetail.module.css'
@@ -10,13 +9,13 @@ import {dateTransformer, jobTypeTranslateHelper, updateOrderHelper} from "../../
 import {AddComment} from "../AddComment/AddComment";
 import {CommentViewer} from "../CommentViewer/CommentViewer";
 import {orderService} from "../../../services";
-import {updateOrderValidator} from "../../../validators";
 
 const OrderDetail = () => {
 
     const [query,] = useSearchParams();
     const {id} = useParams();
     const dispatch = useDispatch();
+    const [hideButton, setHideButton] = useState(false);
 
     useEffect(() => {
         dispatch(orderAction.getById(id))
@@ -45,6 +44,7 @@ const OrderDetail = () => {
 
     const submit = async (upOrder) => {
         try {
+            setHideButton(true)
             const upOrderHelper = updateOrderHelper(upOrder);
 
             if (Object.keys(upOrderHelper).length > 0) {
@@ -54,6 +54,7 @@ const OrderDetail = () => {
             }
 
         } catch (e) {
+            setHideButton(false)
 ////додати обробку помилок
         }
     }
@@ -61,6 +62,7 @@ const OrderDetail = () => {
     return (
         <div>
             {query.has('orderCreated') && <h1>Заявка успішно створена</h1>}
+            {hideButton && <h2>Зміни збережено</h2>}
             {order &&
                 <form onSubmit={handleSubmit(submit)}>
                     {/*<div>*/}
@@ -77,7 +79,7 @@ const OrderDetail = () => {
                         </select>
                         <br/>
                         Пріорітет: {order.priority} <br/>
-                        Час на виконання: {order.executionTime}
+                        Час на виконання:
                         <input type={"number"}
                                placeholder={'Змінити час виконання'}
                                {...register('executionTime', {required: false})} />
@@ -122,7 +124,7 @@ const OrderDetail = () => {
                         </div>
                     </div>
                     {/*</div>*/}
-                    <button disabled={buttonUpdateDisabled()}>Зберегти зміни</button>
+                    {!hideButton && <button disabled={buttonUpdateDisabled()}>Зберегти зміни</button>}
                 </form>
             }
             <hr/>

@@ -40,10 +40,10 @@ const contractorSlice = createSlice({
     reducers: {
         setContractor: (state, action) => {
             state.contractor = action.payload
+        },
+        putUpdateContractor: (state, action) => {
+            state.contractor = Object.assign(state.contractor, action.payload.data)
         }
-        // putUpdateOrder: (state, action) => {
-        //     state.order = Object.assign(state.order, action.payload.data)
-        // }
     },
     extraReducers: builder =>
         builder
@@ -69,10 +69,10 @@ const contractorSlice = createSlice({
             })
 });
 
-const {reducer: contractorReducer, actions: {setContractor}} = contractorSlice;
+const {reducer: contractorReducer, actions: {setContractor, putUpdateContractor}} = contractorSlice;
 
 const contractorAction = {
-    getAll, getById, setContractor
+    getAll, getById, setContractor, putUpdateContractor
 };
 
 export {contractorAction, contractorReducer};

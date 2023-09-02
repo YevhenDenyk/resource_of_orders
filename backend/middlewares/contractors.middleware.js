@@ -32,4 +32,19 @@ module.exports = {
             next(e);
         }
     },
+    checkIsEmailUniqueAtUpdate: async (req, res, next) => {
+        try {
+            if (req.body.email) {
+                const contractor = await contractorsService.findOne({email: req.body.email})
+
+                if (contractor) {
+                    throw new ApiError(`Contractor with this email already exists`, 409);
+                }
+            }
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
 }

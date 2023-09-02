@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import css from './Orders.module.css'
 import {orderAction} from "../../../redux";
 import {Order} from "../Order/Order";
-import {orderFormFilterHelper} from "../../../helpers";
+import {formFilterOrderHelper} from "../../../helpers";
 
 const Orders = () => {
 
@@ -19,7 +19,7 @@ const Orders = () => {
     const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
 
     const submit = (formFilter) => {
-        const formFilterHelper = orderFormFilterHelper(formFilter);
+        const formFilterHelper = formFilterOrderHelper(formFilter);
 
         if (Object.keys(formFilterHelper).length !== 0) {
             setFilter(formFilterHelper)
@@ -100,7 +100,7 @@ const Orders = () => {
 
             <div>
                 Всього заявок {count} <br/>
-                Кількість показано {limit} <br/>
+                Ліміт відображення {limit} <br/>
                 Сторінка {page}
             </div>
 

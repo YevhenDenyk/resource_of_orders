@@ -24,11 +24,11 @@ const App = () => {
 
                 <Route path={'users'} element={<UsersPage/>}/>
                 <Route path={'users/:id'} element={<UserDetailPage/>}/>
-                <Route path={'users/create'} element={<UserCreatePage/>}/>
+                <Route path={'user/create'} element={<UserCreatePage/>}/>
 
                 <Route path={'contractors'} element={<ContractorsPage/>}/>
                 <Route path={'contractors/:id'} element={<ContractorDetailPage/>}/>
-                <Route path={'contractors/create'} element={<ContractorCreatePage/>}/>
+                <Route path={'contractor/create'} element={<ContractorCreatePage/>}/>
 
             </Route>
         </Routes>

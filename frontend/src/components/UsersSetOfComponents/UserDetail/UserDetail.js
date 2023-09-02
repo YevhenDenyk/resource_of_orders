@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useParams} from "react-router-dom";
-import {useEffect} from "react";
+import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 
 import {userAction} from "../../../redux";
@@ -10,78 +10,92 @@ import {userService} from "../../../services";
 const UserDetail = () => {
 
     const {id} = useParams();
+    const navigate = useNavigate();
+    const [query,] = useSearchParams();
     const dispatch = useDispatch();
     const {user,} = useSelector(state => state.userReducer);
+    const [error, setError] = useState(null);
+    const [hideButton, setHideButton] = useState(false);
 
     useEffect(() => {
         dispatch(userAction.getById(id))
     }, [id])
 
-    const {handleSubmit, register} = useForm();
+// валідатор ???
+    const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
     const submit = async (upUserInfo) => {
         try {
+            setHideButton(true)
             const upUserHelper = updateUserHelper(upUserInfo);
 
             if (Object.keys(upUserHelper).length > 0) {
                 const upUser = await userService.update(user._id, upUserHelper);
                 dispatch(userAction.putUpdateUser(upUser))
             }
+            setError(null)
         } catch (e) {
-////додати обробку помилок
+            setHideButton(false)
+            setError(e.response.data)
         }
-
     }
 
+    const deleteUser = async () => {
+        await userService.delete(user._id)
+        navigate('/users?userDelete=true')
+    }
 
     return (
         <div>
-            {user &&
-                <form onSubmit={handleSubmit(submit)}>
-                    <div>
-                        Ім'я:
-                        <input
-                            type={"text"}
-                            defaultValue={user.firstName}
-                            {...register('firstName', {required: false, minLength: 3, maxLength: 30})}
-                        />
-                    </div>
-                    <div>
-                        Прізвище:
-                        <input
-                            type={"text"}
-                            defaultValue={user.lastName}
-                            {...register('lastName', {required: false, minLength: 3, maxLength: 30})}
-                        />
-                    </div>
-                    <div>
-                        Посада:
-                        <input
-                            type={"text"}
-                            defaultValue={user.profession}
-                            {...register('profession', {required: false, minLength: 3, maxLength: 30})}
-                        />
-                    </div>
-                    <div>
-                        Телефон:
-                        <input
-                            type={"text"}
-                            defaultValue={user.phone}
-                            {...register('phone', {required: false, minLength: 3, maxLength: 30})}
-                        />
-                    </div>
-                    <div>
-                        Пошта:
-                        <input
-                            type={"text"}
-                            defaultValue={user.email}
-                            {...register('email', {required: false, minLength: 3, maxLength: 30})}
-                        />
-                    </div>
-                    Адреса місця роботи: {user.location?.fullAddress} <br/>
-                    Опис місця: {user.location?.description} <br/>
-                    <button>Зберегти зміни</button>
-                </form>
-            }
+            {query.has('userCreated') && <h1>Профіль працівника успішно створений</h1>}
+            {error && <h2>{error.message}</h2>}
+            {hideButton && <h2>Зміни збережено</h2>}
+            <form onSubmit={handleSubmit(submit)}>
+                <div>
+                    Ім'я:
+                    <input
+                        type={"text"}
+                        defaultValue={user.firstName}
+                        {...register('firstName', {required: false, minLength: 3, maxLength: 30})}
+                    />
+                </div>
+                <div>
+                    Прізвище:
+                    <input
+                        type={"text"}
+                        defaultValue={user.lastName}
+                        {...register('lastName', {required: false, minLength: 3, maxLength: 30})}
+                    />
+                </div>
+                <div>
+                    Посада:
+                    <input
+                        type={"text"}
+                        defaultValue={user.profession}
+                        {...register('profession', {required: false, minLength: 3, maxLength: 30})}
+                    />
+                </div>
+                <div>
+                    Телефон:
+                    <input
+                        type={"text"}
+                        defaultValue={user.phone}
+                        {...register('phone', {required: false, minLength: 3, maxLength: 30})}
+                    />
+                </div>
+                <div>
+                    Пошта:
+                    <input
+                        type={"text"}
+                        defaultValue={user.email}
+                        {...register('email', {required: false, minLength: 3, maxLength: 30})}
+                    />
+                </div>
+                Адреса місця роботи: {user.location?.fullAddress} <br/>
+                Опис місця: {user.location?.description} <br/>
+                {!hideButton && <button>Зберегти зміни</button>}
+            </form>
+
+            <button onClick={deleteUser}>Видалити користувача</button>
         </div>
     );
 };

@@ -36,7 +36,7 @@ router.put(
     authMiddleware.checkAccessLevel(ENGINEER_LEVEL),
     commonMiddleware.isMongoIdValid,
     commonMiddleware.isBodyValid(contractorsValidator.update),
-    contractorsMiddleware.checkIsEmailUnique,
+    contractorsMiddleware.checkIsEmailUniqueAtUpdate,
     contractorsMiddleware.isContractorExist,
     contractorsController.update
 )

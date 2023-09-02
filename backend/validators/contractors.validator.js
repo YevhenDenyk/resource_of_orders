@@ -9,7 +9,7 @@ module.exports = {
         password: Joi.string().required().regex(PASSWORD),
         phone: Joi.string().required().regex(PHONE),
         representative: Joi.string().required().max(30),
-        jobPosition: Joi.string().required().max(20),
+        jobPosition: Joi.string().required().max(30),
     }),
     update: Joi.object({
         region: Joi.string().optional().regex(REGION),
@@ -17,6 +17,6 @@ module.exports = {
         email: Joi.string().optional().trim().lowercase().regex(EMAIL),
         phone: Joi.string().optional().regex(PHONE),
         representative: Joi.string().optional().max(30),
-        jobPosition: Joi.string().optional().max(20),
+        jobPosition: Joi.string().optional().max(30),
     }),
 }

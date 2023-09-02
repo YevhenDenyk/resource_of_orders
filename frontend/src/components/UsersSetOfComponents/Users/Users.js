@@ -3,12 +3,13 @@ import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 
 import {userAction} from "../../../redux";
-import {userFormFilterHelper} from "../../../helpers";
-import {Contractor} from "../../ContractorsSetOfComponents";
+import {formFilterUserHelper} from "../../../helpers";
 import {User} from "../User/User";
+import {useSearchParams} from "react-router-dom";
 
 const Users = () => {
 
+    const [query,] = useSearchParams();
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({});
     const {users, page, count, limit} = useSelector(state => state.userReducer);
@@ -21,7 +22,7 @@ const Users = () => {
     const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
 
     const submit = (formFilter) => {
-        const formFilterHelper = userFormFilterHelper(formFilter);
+        const formFilterHelper = formFilterUserHelper(formFilter);
 
         if (Object.keys(formFilterHelper).length !== 0) {
             setFilter(formFilterHelper)
@@ -59,10 +60,12 @@ const Users = () => {
             </div>
 
             <div>
-                Всього заявок {count} <br/>
-                Кількість показано {limit} <br/>
+                Всього користувачів {count} <br/>
+                Ліміт відображення {limit} <br/>
                 Сторінка {page}
             </div>
+
+            {query.has('userDelete') && <h1>Профіль користувача успішно видалений</h1>}
 
             <table>
                 <thead>

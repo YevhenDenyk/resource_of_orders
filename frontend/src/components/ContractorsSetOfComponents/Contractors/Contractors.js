@@ -3,12 +3,14 @@ import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 
 import {contractorAction} from "../../../redux";
-import {contractorFormFilterHelper} from "../../../helpers";
+import {formFilterContractorHelper} from "../../../helpers";
 import {Contractor} from "../Contractor/Contractor";
+import {useSearchParams} from "react-router-dom";
 
 
 const Contractors = () => {
 
+    const [query,] = useSearchParams();
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({});
     const {contractors, count, limit, page} = useSelector(state => state.contractorReducer);
@@ -20,7 +22,7 @@ const Contractors = () => {
     const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
 
     const submit = (formFilter) => {
-        const formFilterHelper = contractorFormFilterHelper(formFilter);
+        const formFilterHelper = formFilterContractorHelper(formFilter);
 
         if (Object.keys(formFilterHelper).length !== 0) {
             setFilter(formFilterHelper)
@@ -57,10 +59,13 @@ const Contractors = () => {
             </div>
 
             <div>
-                Всього заявок {count} <br/>
-                Кількість показано {limit} <br/>
+                Всього підрядників {count} <br/>
+                Ліміт відображення {limit} <br/>
                 Сторінка {page}
             </div>
+
+
+            {query.has('contractorDelete')&&<h2>Підрядника успішно видалено</h2>}
 
             <table>
                 <thead>
