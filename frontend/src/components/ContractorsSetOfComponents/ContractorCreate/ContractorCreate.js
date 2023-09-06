@@ -39,7 +39,7 @@ const ContractorCreate = () => {
             <form onSubmit={handleSubmit(submit)}>
                 <div>
                     <select {...register('region')}>
-                        <option value="" disabled selected hidden>Регіон</option>
+                        <option value="" disabled selected hidden>Виберіть Регіон</option>
                         <option value='Північ'>Північ</option>
                         <option value='Схід'>Схід</option>
                         <option value='Центр'>Центр</option>

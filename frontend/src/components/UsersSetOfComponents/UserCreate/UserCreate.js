@@ -70,7 +70,7 @@ const UserCreate = () => {
                 </div>
                 <div>
                     <select {...register('accessLevel')}>
-                        <option value="" disabled selected hidden>Права доступу</option>
+                        <option value="" disabled selected hidden>Виберіть Права доступу</option>
                         <option value='40'>Базовий</option>
                         <option value='60'>Інженер</option>
                         <option value='80'>Провідний інженер</option>
@@ -80,7 +80,7 @@ const UserCreate = () => {
                 </div>
                 <div>
                     <select {...register('location')}>
-                        <option value="" disabled selected hidden>Об'єкт</option>
+                        <option value="" disabled selected hidden>Виберіть Об'єкт</option>
                         {locations.map(location =>
                             <option value={location._id} key={location._id}> {location?.fullAddress} </option>)}
                     </select>

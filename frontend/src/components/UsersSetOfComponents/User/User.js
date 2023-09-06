@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 
 const User = ({user}) => {
-    const {profession, email, phone, name, _id} = user
+    const {profession, email, phone, _id, firstName, lastName} = user
 
     // const setContractorToState = () => {
     //     dispatch(contractorAction.setContractor(contractor))
@@ -13,7 +13,7 @@ const User = ({user}) => {
                 <Link to={`/users/${_id}`}
                     // onClick={setContractorToState}
                 >
-                    {name}
+                    {firstName} {lastName}
                 </Link>
             </td>
             <td>{profession}</td>
@@ -24,9 +24,3 @@ const User = ({user}) => {
 };
 
 export {User};
-//     profession: user.profession,
-//     email: user.email,
-//     phone: user.phone,
-//     accessLevel: user.accessLevel,
-//     location: user.location,
-//     name:user.name,

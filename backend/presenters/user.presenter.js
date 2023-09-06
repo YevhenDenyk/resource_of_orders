@@ -1,6 +1,6 @@
 
 const normalizeUser = (user)=>{
-    user = user.toJSON()
+    // user = user.toJSON()
     return {
         _id: user._id,
         firstName: user.firstName,

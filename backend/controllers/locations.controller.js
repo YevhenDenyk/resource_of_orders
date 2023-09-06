@@ -1,4 +1,5 @@
 const {locationsService} = require('../services');
+const {usersPresenter} = require("../presenters");
 
 module.exports = {
     getAllAndFilter: async (req, res, next) => {
@@ -13,9 +14,12 @@ module.exports = {
 
     getOne: async (req, res, next) => {
         try {
-            const locationWithJob = await locationsService.getByIdWithJobTypes(req.location._id);
+            // const locationWithJob = await locationsService.getByIdWithJobTypes(req.location._id);
+            const locationWithUsers = await locationsService.getByIdWithUsers(req.location._id);
 
-            res.status(200).json(locationWithJob);
+            locationWithUsers.users = usersPresenter.normalizeUsers(locationWithUsers.users)
+
+            res.status(200).json(locationWithUsers);
         } catch (e) {
             next(e);
         }

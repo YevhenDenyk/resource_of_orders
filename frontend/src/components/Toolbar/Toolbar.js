@@ -41,7 +41,16 @@ const Toolbar = () => {
                     Підрядники
                 </div>
             </Link>
-
+            <Link to={'/location/create'} className={css.link}>
+                <div className={css.button}>
+                    Нова Локація
+                </div>
+            </Link>
+            <Link to={'/locations'} className={css.link}>
+                <div className={css.button}>
+                    Локації
+                </div>
+            </Link>
         </div>
     );
 };

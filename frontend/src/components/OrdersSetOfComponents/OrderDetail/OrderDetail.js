@@ -81,7 +81,9 @@ const OrderDetail = () => {
                         Пріорітет: {order.priority} <br/>
                         Час на виконання:
                         <input type={"number"}
-                               placeholder={'Змінити час виконання'}
+                               // defaultValue={order.executionTime}
+                               // placeholder={'Змінити час виконання'}
+                               placeholder={order.executionTime}
                                {...register('executionTime', {required: false})} />
                         <br/>
                         Виконати до: {executionDate} <br/>

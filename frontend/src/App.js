@@ -6,8 +6,9 @@ import {
     ForgotPage, LoginPage, UpdateForgotPasswordPage,
     OrderDetailPage, OrdersPage, OrderCreatePage,
     UsersPage, UserCreatePage, UserDetailPage,
-
+    LocationsPage,LocationDetailPage
 } from "./pages";
+import {LocationCreate} from "./components/LocationSetOfComponents/LocationCreate/LocationCreate";
 
 const App = () => {
     return (
@@ -30,6 +31,9 @@ const App = () => {
                 <Route path={'contractors/:id'} element={<ContractorDetailPage/>}/>
                 <Route path={'contractor/create'} element={<ContractorCreatePage/>}/>
 
+                <Route path={'locations'} element={<LocationsPage/>}/>
+                <Route path={'locations/:id'} element={<LocationDetailPage/>}/>
+                <Route path={'location/create'} element={<LocationCreate/>}/>
             </Route>
         </Routes>
     );

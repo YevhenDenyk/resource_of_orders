@@ -818,9 +818,9 @@
                   "maxLength": 40,
                   "example": "Office"
                 },
-                "jobTypes": {
-                  "type": "object",
-                  "$ref": "#/definitions/JobType"
+                "users": {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/User"}
                 }
               }
             }

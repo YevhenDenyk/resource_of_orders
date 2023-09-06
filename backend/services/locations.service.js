@@ -53,6 +53,25 @@ module.exports = {
 
         return {...res[0], jobTypes: res[0].jobTypes[0]};
     },
+    getByIdWithUsers: async (id) => {
+        const res = await Location.aggregate([
+            {
+                $match: { //пошук у використовуваній колекції
+                    _id: id
+                }
+            },
+            {
+                $lookup: { //пошук у приєднуваній колекції
+                    from: 'users', //назва колекції
+                    localField: '_id', //поле в поточній колекції
+                    foreignField: 'location', //поле в приєднуваній колекції
+                    as: 'users' // назва нового масиву який ми отримаємо
+                }
+            }
+        ]);
+
+        return {...res[0]};
+    },
 
     createLocation: async (location = {}) => {
         return Location.create(location)

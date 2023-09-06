@@ -75,7 +75,7 @@ const CreateOrder = () => {
             <form onSubmit={handleSubmit(submit)}>
                 <div>
                     <select {...register('priority')}>
-                        <option value="" disabled selected hidden>Пріорітет</option>
+                        <option value="" disabled selected hidden>Виберіть Пріорітет</option>
                         <option value='Критичний'>Критичний</option>
                         <option value='Високий'>Високий</option>
                         <option value='Плановий'>Плановий</option>
@@ -85,7 +85,7 @@ const CreateOrder = () => {
                 </div>
                 <div>
                     <select {...register('jobType')}>
-                        <option value="" disabled selected hidden>Тип робіт</option>
+                        <option value="" disabled selected hidden>Виберіть Тип робіт</option>
                         <option value='generalConstructionWorks'>Загальнобудівельні роботи</option>
                         <option value='refrigerationEquipment'>Холодильне обладнання</option>
                         <option value='technologicalEquipment'>Технологічне обладнання</option>

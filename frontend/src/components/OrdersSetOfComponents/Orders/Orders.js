@@ -48,7 +48,7 @@ const Orders = () => {
                 <input type="number" placeholder={'limit'} {...register('limit')}/><label>Ліміт</label><br/>
                 <div>
                     <select {...register('jobType')}>
-                        <option value="" disabled selected hidden>Тип робіт</option>
+                        <option value="" disabled selected hidden>Виберіть Тип робіт</option>
                         <option value=''></option>
                         <option value='generalConstructionWorks'>Загальнобудівельні роботи</option>
                         <option value='refrigerationEquipment'>Холодильне обладнання</option>
@@ -64,7 +64,7 @@ const Orders = () => {
 
                 <div>
                     <select {...register('orderStatus')}>
-                        <option value="" disabled selected hidden>Статус заявки</option>
+                        <option value="" disabled selected hidden>Виберіть Статус заявки</option>
                         <option value=''></option>
                         <option value='Нова'>Нова</option>
                         <option value='В роботі'>В роботі</option>
@@ -82,7 +82,7 @@ const Orders = () => {
 
                 <div>
                     <select {...register('priority')}>
-                        <option value="" disabled selected hidden>Пріорітет</option>
+                        <option value="" disabled selected hidden>Виберіть Пріорітет</option>
                         <option value=''></option>
                         <option value='Критичний'>Критичний</option>
                         <option value='Високий'>Високий</option>

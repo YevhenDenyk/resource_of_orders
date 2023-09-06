@@ -1,6 +1,6 @@
 
 const normalizeContractor = (contractor)=>{
-    contractor = contractor.toJSON()
+    // contractor = contractor.toJSON()
     return {
         _id: contractor._id,
         region: contractor.region,
