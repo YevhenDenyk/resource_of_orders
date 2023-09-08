@@ -1,4 +1,5 @@
 const {jobTypesService} = require("../services");
+const {contractorsPresenter} = require("../presenters");
 
 module.exports = {
     getAll : async (req, res, next) => {
@@ -12,8 +13,18 @@ module.exports = {
       },
     getByIdLocation: async (req, res, next) => {
         try {
+            const detailJobType = await jobTypesService.findByLocationAndPopulateContractors(req.jobType.location);
 
-            res.status(200).json(req.jobType);
+            detailJobType.generalConstructionWorks = contractorsPresenter.normalizeContractor(detailJobType.generalConstructionWorks)
+            detailJobType.refrigerationEquipment = contractorsPresenter.normalizeContractor(detailJobType.refrigerationEquipment)
+            detailJobType.technologicalEquipment = contractorsPresenter.normalizeContractor(detailJobType.technologicalEquipment)
+            detailJobType.ventilationAndAirConditioning = contractorsPresenter.normalizeContractor(detailJobType.ventilationAndAirConditioning)
+            detailJobType.liftingEquipmentAndElevators = contractorsPresenter.normalizeContractor(detailJobType.liftingEquipmentAndElevators)
+            detailJobType.dieselGenerators = contractorsPresenter.normalizeContractor(detailJobType.dieselGenerators)
+            detailJobType.electricity = contractorsPresenter.normalizeContractor(detailJobType.electricity)
+            detailJobType.waterAndHeating = contractorsPresenter.normalizeContractor(detailJobType.waterAndHeating)
+
+            res.status(200).json(detailJobType);
         } catch (e) {
             next(e);
         }

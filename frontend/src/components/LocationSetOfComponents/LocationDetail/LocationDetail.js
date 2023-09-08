@@ -76,7 +76,7 @@ const LocationDetail = () => {
                 {!hideButton && <button>Зберегти зміни</button>}
             </form>
 
-            Працівники:
+            <h2>Працівники:</h2>
             <table>
                 <thead>
                 <tr>
@@ -90,6 +90,11 @@ const LocationDetail = () => {
                 {location?.users?.map(user => <User key={user._id} user={user}/>)}
                 </tbody>
             </table>
+
+            <h2>Відповідальні компанії:</h2>
+
+
+
 
         </div>
     );

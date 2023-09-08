@@ -566,7 +566,7 @@
           "200": {
             "description": "Success response",
             "schema": {
-              "$ref": "#/definitions/JobType"
+              "$ref": "#/definitions/JobTypeDetail"
             }
           },
           "400": {
@@ -1791,6 +1791,53 @@
           "type": "string",
           "title": "mongoID ref Contractor",
           "example": "6422e90f22c474b3316bcaea"
+        }
+      }
+    },
+    "JobTypeDetail": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "title": "ID",
+          "readOnly": true,
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "location": {
+          "type": "string",
+          "title": "mongoID ref Contractor",
+          "example": "6422e90f22c474b3316bcaea"
+        },
+        "generalConstructionWorks": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "refrigerationEquipment": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "technologicalEquipment": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "ventilationAndAirConditioning": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "liftingEquipmentAndElevators": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "dieselGenerators": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "electricity": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
+        },
+        "waterAndHeating": {
+          "type": "object",
+          "$ref": "#/definitions/Contractor"
         }
       }
     },
