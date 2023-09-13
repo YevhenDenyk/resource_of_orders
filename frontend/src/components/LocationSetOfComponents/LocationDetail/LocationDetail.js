@@ -1,4 +1,4 @@
-import {useNavigate, useParams, useSearchParams} from "react-router-dom";
+import {Link, Outlet, useNavigate, useParams, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
@@ -13,14 +13,20 @@ const LocationDetail = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [query,] = useSearchParams();
+
     const [error, setError] = useState(null);
     const [hideButton, setHideButton] = useState(false);
+    const [usersAvailable, setUsersAvailable] = useState(false)
+
+    const {location} = useSelector(state => state.locationReducer);
 
     useEffect(() => {
         dispatch(locationAction.getById(id))
     }, [id])
 
-    const {location} = useSelector(state => state.locationReducer);
+    useEffect(() => {
+        setUsersAvailable(location.users?.length > 0)
+    }, [location]);
 
     // додати валідатор???
     const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
@@ -46,7 +52,7 @@ const LocationDetail = () => {
             {error && <h2>{error.message}</h2>}
             {hideButton && <h2>Зміни збережено</h2>}
 
-            <h2>{location.region} {location.city} {location.address}</h2>
+            <h2>{location.region} м. {location.city}, {location.address}</h2>
 
             <form onSubmit={handleSubmit(submit)}>
                 <div>
@@ -77,24 +83,29 @@ const LocationDetail = () => {
             </form>
 
             <h2>Працівники:</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>ПІБ</th>
-                    <th>Посада</th>
-                    <th>Телефон</th>
-                    <th>Пошта</th>
-                </tr>
-                </thead>
-                <tbody>
-                {location?.users?.map(user => <User key={user._id} user={user}/>)}
-                </tbody>
-            </table>
+            {usersAvailable &&
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ПІБ</th>
+                        <th>Посада</th>
+                        <th>Телефон</th>
+                        <th>Пошта</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {location.users.map(user => <User key={user._id} user={user}/>)}
+                    </tbody>
+                </table>
+            }
+            {!usersAvailable && <h2>Об'єкт не має зареєстрованих працівників</h2>}
 
-            <h2>Відповідальні компанії:</h2>
-
-
-
+            <Link to={`/locations/${id}/jobType`}>
+                <div>
+                    <h2>Відповідальні компанії за типами робіт:</h2>
+                </div>
+            </Link>
+            <Outlet/>
 
         </div>
     );

@@ -14,7 +14,7 @@ const UserCreate = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        locationService.getAbsolutelyAll().then(({data}) => setLocations(data.locations))
+        locationService.getAll({limit: 1000}).then(({data}) => setLocations(data.locations))
     }, [])
 
     const {
@@ -33,7 +33,7 @@ const UserCreate = () => {
 
             navigate(`/users/${data._id}?userCreated=true`)
             setError(null)
-        }catch (e) {
+        } catch (e) {
             setError(e.response.data)
             setHideButton(false)
         }
@@ -89,7 +89,7 @@ const UserCreate = () => {
 
                 {!hideButton && <button disabled={!isValid}>Створити користувача</button>}
             </form>
-            {error&&<h2>{error.message}</h2>}
+            {error && <h2>{error.message}</h2>}
         </div>
     );
 };

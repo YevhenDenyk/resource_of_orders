@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 
 import {userAction} from "../../../redux";
 import {updateUserHelper} from "../../../helpers";
-import {userService} from "../../../services";
+import {locationService, userService} from "../../../services";
 
 const UserDetail = () => {
 
@@ -14,12 +14,17 @@ const UserDetail = () => {
     const [query,] = useSearchParams();
     const dispatch = useDispatch();
     const {user,} = useSelector(state => state.userReducer);
+    const [locations, setLocations] = useState([]);
     const [error, setError] = useState(null);
     const [hideButton, setHideButton] = useState(false);
 
     useEffect(() => {
         dispatch(userAction.getById(id))
     }, [id])
+
+    useEffect(() => {
+        locationService.getAll({limit: 1000}).then(({data}) => setLocations(data.locations))
+    }, [])
 
 // валідатор ???
     const {handleSubmit, register, reset, formState: {isValid, errors}} = useForm();
@@ -90,7 +95,14 @@ const UserDetail = () => {
                         {...register('email', {required: false, minLength: 3, maxLength: 30})}
                     />
                 </div>
-                Адреса місця роботи: {user.location?.fullAddress} <br/>
+                <div>
+                    Адреса місця роботи:
+                    <select {...register('location')}>
+                        <option value="" disabled selected hidden>{user.location?.fullAddress}</option>
+                        {locations.map(location =>
+                            <option value={location._id} key={location._id}> {location?.fullAddress} </option>)}
+                    </select>
+                </div>
                 Опис місця: {user.location?.description} <br/>
                 {!hideButton && <button>Зберегти зміни</button>}
             </form>

@@ -6,9 +6,10 @@ import {
     ForgotPage, LoginPage, UpdateForgotPasswordPage,
     OrderDetailPage, OrdersPage, OrderCreatePage,
     UsersPage, UserCreatePage, UserDetailPage,
-    LocationsPage,LocationDetailPage
+    LocationsPage, LocationDetailPage, LocationCreatePage
 } from "./pages";
-import {LocationCreate} from "./components/LocationSetOfComponents/LocationCreate/LocationCreate";
+
+import {JobType} from "./components/JobTypeSetOfComponents";
 
 const App = () => {
     return (
@@ -32,8 +33,10 @@ const App = () => {
                 <Route path={'contractor/create'} element={<ContractorCreatePage/>}/>
 
                 <Route path={'locations'} element={<LocationsPage/>}/>
-                <Route path={'locations/:id'} element={<LocationDetailPage/>}/>
-                <Route path={'location/create'} element={<LocationCreate/>}/>
+                <Route path={'locations/:id'} element={<LocationDetailPage/>}>
+                    <Route path={'jobType'} element={<JobType/>}/>
+                </Route>
+                <Route path={'location/create'} element={<LocationCreatePage/>}/>
             </Route>
         </Routes>
     );

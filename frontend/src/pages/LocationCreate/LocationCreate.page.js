@@ -1,4 +1,4 @@
-import {LocationCreate} from "../../components/LocationSetOfComponents/LocationCreate/LocationCreate";
+import {LocationCreate} from "../../components";
 
 const LocationCreatePage = () => {
     return (

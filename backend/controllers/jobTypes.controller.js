@@ -1,5 +1,5 @@
 const {jobTypesService} = require("../services");
-const {contractorsPresenter} = require("../presenters");
+const {jobTypePresenter} = require("../presenters");
 
 module.exports = {
     getAll : async (req, res, next) => {
@@ -15,16 +15,9 @@ module.exports = {
         try {
             const detailJobType = await jobTypesService.findByLocationAndPopulateContractors(req.jobType.location);
 
-            detailJobType.generalConstructionWorks = contractorsPresenter.normalizeContractor(detailJobType.generalConstructionWorks)
-            detailJobType.refrigerationEquipment = contractorsPresenter.normalizeContractor(detailJobType.refrigerationEquipment)
-            detailJobType.technologicalEquipment = contractorsPresenter.normalizeContractor(detailJobType.technologicalEquipment)
-            detailJobType.ventilationAndAirConditioning = contractorsPresenter.normalizeContractor(detailJobType.ventilationAndAirConditioning)
-            detailJobType.liftingEquipmentAndElevators = contractorsPresenter.normalizeContractor(detailJobType.liftingEquipmentAndElevators)
-            detailJobType.dieselGenerators = contractorsPresenter.normalizeContractor(detailJobType.dieselGenerators)
-            detailJobType.electricity = contractorsPresenter.normalizeContractor(detailJobType.electricity)
-            detailJobType.waterAndHeating = contractorsPresenter.normalizeContractor(detailJobType.waterAndHeating)
+            const normalizeJobTypeWithContractors = jobTypePresenter.normalizeJobTypeWithContractors(detailJobType);
 
-            res.status(200).json(detailJobType);
+            res.status(200).json(normalizeJobTypeWithContractors);
         } catch (e) {
             next(e);
         }
@@ -33,8 +26,11 @@ module.exports = {
     create: async (req, res, next) => {
         try {
             const jobType = await jobTypesService.create(req.body);
+            const detailJobType = await jobTypesService.findByLocationAndPopulateContractors(jobType.location);
 
-            res.status(201).json(jobType);
+            const normalizeJobTypeWithContractors = jobTypePresenter.normalizeJobTypeWithContractors(detailJobType);
+
+            res.status(201).json(normalizeJobTypeWithContractors);
         } catch (e) {
             next(e);
         }
