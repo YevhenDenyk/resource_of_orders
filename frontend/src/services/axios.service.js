@@ -7,7 +7,6 @@ import {authService} from "./auth.service";
 const history = createBrowserHistory();
 
 const axiosService = axios.create({baseURL});
-let isRefreshing = false;
 
 axiosService.interceptors.request.use((config) => {
     const accessToken = authService.getAccessToken();
@@ -19,6 +18,8 @@ axiosService.interceptors.request.use((config) => {
     return config
 })
 
+
+let isRefreshing = false;
 axiosService.interceptors.response.use((config) => {
         return config
     },

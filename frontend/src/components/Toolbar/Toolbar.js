@@ -1,14 +1,33 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 import css from './Toolbar.module.css'
+import {authService} from "../../services";
 
 const Toolbar = () => {
+    // може кудись вивести потенційну помилку?
+    const [error, setError] = useState(null);
+
+    const logout = async () => {
+        try {
+            await authService.logout()
+            authService.deleteToken()
+            setError(null)
+        } catch (e) {
+            setError(e.response.data)
+        }
+    }
 
     return (
         <div>
             <Link to={'/login'} className={css.link}>
                 <div className={css.button}>
                     Увійти
+                </div>
+            </Link>
+            <Link to={'/login?endSession=true'} onClick={logout} className={css.link}>
+                <div className={css.button}>
+                    Завершити роботу
                 </div>
             </Link>
             <Link to={'/order/create'} className={css.link}>

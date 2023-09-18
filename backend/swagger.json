@@ -43,6 +43,26 @@
             "schema": {
               "type": "object",
               "properties": {
+                "essenceId": {
+                  "type": "string",
+                  "example": "64919f159cc69362e170453a"
+                },
+                "essenceEmail": {
+                  "type": "string",
+                  "example": "denyk.yevhen@gmail.com"
+                },
+                "essenceName": {
+                  "type": "string",
+                  "example": "Yevhen Denyk"
+                },
+                "accessLevel": {
+                  "type": "number",
+                  "example": 100
+                },
+                "location": {
+                  "type": "string",
+                  "example": "v64f8640ffea82561f59d289"
+                },
                 "accessToken": {
                   "type": "string",
                   "example": "GciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlbnlrLnlldmhlbkBnbWFpbC5jb20iLCJpYXQiOjE2ODE3NTM5MTUs"

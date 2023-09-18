@@ -33,11 +33,7 @@ module.exports = {
 
             await authService.createInBase(inf)
 
-            res.status(200).json({
-                accessToken,
-                refreshToken,
-                essence
-            });
+            res.status(200).json(inf);
         } catch (e) {
             next(e);
         }
