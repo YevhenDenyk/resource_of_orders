@@ -11,7 +11,7 @@ const RequireAuth = ({children, minAccessLevel}) => {
     if (!accessLevel) {
         return <Navigate to={'/login'} state={location}/>
     }
-    if (accessLevel > minAccessLevel || accessLevel === minAccessLevel) {
+    if (accessLevel >= minAccessLevel) {
         return children
     }
     if (accessLevel < minAccessLevel) {

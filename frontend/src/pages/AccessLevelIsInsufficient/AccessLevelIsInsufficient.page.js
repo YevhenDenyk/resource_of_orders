@@ -1,6 +1,8 @@
-import {authService, history} from "../../services";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+
+import {authService} from "../../services";
+
 
 const AccessLevelIsInsufficientPage = () => {
 
@@ -9,7 +11,7 @@ const AccessLevelIsInsufficientPage = () => {
     const navigate = useNavigate();
 
     useEffect( () => {
-        new Promise(resolve => setTimeout(resolve, 1000)).then(() => {
+        new Promise(resolve => setTimeout(resolve, 10000)).then(() => {
                navigate('/orders', {replace: true})
         })
     }, []);

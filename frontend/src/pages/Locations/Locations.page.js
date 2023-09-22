@@ -1,10 +1,10 @@
-import {Locations} from "../../components/LocationSetOfComponents/Locations/Locations";
+import {Locations} from "../../components";
 
 const LocationsPage = () => {
     return (
-        <div>
+
             <Locations/>
-        </div>
+
     );
 };
 

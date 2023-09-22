@@ -1,10 +1,13 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useState} from "react";
 
 import css from './Toolbar.module.css'
 import {authService} from "../../services";
 
 const Toolbar = () => {
+
+    const accessLevel = authService.getAccessLevel();
+
     // може кудись вивести потенційну помилку?
     const [error, setError] = useState(null);
 
@@ -20,7 +23,7 @@ const Toolbar = () => {
 
     return (
         <div>
-            <Link to={'/login'} className={css.link}>
+             <Link to={'/login'} className={css.link}>
                 <div className={css.button}>
                     Увійти
                 </div>
@@ -65,7 +68,7 @@ const Toolbar = () => {
                     Нова Локація
                 </div>
             </Link>
-            <Link to={'/locations'} className={css.link}>
+           <Link to={'/locations'} className={css.link}>
                 <div className={css.button}>
                     Локації
                 </div>

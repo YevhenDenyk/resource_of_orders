@@ -1,12 +1,28 @@
 import {useForm} from "react-hook-form";
-import {Link, useLocation, useNavigate, useSearchParams} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {joiResolver} from "@hookform/resolvers/joi";
+
+import {
+    Alert, Box,
+    Button, Container,
+    FormControl,
+    FormControlLabel, FormHelperText,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    OutlinedInput, Paper,
+    Switch, TextField, Typography
+} from "@mui/material";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import {authService} from "../../../services";
 import {loginValidator} from "../../../validators";
 
 const Login = () => {
+
+    const [showPassword, setShowPassword] = useState(false)
 
     const {state} = useLocation(); // щоб витягнути стейт в якому є шлях на який ми переходили
 
@@ -15,7 +31,7 @@ const Login = () => {
         register,
         reset,
         formState: {errors, isValid}
-    } = useForm({resolver: joiResolver(loginValidator), mode: "all"});
+    } = useForm({resolver: joiResolver(loginValidator), mode: "onBlur"});
 
     const navigate = useNavigate();
     const [error, setError] = useState(null);
@@ -40,32 +56,121 @@ const Login = () => {
     }
     const [query,] = useSearchParams();
 
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+
     return (
-        <div>
-            <h1>login</h1>
+        <Container maxWidth="xs">
 
-            {query.has('expSession') && <h1>Сесія закінчилася, увійдіть знову</h1>}
-            {query.has('endSession') && <h1>Всі активні сесії завершено, увійдіть знову</h1>}
-            {query.has('updatePassword') && <h1>Ваш пароль успішно змінено</h1>}
 
-            <form onSubmit={handleSubmit(submit)}>
+            <Paper elevation={4} sx={{
+                mt: 8,
+                p: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}>
 
-                {error && <h2>{error.message}</h2>}
+                <Typography
+                    component="h1" variant={"h3"}
+                    sx={{my:3}}
+                >
+                    Вхід
+                </Typography>
 
-                <input type="text" placeholder={'email'} {...register('email')}/>
-                {errors.email && <span>{errors.email.message}</span>}
-                <input type="text" placeholder={'password'} {...register('password')}/>
-                {errors.password && <span>{errors.password.message}</span>}
-                <input type='checkbox'  {...register('contractor')} />
-                <label>Я підрядник</label>
-                <button disabled={!isValid}>Login</button>
-            </form>
+                {
+                    query.has('expSession') &&
+                    <Alert variant="outlined" severity="info">
+                        Сесія закінчилася, увійдіть знову
+                    </Alert>
+                }
+                {
+                    query.has('endSession') &&
+                    <Alert variant="outlined" severity="info">
+                        Всі активні сесії завершено
+                    </Alert>
+                }
+                {
+                    query.has('updatePassword') &&
+                    <Alert variant="outlined" severity="info">
+                        Ваш пароль успішно змінено
+                    </Alert>
+                }
 
-            <div>
-                <Link to={'/forgot/password'}>Forgot password</Link>
-            </div>
-        </div>
-    );
+                <form onSubmit={handleSubmit(submit)}>
+
+                    {error &&
+                        <Alert variant="outlined" severity="error">
+                            {error.message}
+                        </Alert>}
+
+                    <TextField
+                        {...register('email')}
+                        label="Пошта"
+                        error={errors.email}
+                        helperText={errors.email ? 'Будь ласка, введіть коректну адресу пошти.' : ''}
+                        variant="outlined"
+                        margin={"normal"}
+                        fullWidth={true}
+                    />
+
+                    <FormControl
+                        error={errors.password}
+                        variant="outlined"
+                        margin={'normal'}
+                        fullWidth={true}
+                    >
+                        <InputLabel htmlFor="outlined-adornment-password">Пароль</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-password"
+                            {...register('password')}
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                            label="Пароль"
+                        />
+                        <FormHelperText error={errors.password}>
+                            {errors.password ? 'Перевірте пароль' : ''}
+                        </FormHelperText>
+                    </FormControl>
+
+                    <FormControlLabel
+                        control={<Switch {...register('contractor')} />}
+                        label={'Я підрядник'}
+                        sx={{m: 1}}
+                    />
+
+
+                    <Box sx={{
+                        mt: 2,
+                        mb: 2,
+                        display: "flex",
+                        justifyContent: "space-between",
+                    }}>
+                        <Button href={'/forgot/password'} size={'small'}>Відновити пароль</Button>
+                        <Button type="submit" disabled={!isValid} variant={"contained"}>Увійти</Button>
+                    </Box>
+                </form>
+            </Paper>
+        </Container>
+
+    )
+        ;
 };
 
 export {Login};
