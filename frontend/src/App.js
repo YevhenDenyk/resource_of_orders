@@ -16,11 +16,12 @@ const App = () => {
     return (
         <ScopedCssBaseline>
             <Routes>
+                <Route path={'login'} element={<LoginPage/>}/>
+                <Route path={'forgot/password'} element={<ForgotPage/>}/>
+                <Route path={'password/new'} element={<UpdateForgotPasswordPage/>}/>
+
                 <Route path={'/'} element={<MainLayout/>}>
                     <Route index element={<Navigate to={'login'}/>}/>
-                    <Route path={'login'} element={<LoginPage/>}/>
-                    <Route path={'forgot/password'} element={<ForgotPage/>}/>
-                    <Route path={'password/new'} element={<UpdateForgotPasswordPage/>}/>
                     <Route path={'accessLevelIsInsufficient'} element={<AccessLevelIsInsufficientPage/>}/>
 
                     <Route path={'orders'} element={
