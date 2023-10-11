@@ -6,6 +6,7 @@ import {contractorAction} from "../../../redux";
 import {formFilterContractorHelper} from "../../../helpers";
 import {Contractor} from "../Contractor/Contractor";
 import {useSearchParams} from "react-router-dom";
+import {Pagination} from "@mui/material";
 
 
 const Contractors = () => {
@@ -13,7 +14,7 @@ const Contractors = () => {
     const [query,] = useSearchParams();
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({});
-    const {contractors, count, limit, page} = useSelector(state => state.contractorReducer);
+    const {contractors, count, limit, page,totalPage} = useSelector(state => state.contractorReducer);
 
     useEffect(() => {
         dispatch(contractorAction.getAll(filter))
@@ -89,6 +90,7 @@ const Contractors = () => {
                 <button onClick={nextPage}>Вперед</button>
 
             </div>
+            <Pagination count={totalPage} page={page} color="primary" />
         </div>
     );
 };

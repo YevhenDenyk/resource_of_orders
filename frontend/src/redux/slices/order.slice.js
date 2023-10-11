@@ -3,11 +3,12 @@ import {orderService} from "../../services";
 
 const initialState = {
     orders: [],
+    order: {},
+    comments: [],
     page: null,
     count: null,
     limit: null,
-    order: {},
-    comments: [],
+    totalPage: null,
     errors: null,
 }
 
@@ -53,6 +54,7 @@ const orderSlice = createSlice({
                 state.page = action.payload.page
                 state.count = action.payload.count
                 state.limit = action.payload.limit
+                state.totalPage = action.payload.totalPage
             })
             .addCase(getById.fulfilled, (state, action) => {
                 state.order = action.payload

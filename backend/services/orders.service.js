@@ -45,11 +45,14 @@ module.exports = {
             Order.count(findObj)
         ])
 
+        const totalPage = Math.ceil(count/limit)
+
         return {
             limit: +limit,
             page: +page,
+            totalPage,
             count,
-            orders
+            orders,
         }
     },
 

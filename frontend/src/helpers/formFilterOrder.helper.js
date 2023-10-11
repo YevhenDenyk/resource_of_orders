@@ -1,5 +1,6 @@
 const formFilterOrderHelper = (formFilter) => {
     const {page, limit, jobType, orderStatus, overdue, priority, contractor, location} = formFilter
+
     if (!page || page <= 0) {
         delete formFilter.page
     }

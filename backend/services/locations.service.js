@@ -26,11 +26,14 @@ module.exports = {
             Location.count(findObj),
         ])
 
+        const totalPage = Math.ceil(count/limit)
+
         return {
             limit: +limit,
             page: +page,
             count,
-            locations
+            totalPage,
+            locations,
         }
     },
 

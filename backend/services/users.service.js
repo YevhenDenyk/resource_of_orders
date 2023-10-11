@@ -24,10 +24,13 @@ module.exports = {
             User.count(findObject),
         ])
 
+        const totalPage = Math.ceil(count/limit)
+
         return {
             limit: +limit,
             page: +page,
             count,
+            totalPage,
             users
         }
     },

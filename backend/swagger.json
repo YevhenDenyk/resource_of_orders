@@ -320,6 +320,10 @@
                   "type": "number",
                   "example": 38
                 },
+                "totalPage": {
+                  "type": "number",
+                  "example": 4
+                },
                 "contractors": {
                   "type": "array",
                   "items": {
@@ -725,6 +729,10 @@
                   "type": "number",
                   "example": 38
                 },
+                "totalPage": {
+                  "type": "number",
+                  "example": 4
+                },
                 "contractors": {
                   "type": "array",
                   "items": {
@@ -1019,7 +1027,11 @@
                 },
                 "count": {
                   "type": "number",
-                  "example": 333
+                  "example": 33
+                },
+                "totalPage": {
+                  "type": "number",
+                  "example": 4
                 },
                 "orders": {
                   "type": "array",
@@ -1410,6 +1422,10 @@
                 "count": {
                   "type": "number",
                   "example": 38
+                },
+                "totalPage": {
+                  "type": "number",
+                  "example": 4
                 },
                 "users": {
                   "type": "array",

@@ -78,32 +78,31 @@ const Login = () => {
 
                 <Typography
                     component="h1" variant={"h3"}
-                    sx={{my:3}}
+                    sx={{my: 3}}
                 >
                     Вхід
                 </Typography>
 
-                {
-                    query.has('expSession') &&
-                    <Alert variant="outlined" severity="info">
-                        Сесія закінчилася, увійдіть знову
-                    </Alert>
-                }
-                {
-                    query.has('endSession') &&
-                    <Alert variant="outlined" severity="info">
-                        Всі активні сесії завершено
-                    </Alert>
-                }
-                {
-                    query.has('updatePassword') &&
-                    <Alert variant="outlined" severity="info">
-                        Ваш пароль успішно змінено
-                    </Alert>
-                }
-
                 <form onSubmit={handleSubmit(submit)}>
 
+                    {
+                        query.has('expSession') &&
+                        <Alert variant="outlined" severity="info">
+                            Сесія закінчилася, увійдіть знову
+                        </Alert>
+                    }
+                    {
+                        query.has('endSession') &&
+                        <Alert variant="outlined" severity="info">
+                            Всі активні сесії завершено
+                        </Alert>
+                    }
+                    {
+                        query.has('updatePassword') &&
+                        <Alert variant="outlined" severity="success">
+                            Ваш пароль успішно змінено
+                        </Alert>
+                    }
                     {error &&
                         <Alert variant="outlined" severity="error">
                             {error.message}
@@ -169,8 +168,7 @@ const Login = () => {
             </Paper>
         </Container>
 
-    )
-        ;
+    );
 };
 
 export {Login};

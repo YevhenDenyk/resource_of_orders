@@ -8,6 +8,7 @@ const initialState = {
     page: null,
     count: null,
     limit: null,
+    totalPage: null,
     errors: null,
 }
 
@@ -53,6 +54,7 @@ const locationSlice = createSlice({
                 state.page = action.payload.page
                 state.count = action.payload.count
                 state.limit = action.payload.limit
+                state.totalPage = action.payload.totalPage
             })
             .addCase(getById.fulfilled, (state, action) => {
                 state.location = action.payload

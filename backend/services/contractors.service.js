@@ -56,11 +56,14 @@ module.exports = {
             Contractor.count(findObject)
         ])
 
+        const totalPage = Math.ceil(count/limit)
+
         return {
             page: +page,
             limit: +limit,
             count,
-            contractors
+            totalPage,
+            contractors,
         }
     }
 

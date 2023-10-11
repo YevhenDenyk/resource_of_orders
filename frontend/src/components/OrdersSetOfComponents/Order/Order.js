@@ -1,7 +1,8 @@
 import {Link} from "react-router-dom";
 
 import {dateTransformer} from "../../../helpers"
-import css from './Order.module.css'
+
+import {TableCell, TableRow} from "@mui/material";
 
 const Order = ({order}) => {
     let {createdAt, executionDate, jobType, orderStatus, priority, overdue, orderNumber, _id} = order
@@ -21,7 +22,7 @@ const Order = ({order}) => {
             jobType = 'Технологічне обладнання'
             break
         case 'ventilationAndAirConditioning':
-            jobType = 'Вентиляції та кондиціонування обладнання'
+            jobType = 'Вентиляція та кондиціонування обладнання'
             break
         case 'liftingEquipmentAndElevators':
             jobType = 'Ліфти та підйомне обладнання'
@@ -43,40 +44,24 @@ const Order = ({order}) => {
     if (orderStatus === 'Виконана' || orderStatus === 'Відхилена' || orderStatus === 'Скасована') color = 'lightgrey'
 
     return (
-        <tr bgcolor={color}>
-            <td>
+        <TableRow
+            sx={{
+                '&:last-child td, &:last-child th': {border: 0},
+                backgroundColor: color
+            }}
+        >
+            <TableCell component="th" scope="row">
                 <Link to={`/orders/${_id}`}>
                     {orderNumber}
-                </Link>
-            </td>
-            <td>{executionDate}</td>
-            <td>{orderStatus}</td>
-            <td>{priority}</td>
-            <td>{jobType}</td>
-            <td>{createdAt}</td>
-        </tr>
+                </Link >
+            </TableCell>
+            <TableCell>{executionDate}</TableCell>
+            <TableCell>{orderStatus}</TableCell>
+            <TableCell align="center">{priority}</TableCell>
+            <TableCell>{jobType}</TableCell>
+            <TableCell>{createdAt}</TableCell>
+        </TableRow>
     );
 };
 
 export {Order};
-
-
-// "_id": "649af9c4d0f09f0c7a7b41ee",
-//     "jobType": "technologicalEquipment",
-//     "orderStatus": "Нова",
-//     "executionTime": 1,
-//     "contractor": "649d9a4a837a17cfb3514e14",
-//     "user": "64919f159cc69362e170453a",
-//     "location": "64918c93c3a37bd27f525444",
-//     "priority": "Високий",
-//     "description": "ой горіло ой палало",
-//     "files": [
-//     "vsvwe32fe32ew32ew",
-//     "https://learning-2022-2023.s3.eu-north-1.amazonaws.com/fileToOrder/649af9c4d0f09f0c7a7b41ee/568d7dc0-1cd1-11ee-92b0-6bf7fb248a85.jpeg"
-// ],
-//     "overdue": true,
-//     "orderNumber": 1687878084208,
-//     "createdAt": "2023-06-27T15:01:24.209Z",
-//     "updatedAt": "2023-07-19T14:45:00.012Z",
-//     "__v": 0,
-//     "executionDate": "2023-06-27T16:01:24.209Z"

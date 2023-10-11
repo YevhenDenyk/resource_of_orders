@@ -7,7 +7,7 @@ import {
     ForgotPage, LoginPage, UpdateForgotPasswordPage,
     OrderDetailPage, OrdersPage, OrderCreatePage,
     UsersPage, UserCreatePage, UserDetailPage,
-    LocationsPage, LocationDetailPage, LocationCreatePage, AccessLevelIsInsufficientPage
+    LocationsPage, LocationDetailPage, LocationCreatePage, AccessLevelIsInsufficientPage, UnknownPage
 } from "./pages";
 import {JobType} from "./components/JobTypeSetOfComponents";
 import {RequireAuth} from "./hoc";
@@ -88,6 +88,12 @@ const App = () => {
                     <Route path={'location/create'} element={
                         <RequireAuth minAccessLevel={61}>
                             <LocationCreatePage/>
+                        </RequireAuth>
+                    }/>
+
+                    <Route path={'*'} element={
+                        <RequireAuth minAccessLevel={10}>
+                            <UnknownPage/>
                         </RequireAuth>
                     }/>
 

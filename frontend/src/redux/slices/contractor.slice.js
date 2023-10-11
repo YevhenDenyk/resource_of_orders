@@ -6,6 +6,7 @@ const initialState = {
     page: null,
     count: null,
     limit: null,
+    totalPage: null,
     contractor: {},
     errors: null,
 }
@@ -52,6 +53,7 @@ const contractorSlice = createSlice({
                 state.page = action.payload.page
                 state.count = action.payload.count
                 state.limit = action.payload.limit
+                state.totalPage = action.payload.totalPage
             })
             .addCase(getById.fulfilled, (state, action) => {
                 state.contractor = action.payload
