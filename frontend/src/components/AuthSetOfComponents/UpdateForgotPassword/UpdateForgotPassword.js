@@ -27,7 +27,7 @@ const UpdateForgotPassword = () => {
 
     const [error, setError] = useState(null)
     const [showPassword, setShowPassword] = useState(false)
-    const [showСonfirmPassword, setShowСonfirmPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
     const {
         handleSubmit,
@@ -55,9 +55,9 @@ const UpdateForgotPassword = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    const handleClickShowСonfirmPassword = () => setShowСonfirmPassword((show) => !show);
+    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
-    const handleMouseDownСonfirmPassword = (event) => {
+    const handleMouseDownConfirmPassword = (event) => {
         event.preventDefault();
     };
 
@@ -130,16 +130,16 @@ const UpdateForgotPassword = () => {
                         <OutlinedInput
                             id="outlined-adornment-Confirm-password"
                             {...register('confirmPassword')}
-                            type={showСonfirmPassword ? 'text' : 'password'}
+                            type={showConfirmPassword ? 'text' : 'password'}
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
                                         aria-label="toggle password visibility"
-                                        onClick={handleClickShowСonfirmPassword}
-                                        onMouseDown={handleMouseDownСonfirmPassword}
+                                        onClick={handleClickShowConfirmPassword}
+                                        onMouseDown={handleMouseDownConfirmPassword}
                                         edge="end"
                                     >
-                                        {showСonfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                                        {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
                                     </IconButton>
                                 </InputAdornment>
                             }
