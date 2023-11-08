@@ -97,7 +97,7 @@ const Orders = () => {
                     value={priorityDefaultValue}
                     labelId="priority-label"
                     id="priority"
-                    label="Статус заявок"
+                    label="Пріорітет"
                     onChange={(e) => {
                         setFilter({...filter, priority: e.target.value})
                         setPriorityDefaultValue(e.target.value)
